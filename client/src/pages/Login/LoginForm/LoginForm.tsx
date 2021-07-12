@@ -26,6 +26,11 @@ interface Props {
   ) => void;
 }
 
+// function setDemoValues({values}) {
+//   values.email = 'demo@tattooart.com';
+//   values.password = 'demo123';
+// }
+
 export default function Login({ handleSubmit }: Props): JSX.Element {
   const classes = useStyles();
 
@@ -87,6 +92,19 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
           <Box textAlign="center">
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
               {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Login'}
+            </Button>
+            <Button
+              type="submit"
+              size="large"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={() => {
+                values.email = 'demo@tattooart.com';
+                values.password = 'demo123';
+              }}
+            >
+              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Use Demo'}
             </Button>
           </Box>
           <div style={{ height: 95 }} />
