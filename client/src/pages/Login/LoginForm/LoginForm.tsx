@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { CircularProgress } from '@material-ui/core';
+import { demoValues } from '../../../helpers/demovalues';
 
 interface Props {
   handleSubmit: (
@@ -26,13 +27,9 @@ interface Props {
   ) => void;
 }
 
-// function setDemoValues({values}) {
-//   values.email = 'demo@tattooart.com';
-//   values.password = 'demo123';
-// }
-
 export default function Login({ handleSubmit }: Props): JSX.Element {
   const classes = useStyles();
+  let demo = false;
 
   return (
     <Formik
@@ -91,7 +88,7 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
           />
           <Box textAlign="center">
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
-              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Login'}
+              {!demo && isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Login'}
             </Button>
             <Button
               type="submit"
@@ -100,11 +97,12 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
               color="primary"
               className={classes.submit}
               onClick={() => {
-                values.email = 'demo@tattooart.com';
-                values.password = 'demo123';
+                values.email = demoValues.email;
+                values.password = demoValues.password;
+                demo = true;
               }}
             >
-              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Use Demo'}
+              {demo && isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Use Demo'}
             </Button>
           </Box>
           <div style={{ height: 95 }} />
