@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
   },
   authWrapper: {
     display: 'flex',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'column',
     minHeight: '100vh',
@@ -20,7 +20,10 @@ const useStyles = makeStyles(() => ({
     paddingBottom: 20,
     color: '#000000',
     fontWeight: 700,
-    fontFamily: "'Open Sans'",
+    textAlign: 'center',
+  },
+  authCard: {
+    padding: '50px',
   },
 }));
 
