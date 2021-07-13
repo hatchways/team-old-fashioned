@@ -6,6 +6,9 @@ import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { CircularProgress } from '@material-ui/core';
+import { demoValues } from '../../../helpers/demovalues';
+import login from '../../../helpers/APICalls/login';
+import { useAuth } from '../../../context/useAuthContext';
 
 interface Props {
   handleSubmit: (
@@ -31,6 +34,16 @@ interface Props {
 
 const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
   const classes = useStyles();
+  const { updateLoginContext } = useAuth();
+  let demo = false;
+  const demoLogin = () => {
+    login(demoValues.email, demoValues.password).then((data) => {
+      if (data.success) {
+        updateLoginContext(data.success);
+        demo = true;
+      }
+    });
+  };
 
   return (
     <Formik
@@ -109,10 +122,18 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
 
           <Box textAlign="center">
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
-              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Create'}
+              {!demo && isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Create'}
             </Button>
-            <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
-              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Use Demo'}
+            <Button
+              // disables formik validation
+              type="button"
+              size="large"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={demoLogin}
+            >
+              {demo ? <CircularProgress style={{ color: 'white' }} /> : 'Use Demo'}
             </Button>
           </Box>
         </form>
