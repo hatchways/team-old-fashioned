@@ -1,36 +1,36 @@
-const mongoose = require('mongoose')
-const { User } = require('./User')
+const mongoose = require('mongoose');
+const { User } = require('./User');
 
 const contestSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
+  title: {
+    type: String,
+    required: true,
+  },
 
-    description: {
-        type: String,
-        required: true
-    },
+  description: {
+    type: String,
+    required: true,
+  },
 
-    prizeAmount: {
-        type: Number
-    },
+  prizeAmount: {
+    type: Number,
+  },
 
-    deadline: {
-        type: Date,
-        required: true
-    },
+  deadline: {
+    type: Date,
+    required: true,
+  },
 
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
 
-    created: {
-        type: Date,
-        Default: Date.now
-    }
+  created: {
+    type: Date,
+    Default: Date.now,
+  },
 });
 
-const Contest = mongoose.model('Contest', contestSchema)
-model.exports = Contest
+const Contest = mongoose.model('Contest', contestSchema);
+module.exports = Contest;
