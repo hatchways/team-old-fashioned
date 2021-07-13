@@ -9,6 +9,7 @@ import { CircularProgress } from '@material-ui/core';
 import { demoValues } from '../../../helpers/demovalues';
 import login from '../../../helpers/APICalls/login';
 import { useAuth } from '../../../context/useAuthContext';
+import { useSnackBar } from '../../../context/useSnackbarContext';
 
 interface Props {
   handleSubmit: (
@@ -35,12 +36,19 @@ interface Props {
 const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
   const classes = useStyles();
   const { updateLoginContext } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
   let demo = false;
   const demoLogin = () => {
     login(demoValues.email, demoValues.password).then((data) => {
-      if (data.success) {
+      if (data.error) {
+        updateSnackBarMessage(data.error.message);
+      } else if (data.success) {
         updateLoginContext(data.success);
         demo = true;
+      } else {
+        // Catchall for unknown issues
+        console.error({ data });
+        updateSnackBarMessage('An unexpected error occurred. Please try again');
       }
     });
   };
