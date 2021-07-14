@@ -6,14 +6,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   label: {
-    fontSize: 19,
+    fontSize: 14,
     color: 'rgb(0,0,0,0.4)',
-    paddingLeft: '5px',
+    marginTop: '15px',
+    fontWeight: 'bold',
   },
   inputs: {
-    marginTop: '.8rem',
+    borderRadius: 0,
     height: '2rem',
-    padding: '5px',
   },
   forgot: {
     paddingRight: 10,
@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
     width: 160,
     height: 56,
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: 0,
     marginTop: 49,
     fontSize: 16,
-    backgroundColor: '#3a8dff',
+    backgroundColor: '#000',
     fontWeight: 'bold',
   },
 }));

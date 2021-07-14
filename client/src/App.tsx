@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
+import ProtectedRoute from './components/ProtectedRoutes/ProtectedRoutes';
 
 import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
@@ -21,10 +22,8 @@ function App(): JSX.Element {
               <Switch>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
-                <Route exact path="/dashboard">
-                  <Dashboard />
-                </Route>
                 <Route exact path="/fileUpload" component={DesignSubmit}></Route>
+                <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                 <Route path="*">
                   <Redirect to="/login" />
                 </Route>
