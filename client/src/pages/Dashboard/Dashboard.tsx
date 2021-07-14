@@ -7,6 +7,7 @@ import { useSocket } from '../../context/useSocketContext';
 import { useHistory } from 'react-router-dom';
 import ChatSideBanner from '../../components/ChatSideBanner/ChatSideBanner';
 import { useEffect } from 'react';
+import AuthHeader from '../../components/AuthHeader/AuthHeader';
 
 export default function Dashboard(): JSX.Element {
   const classes = useStyles();
@@ -30,6 +31,7 @@ export default function Dashboard(): JSX.Element {
   return (
     <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
       <CssBaseline />
+      <AuthHeader linkTo="/fileUpload" asideText="testing upload file page" btnText="open uploadFile page" />
       <Grid item className={classes.drawerWrapper}>
         <ChatSideBanner loggedInUser={loggedInUser} />
       </Grid>

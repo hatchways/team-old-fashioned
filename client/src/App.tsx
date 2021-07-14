@@ -9,6 +9,7 @@ import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
 
 import './App.css';
+import DesignSubmit from './components/DesignSubmit/DesignSubmit';
 
 function App(): JSX.Element {
   return (
@@ -23,6 +24,7 @@ function App(): JSX.Element {
                 <Route exact path="/dashboard">
                   <Dashboard />
                 </Route>
+                <Route exact path="/fileUpload" component={DesignSubmit}></Route>
                 <Route path="*">
                   <Redirect to="/login" />
                 </Route>
