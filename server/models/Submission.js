@@ -2,22 +2,22 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const submissionSchema = new Schema({
-    contest_id: {
+    contestId: {
         type: ObjectId,
         ref: "contest",
         require: true
     },
-    user_id: {
+    userId: {
         type: ObjectId,
         ref: "user",
         require: true
     },
-    is_active: {
+    isActive: {
         type: Boolean,
         require: true
     },
     files: [{ type: String, required: true }],
-    submit_date: {
+    submitDate: {
         type: Date,
         default: Date.now
     }
