@@ -1,13 +1,11 @@
 import { ChangeEvent, useState, useEffect } from 'react';
-import { Box, Grid, Typography, Button, CircularProgress, CardContent, CardHeader, Card } from '@material-ui/core';
+import { Box, Typography, Button, CircularProgress, CardContent, CardHeader, Card } from '@material-ui/core';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import uploadImageAPI from '../../helpers/APICalls/uploadImages';
 
 import useStyles from './useStyles';
-import { forEachChild } from 'typescript';
-import { string } from 'yup/lib/locale';
 
 export default function DesignSubmit(): JSX.Element {
   const classes = useStyles();
@@ -63,46 +61,48 @@ export default function DesignSubmit(): JSX.Element {
   };
 
   return (
-    <Card className={classes.root}>
-      <CardHeader title="Submit design" component="h1" className={classes.cardHeader} />
-      <CardContent className={classes.cardContent}>
-        {preview ? (
-          <Button variant="contained" component="label" className={classes.btn}>
-            <img className={classes.preview} src={preview} />
-          </Button>
-        ) : (
-          <Typography style={{ textAlign: 'center' }}>
+    <div className={classes.root}>
+      <Card className={classes.card}>
+        <CardHeader title="Submit design" component="h1" className={classes.cardHeader} />
+        <CardContent className={classes.cardContent}>
+          {preview ? (
             <Button variant="contained" component="label" className={classes.btn}>
-              <input type="file" multiple accept="image/*" hidden onChange={handleSelectedImage} />
-              <CloudUploadIcon className={classes.uploadIcon} />
+              <img className={classes.preview} src={preview} />
             </Button>
+          ) : (
+            <Typography style={{ textAlign: 'center' }}>
+              <Button variant="contained" component="label" className={classes.btn}>
+                <input type="file" multiple accept="image/*" hidden onChange={handleSelectedImage} />
+                <CloudUploadIcon color="disabled" className={classes.uploadIcon} />
+              </Button>
+            </Typography>
+          )}
+          {preview ? (
+            <Button type="submit" disableFocusRipple disableRipple onClick={handleImageDelete}>
+              <DeleteOutlineIcon />
+              <Typography color="textSecondary">Delete</Typography>
+            </Button>
+          ) : null}
+          <Typography variant="h5" display="block" className={classes.submitText} gutterBottom>
+            Click to choose a file
           </Typography>
-        )}
-        {preview ? (
-          <Button type="submit" disableFocusRipple disableRipple onClick={handleImageDelete}>
-            <DeleteOutlineIcon />
-            <Typography color="textSecondary">Delete</Typography>
-          </Button>
-        ) : null}
-        <Typography color="textSecondary" className={classes.profileMediaInfo}>
-          Click to choose a file
-        </Typography>
-        <Typography>High resolution images</Typography>
-        <Typography>PNG, JPG, GIF</Typography>
-        <Typography>(Maximum size is 3MB)</Typography>
-        <Box>
-          <Button
-            type="submit"
-            onClick={handleImageUpload}
-            size="large"
-            variant="contained"
-            color="primary"
-            className={classes.submitBtn}
-          >
-            {isLoading ? <CircularProgress /> : 'Submit'}
-          </Button>
-        </Box>
-      </CardContent>
-    </Card>
+          <Typography color="textSecondary">High resolution images</Typography>
+          <Typography color="textSecondary">PNG, JPG, GIF</Typography>
+          <Typography color="textSecondary">(Maximum size is 3MB)</Typography>
+        </CardContent>
+      </Card>
+      <Box>
+        <Button
+          type="submit"
+          onClick={handleImageUpload}
+          size="large"
+          variant="contained"
+          color="primary"
+          className={classes.submitBtn}
+        >
+          {isLoading ? <CircularProgress /> : 'SUBMIT'}
+        </Button>
+      </Box>
+    </div>
   );
 }

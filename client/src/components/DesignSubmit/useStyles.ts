@@ -2,24 +2,30 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    maxWidth: '50%',
     margin: '100px auto',
   },
-  preview: {
+  card: {
     width: '100%',
+  },
+  preview: {
+    width: '90%',
   },
   btn: {
     marginTop: '2em',
+    borderRadius: '25px',
   },
   cardHeader: {
     textAlign: 'center',
     '& .MuiTypography-h5': {
-      fontWeight: 600,
-      fontSize: '1.7rem',
+      fontWeight: 'bolder',
+      fontSize: '2.4rem',
     },
   },
   uploadIcon: {
-    color: 'primary',
     fontSize: '150px',
   },
   submitBtn: {
@@ -62,9 +68,10 @@ const useStyles = makeStyles((theme) => ({
     border: '4px solid white',
     borderRadius: '6rem',
   },
-  profileMediaInfo: {
+  submitText: {
     textAlign: 'center',
-    marginTop: '5rem',
+    marginTop: '2rem',
+    fontWeight: 'bolder',
   },
   upload: {
     margin: theme.spacing(2, 2, 2),
