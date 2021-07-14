@@ -48,11 +48,12 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
     >
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
+          <label htmlFor="email">{<Typography className={classes.label}>E-mail</Typography>}</label>
           <TextField
             id="email"
-            label={<Typography className={classes.label}>E-mail address</Typography>}
             fullWidth
-            margin="normal"
+            variant="outlined"
+            margin="none"
             InputLabelProps={{
               shrink: true,
             }}
@@ -61,26 +62,28 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
             }}
             name="email"
             autoComplete="email"
+            placeholder="Enter e-mail address"
             autoFocus
             helperText={touched.email ? errors.email : ''}
             error={touched.email && Boolean(errors.email)}
             value={values.email}
             onChange={handleChange}
           />
+          <label htmlFor="password">{<Typography className={classes.label}>Password</Typography>}</label>
           <TextField
             id="password"
-            label={<Typography className={classes.label}>Password</Typography>}
             fullWidth
-            margin="normal"
+            variant="outlined"
+            margin="none"
             InputLabelProps={{
               shrink: true,
             }}
             InputProps={{
               classes: { input: classes.inputs },
-              endAdornment: <Typography className={classes.forgot}>Forgot?</Typography>,
             }}
             type="password"
             autoComplete="current-password"
+            placeholder="Enter password"
             helperText={touched.password ? errors.password : ''}
             error={touched.password && Boolean(errors.password)}
             value={values.password}
@@ -88,7 +91,7 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
           />
           <Box textAlign="center">
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
-              {!demo && isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Login'}
+              {!demo && isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'SIGN IN'}
             </Button>
             <Button
               type="submit"
@@ -105,7 +108,6 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
               {demo && isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Use Demo'}
             </Button>
           </Box>
-          <div style={{ height: 95 }} />
         </form>
       )}
     </Formik>
