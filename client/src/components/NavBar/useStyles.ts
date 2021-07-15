@@ -23,19 +23,6 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'none',
     },
   },
-  createContestLink: {
-    color: theme.palette.text.secondary,
-    cursor: 'pointer',
-    borderStyle: 'groove',
-    borderBlockColor: '#FFFFFF',
-    borderWidth: 1,
-    padding: theme.spacing(1.5, 4),
-    margin: theme.spacing(0, 6),
-    noWrap: true,
-    '&:hover': {
-      textDecoration: 'none',
-    },
-  },
   profileImg: {
     // margin: theme.spacing(0, 0, 0, 4),
   },

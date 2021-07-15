@@ -7,6 +7,9 @@ export const theme = createMuiTheme({
     button: {
       textTransform: 'none',
       fontWeight: 600,
+      label: {
+        padding: 1,
+      },
     },
     subtitle1: {
       fontFamily: '"Poppins","sans-serif"',

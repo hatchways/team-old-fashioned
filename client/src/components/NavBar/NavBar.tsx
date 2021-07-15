@@ -8,9 +8,13 @@ import Logo from '../../Images/logo.png';
 import demoProfilePhoto from '../../Images/demo-profile-photo.png';
 import useStyles from './useStyles';
 import AuthMenu from '../AuthMenu/AuthMenu';
+import { Button } from '@material-ui/core';
+import { useAuth } from '../../context/useAuthContext';
 
 const NavBar = (): JSX.Element => {
   const classes = useStyles();
+  const { loggedInUser } = useAuth();
+  const path = window.location.pathname;
 
   return (
     <AppBar className={classes.root} position="static">
@@ -20,39 +24,59 @@ const NavBar = (): JSX.Element => {
             <Box p={1} flexGrow={1}>
               <img width="170px" src={Logo} alt="Tattoo Art logo" />
             </Box>
-            <Box p={0}>
-              <Link variant="subtitle1" className={classes.link}>
-                Discover
-              </Link>
+            {loggedInUser ? (
+              <>
+                <Box p={0}>
+                  <Link variant="subtitle1" className={classes.link}>
+                    Discover
+                  </Link>
+                </Box>
+                <Box p={0}>
+                  <Link variant="subtitle1" className={classes.link}>
+                    Messages
+                  </Link>
+                </Box>
+                <Box p={0}>
+                  <Link variant="subtitle1" className={classes.link}>
+                    Notifications
+                  </Link>
+                </Box>
+              </>
+            ) : (
+              <Box p={0}></Box>
+            )}
+            <Box px={6} flexWrap="nowrap">
+              {/* Adapted from https://github.com/hatchways/team-hummingbird/blob/dev/client/src/components/Header.js */}
+              <Button
+                variant="outlined"
+                color="secondary"
+                style={{
+                  borderRadius: 0,
+                }}
+                href={loggedInUser ? '/contest' : path === '/login' ? '/signup' : '/login'}
+              >
+                {loggedInUser ? 'CREATE CONTEST' : path === '/login' ? 'SIGN UP' : 'SIGN IN'}
+              </Button>
             </Box>
-            <Box p={0}>
-              <Link variant="subtitle1" className={classes.link}>
-                Messages
-              </Link>
-            </Box>
-            <Box p={0}>
-              <Link variant="subtitle1" className={classes.link}>
-                Notifications
-              </Link>
-            </Box>
-            <Box p={1} flexWrap="nowrap">
-              <Link variant="subtitle1" className={classes.createContestLink}>
-                CREATE CONTEST
-              </Link>
-            </Box>
-            <Box p={1.5}>
-              {/* replace `demoProfilePhoto` with link to user photo */}
-              <Avatar className={classes.profileImg} src={demoProfilePhoto} alt="Profile Photo" />
-            </Box>
-            <Box p={0}>
-              {/* replace `Kenneth` with username */}
-              <Link variant="subtitle1" className={classes.username}>
-                Kenneth
-              </Link>
-            </Box>
-            <Box p={0}>
-              <AuthMenu />
-            </Box>
+            {loggedInUser ? (
+              <>
+                <Box p={1.5}>
+                  {/* replace `demoProfilePhoto` with link to user photo */}
+                  <Avatar className={classes.profileImg} src={demoProfilePhoto} alt="Profile Photo" />
+                </Box>
+                <Box p={0}>
+                  {/* replace `Kenneth` with username */}
+                  <Link variant="subtitle1" className={classes.username}>
+                    Kenneth
+                  </Link>
+                </Box>
+                <Box p={0}>
+                  <AuthMenu />
+                </Box>
+              </>
+            ) : (
+              <Box p={0}></Box>
+            )}
           </Box>
         </div>
       </Toolbar>
