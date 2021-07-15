@@ -4,9 +4,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useAuth } from '../../context/useAuthContext';
 import { useSocket } from '../../context/useSocketContext';
 import { useHistory } from 'react-router-dom';
-import NavBar from '../../components/NavBar/NavBar';
 import { useEffect } from 'react';
 import AuthHeader from '../../components/AuthHeader/AuthHeader';
+import NavBar from '../../components/NavBar/NavBar';
 
 export default function Dashboard(): JSX.Element {
   const { loggedInUser } = useAuth();
