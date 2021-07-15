@@ -9,7 +9,6 @@ AWS.config.update({
 
 exports.uploadImage = asyncHandler(async (req, res, next) => {
     const files = req.files;
-    console.log(files);
     const urlArray = [];
   
     if (files) {

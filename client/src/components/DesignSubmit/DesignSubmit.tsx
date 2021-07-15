@@ -70,7 +70,7 @@ export default function DesignSubmit(): JSX.Element {
               <img className={classes.preview} src={preview} />
             </Button>
           ) : (
-            <Typography style={{ textAlign: 'center' }}>
+            <Typography>
               <Button variant="contained" component="label" className={classes.btn}>
                 <input type="file" multiple accept="image/*" hidden onChange={handleSelectedImage} />
                 <CloudUploadIcon color="disabled" className={classes.uploadIcon} />
