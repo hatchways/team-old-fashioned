@@ -52,7 +52,7 @@ export default function DesignSubmit(): JSX.Element {
     }
     const result = await uploadImageAPI(formData);
     if (result.error) {
-      updateSnackBarMessage(result.error);
+      updateSnackBarMessage(result.error.message);
     }
     if (result.success) {
       updateSnackBarMessage('Your design images have been uploaded successfully');
