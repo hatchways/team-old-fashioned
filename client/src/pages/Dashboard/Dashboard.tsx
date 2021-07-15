@@ -4,7 +4,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useAuth } from '../../context/useAuthContext';
 import { useSocket } from '../../context/useSocketContext';
 import { useHistory } from 'react-router-dom';
-import NavBar from '../../components/NavBar/NavBar';
 import { useEffect } from 'react';
 
 export default function Dashboard(): JSX.Element {
@@ -23,6 +22,5 @@ export default function Dashboard(): JSX.Element {
     // loading for a split seconds until history.push works
     return <CircularProgress />;
   }
-
-  return <NavBar />;
+  return <div></div>;
 }
