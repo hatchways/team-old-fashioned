@@ -25,9 +25,16 @@ function App(): JSX.Element {
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
               <Route exact path="/fileUpload" component={DesignSubmit}></Route>
-              <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+              {/* Replace component with Discovery Page */}
+              <ProtectedRoute exact path="/" component={Dashboard} />
+              {/* Replace the components once created */}
+              <ProtectedRoute exact path="/messages" component={Dashboard} />
+              <ProtectedRoute exact path="/notifications" component={Dashboard} />
+              <ProtectedRoute exact path="/new-contest" component={Dashboard} />
+              <ProtectedRoute exact path="/profile" component={Dashboard} />
+              <ProtectedRoute exact path="/logout" component={Dashboard} />
               <Route path="*">
-                <Redirect to="/login" />
+                <Redirect to="/" />
               </Route>
             </SocketProvider>
           </AuthProvider>

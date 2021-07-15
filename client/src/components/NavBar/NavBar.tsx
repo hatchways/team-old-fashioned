@@ -22,22 +22,24 @@ const NavBar = (): JSX.Element => {
         <div style={{ width: '100%' }}>
           <Box display="flex" flexWrap="nowrap" p={1} m={1} alignItems="center" bgcolor="transparent">
             <Box p={1} flexGrow={1}>
-              <img width="170px" src={Logo} alt="Tattoo Art logo" />
+              <Link href="/">
+                <img width="170px" src={Logo} alt="Tattoo Art logo" />
+              </Link>
             </Box>
             {loggedInUser ? (
               <>
                 <Box p={0}>
-                  <Link variant="subtitle1" className={classes.link}>
+                  <Link variant="subtitle1" className={classes.link} href="/">
                     Discover
                   </Link>
                 </Box>
                 <Box p={0}>
-                  <Link variant="subtitle1" className={classes.link}>
+                  <Link variant="subtitle1" className={classes.link} href="/messages">
                     Messages
                   </Link>
                 </Box>
                 <Box p={0}>
-                  <Link variant="subtitle1" className={classes.link}>
+                  <Link variant="subtitle1" className={classes.link} href="/notifications">
                     Notifications
                   </Link>
                 </Box>
@@ -46,9 +48,8 @@ const NavBar = (): JSX.Element => {
               <Box p={0}></Box>
             )}
             <Box px={6} flexWrap="nowrap">
-              {/* Adapted from https://github.com/hatchways/team-hummingbird/blob/dev/client/src/components/Header.js */}
               {loggedInUser ? (
-                <CustomButton linkTo="/contest" btnText="CREATE CONTEST" />
+                <CustomButton linkTo="/new-contest" btnText="CREATE CONTEST" />
               ) : path === '/login' ? (
                 <CustomButton linkTo="/signup" btnText="SIGNUP" />
               ) : (
@@ -63,7 +64,7 @@ const NavBar = (): JSX.Element => {
                 </Box>
                 <Box p={0}>
                   {/* replace `Kenneth` with username */}
-                  <Link variant="subtitle1" className={classes.username}>
+                  <Link variant="subtitle1" className={classes.username} href="/profile">
                     Kenneth
                   </Link>
                 </Box>
