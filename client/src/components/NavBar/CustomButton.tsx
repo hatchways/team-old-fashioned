@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import useStyles from './useStyles';
 
 interface Props {
   linkTo: string;
@@ -7,18 +8,11 @@ interface Props {
 }
 
 const CustomButton = ({ linkTo, btnText }: Props): JSX.Element => {
+  const classes = useStyles();
   return (
-    <Link to={linkTo}>
-      <Button
-        variant="outlined"
-        color="secondary"
-        style={{
-          borderRadius: 0,
-        }}
-      >
-        {btnText}
-      </Button>
-    </Link>
+    <Button component={Link} to={linkTo} variant="outlined" color="secondary" className={classes.customButton}>
+      {btnText}
+    </Button>
   );
 };
 

@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   root: {
     background: theme.palette.primary.main,
-    //padding: '1rem 1rem',
   },
   title: {
     marginRight: theme.spacing(2),
@@ -23,15 +22,15 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'none',
     },
   },
-  profileImg: {
-    // margin: theme.spacing(0, 0, 0, 4),
+  customButton: {
+    borderRadius: 0,
   },
+  profileImg: {},
   username: {
     color: '#FFFFFF',
     cursor: 'pointer',
     textDecoration: 'none',
     display: 'inline-block',
-    // margin: theme.spacing(0, 0, 0, 2),
     '&:hover': {
       textDecoration: 'none',
     },
