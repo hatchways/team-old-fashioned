@@ -12,7 +12,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import Grid from '@material-ui/core/Grid';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, FormLabel } from '@material-ui/core';
 import PreferedDesigns from '../PreferedDesigns/PreferedDesigns';
 
 import useStyles from './useStyles';
@@ -82,6 +82,8 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
     '11:00 pm',
   ];
 
+  //<label htmlFor="title">What do you need designed?</label>
+  //<br />;
   return (
     <Formik
       initialValues={{
@@ -92,14 +94,21 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
         time: '',
         timezone: '',
       }}
+      validationSchema={Yup.object().shape({
+        title: Yup.string().required('Title is required'),
+        description: Yup.string().required('Description is required'),
+        prizeAmount: Yup.number().required('Prize amount is required').min(1).max(1000000),
+        date: Yup.date().required('Date is required'),
+        time: Yup.string().required('Time is required'),
+        timezone: Yup.string().required('Timezone is required'),
+      })}
       onSubmit={handleSubmit}
     >
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <Grid container direction="row" justify="center" spacing={4}>
             <Grid item xs={11} md={9}>
-              <label htmlFor="title">What do you need designed?</label>
-              <br />
+              <FormLabel htmlFor="title">What do you need designed?</FormLabel>
               <TextField
                 id="title"
                 variant="outlined"
@@ -115,8 +124,7 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
               />
             </Grid>
             <Grid item xs={11} md={9}>
-              <label htmlFor="description">Description</label>
-              <br />
+              <FormLabel htmlFor="description">Description</FormLabel>
               <TextField
                 id="description"
                 multiline
@@ -135,8 +143,7 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
             <Grid item xs={11} md={9}>
               <Grid container spacing={4}>
                 <Grid item xs={12} md={4}>
-                  <label htmlFor="prizeAmount">Prize amount</label>
-                  <br />
+                  <FormLabel htmlFor="prizeAmount">Prize amount</FormLabel>
                   <OutlinedInput
                     id="prizeAmount"
                     fullWidth
@@ -155,7 +162,7 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
                   />
                 </Grid>
                 <Grid item xs={12} md={8}>
-                  <label>Deadline</label>
+                  <FormLabel htmlFor="date">Deadline</FormLabel>
                   <Grid container spacing={4}>
                     <Grid item xs={12} md={6}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -177,7 +184,7 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
                       </MuiPickersUtilsProvider>
                     </Grid>
                     <Grid item xs={12} md={3}>
-                      <Select fullWidth id="time" name="time" variant="outlined" defaultValue="">
+                      <Select fullWidth id="time" margin="none" name="time" variant="outlined" defaultValue="">
                         {times.map((t) => (
                           <MenuItem key={t} value={t}>
                             {t}
@@ -186,7 +193,7 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
                       </Select>
                     </Grid>
                     <Grid item xs={12} md={3}>
-                      <Select fullWidth id="timezone" name="timezone" variant="outlined" defaultValue="">
+                      <Select fullWidth id="timezone" margin="none" name="timezone" variant="outlined" defaultValue="">
                         <MenuItem key="EST" value="EST">
                           EST
                         </MenuItem>
