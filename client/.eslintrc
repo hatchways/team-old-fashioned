@@ -15,10 +15,15 @@
   },
   "rules": {
     // suppress errors for missing 'import React' in files
-    "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error",
-    "prettier/prettier": ["error", { "endOfLine": "auto" }, { "usePrettierrc": true }]
+   "react/react-in-jsx-scope": "off",
+   "react/prop-types": "off",
+   "react-hooks/rules-of-hooks": "error",
+   "react-hooks/exhaustive-deps": "error",
+   "prettier/prettier": [
+    "error",
+    {
+      "endOfLine": "auto"
+    }
+  ]
   }
 }

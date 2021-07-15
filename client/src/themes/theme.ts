@@ -2,17 +2,35 @@ import { createMuiTheme } from '@material-ui/core';
 
 export const theme = createMuiTheme({
   typography: {
-    fontFamily: '"Open Sans", "sans-serif", "Roboto"',
+    fontFamily: '"Poppins", "sans-serif", "Roboto"',
     fontSize: 12,
     button: {
       textTransform: 'none',
-      fontWeight: 700,
+      fontWeight: 600,
+      label: {
+        padding: 1,
+      },
+    },
+    subtitle1: {
+      fontFamily: '"Poppins","sans-serif"',
     },
   },
   palette: {
-    primary: { main: '#3A8DFF' },
+    primary: { main: '#000000' },
+    secondary: { main: '#FFFFFF' },
+    text: {
+      primary: '#000000',
+      secondary: '#FFFFFF',
+    },
   },
   shape: {
     borderRadius: 5,
+  },
+  overrides: {
+    MuiTypography: {
+      subtitle1: {
+        fontWeight: 600,
+      },
+    },
   },
 });

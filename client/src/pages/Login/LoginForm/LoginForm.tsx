@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { CircularProgress } from '@material-ui/core';
+import { demoValues } from '../../../helpers/demovalues';
 
 interface Props {
   handleSubmit: (
@@ -28,6 +29,7 @@ interface Props {
 
 export default function Login({ handleSubmit }: Props): JSX.Element {
   const classes = useStyles();
+  let demo = false;
 
   return (
     <Formik
@@ -89,7 +91,21 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
           />
           <Box textAlign="center">
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
-              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'SIGN IN'}
+              {!demo && isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'SIGN IN'}
+            </Button>
+            <Button
+              type="submit"
+              size="large"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={() => {
+                values.email = demoValues.email;
+                values.password = demoValues.password;
+                demo = true;
+              }}
+            >
+              {demo && isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Use Demo'}
             </Button>
           </Box>
         </form>
