@@ -8,8 +8,8 @@ import Logo from '../../Images/logo.png';
 import demoProfilePhoto from '../../Images/demo-profile-photo.png';
 import useStyles from './useStyles';
 import AuthMenu from '../AuthMenu/AuthMenu';
-import { Button } from '@material-ui/core';
 import { useAuth } from '../../context/useAuthContext';
+import CustomButton from './CustomButton';
 
 const NavBar = (): JSX.Element => {
   const classes = useStyles();
@@ -47,16 +47,13 @@ const NavBar = (): JSX.Element => {
             )}
             <Box px={6} flexWrap="nowrap">
               {/* Adapted from https://github.com/hatchways/team-hummingbird/blob/dev/client/src/components/Header.js */}
-              <Button
-                variant="outlined"
-                color="secondary"
-                style={{
-                  borderRadius: 0,
-                }}
-                href={loggedInUser ? '/contest' : path === '/login' ? '/signup' : '/login'}
-              >
-                {loggedInUser ? 'CREATE CONTEST' : path === '/login' ? 'SIGN UP' : 'SIGN IN'}
-              </Button>
+              {loggedInUser ? (
+                <CustomButton linkTo="/contest" btnText="CREATE CONTEST" />
+              ) : path === '/login' ? (
+                <CustomButton linkTo="/signup" btnText="SIGNUP" />
+              ) : (
+                <CustomButton linkTo="/login" btnText="SIGN IN" />
+              )}
             </Box>
             {loggedInUser ? (
               <>
