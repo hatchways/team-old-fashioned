@@ -1,9 +1,10 @@
-import { useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { useAuth } from '../../context/useAuthContext';
+import { Link } from 'react-router-dom';
 
 const AuthMenu = (): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -47,6 +48,9 @@ const AuthMenu = (): JSX.Element => {
         getContentAnchorEl={null}
       >
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <Link to="/profile" style={{ textDecoration: 'none' }}>
+          <MenuItem>Profile</MenuItem>
+        </Link>
       </Menu>
     </div>
   );
