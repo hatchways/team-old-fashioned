@@ -1,0 +1,75 @@
+import Grid from '@material-ui/core/Grid';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { useAuth } from '../../context/useAuthContext';
+import { useSocket } from '../../context/useSocketContext';
+import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
+import Typography from '@material-ui/core/Typography';
+import useStyles from './useStyles';
+import { Link } from 'react-router-dom';
+import Box from '@material-ui/core/Box';
+import Avatar from '@material-ui/core/Avatar';
+import demoProfilePhoto from '../../Images/demo-profile-photo.png';
+import FullWidthTabs from './ContestDetailTabs/ContestDetailTabs';
+
+export default function ContestDetails(): JSX.Element {
+  const classes = useStyles();
+  const { loggedInUser } = useAuth();
+  const { initSocket } = useSocket();
+
+  const history = useHistory();
+
+  useEffect(() => {
+    initSocket();
+  }, [initSocket]);
+
+  if (loggedInUser === undefined) return <CircularProgress />;
+  if (!loggedInUser) {
+    history.push('/login');
+    // loading for a split seconds until history.push works
+    return <CircularProgress />;
+  }
+
+  return (
+    <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Grid container direction="column">
+        <Grid container alignItems="center" justify="center">
+          <Grid item xs={12} sm={10} md={8}>
+            <Link to="/contest/all" className={classes.breadcrumb}>
+              Back to contests list
+            </Link>
+          </Grid>
+          <Grid item xs={12} sm={10} md={8}>
+            <Box display="flex" flexWrap="nowrap" p={1} m={1} alignItems="center" bgcolor="transparent">
+              <Box>
+                <Typography className={classes.contestTitle} component="h1" variant="h5">
+                  {/* Replace with Contest Title variable */}
+                  Contest Title
+                </Typography>
+              </Box>
+              <Box flexGrow={1}>
+                <Typography className={classes.prize} component="h1" variant="h5">
+                  {/* Replace with Prize variable */}
+                  $150
+                </Typography>
+              </Box>
+              <Box>Select Winner</Box>
+            </Box>
+            <Grid item xs={12} sm={10} md={8}>
+              <Box display="flex">
+                {/* Replace with user variables sa photo and name */}
+                <Box>
+                  <Avatar className={classes.profilePhoto} src={demoProfilePhoto} alt="Profile Photo" />
+                </Box>
+                <Box>By Kenneth Stewart</Box>
+              </Box>
+            </Grid>
+            <FullWidthTabs />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+}
