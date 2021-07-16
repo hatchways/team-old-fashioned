@@ -1,11 +1,10 @@
-const AWS = require("aws-sdk");
-const asyncHandler = require("express-async-handler");
-const {createSubmission} = require("../models/Submission");
+const AWS = require('aws-sdk');
+const asyncHandler = require('express-async-handler');
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY,
   secretAccessKey: process.env.AWS_SECRET_KEY,
-  region: process.env.AWS_BUCKET_REGION
+  region: process.env.AWS_BUCKET_REGION,
 });
 
 exports.uploadImage = asyncHandler(async (req, res, next) => {
@@ -39,4 +38,4 @@ exports.uploadImage = asyncHandler(async (req, res, next) => {
       }
     });
   }
-})
+});
