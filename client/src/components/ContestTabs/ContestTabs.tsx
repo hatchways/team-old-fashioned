@@ -1,5 +1,6 @@
-import { Box, Paper, Tab, Tabs, Typography } from '@material-ui/core';
-import React from 'react';
+import { Box, Paper, Tab, Tabs, Typography, withStyles } from '@material-ui/core';
+import React, { ChangeEvent } from 'react';
+import useStyles from './useStyles';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -26,24 +27,38 @@ function TabPanel(props: TabPanelProps): JSX.Element {
   );
 }
 
-// Display two tabs, the completed and the in progress contests
-export default function ContestTabs(): JSX.Element {
+interface ContestProps {
+  inProgress: string[];
+  completed: string[];
+}
+
+// Display two tabs, the completed and the in progress contest
+export default function ContestTabs(props: ContestProps): JSX.Element {
+  const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
   };
   return (
-    <Paper>
+    <Paper square className={classes.root}>
       <Tabs value={value} onChange={handleChange}>
-        <Tab label="In PROGRESS" />
+        <Tab label="IN PROGRESS" />
         <Tab label="COMPLETED" />
       </Tabs>
       <TabPanel value={value} index={0}>
         {/*TODO: In progress contests */}
+        <ul>
+          <li>Item 1</li>
+          <li>Item 2</li>
+        </ul>
       </TabPanel>
 
       <TabPanel value={value} index={1}>
         {/*TODO: Completed contests */}
+        <ul>
+          <li>Item 11</li>
+          <li>Item 22</li>
+        </ul>
       </TabPanel>
     </Paper>
   );
