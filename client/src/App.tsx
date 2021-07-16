@@ -13,6 +13,7 @@ import NavBar from './components/NavBar/NavBar';
 
 import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
+import ProfileSetting from './pages/ProfileSetting/ProfileSetting';
 
 function App(): JSX.Element {
   return (
@@ -26,13 +27,14 @@ function App(): JSX.Element {
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
               <ProtectedRoute exact path="/fileUpload" component={DesignSubmit} />
+              <ProtectedRoute exact path="/setting" component={ProfileSetting} />
               {/* Replace component with Discovery Page */}
               <Route exact path="/" component={Dashboard} />
               {/* Replace the components once created */}
               <ProtectedRoute exact path="/messages" component={Dashboard} />
               <ProtectedRoute exact path="/notifications" component={Dashboard} />
-              <ProtectedRoute exact path="/new-contest" component={NewContest} />
-              <ProtectedRoute exact path="/profile" component={Dashboard} />
+              <ProtectedRoute exact path="/new-contest" component={Dashboard} />
+              <ProtectedRoute exact path="/profile" component={ProfileSetting} />
               <ProtectedRoute exact path="/logout" component={Dashboard} />
               <Route path="*">
                 <Redirect to="/" />
