@@ -4,6 +4,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import uploadImageAPI from '../../helpers/APICalls/uploadImages';
+import submissionAPI from '../../helpers/APICalls/submission';
 
 import useStyles from './useStyles';
 
@@ -50,12 +51,18 @@ export default function DesignSubmit(): JSX.Element {
         formData.append('designImg', img);
       }
     }
+    console.log(formData);
     const result = await uploadImageAPI(formData);
+    console.log(result);
     if (result.error) {
-      updateSnackBarMessage(result.error);
+      updateSnackBarMessage(result.error.message);
     }
     if (result.success) {
       updateSnackBarMessage('Your design images have been uploaded successfully');
+    }
+    if (result.success) {
+      const returnData = await submissionAPI(result.success.urlArray);
+      console.log(returnData);
     }
     setisLoading(false);
   };
