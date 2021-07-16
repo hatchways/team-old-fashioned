@@ -31,7 +31,7 @@ function App(): JSX.Element {
               {/* Replace the components once created */}
               <ProtectedRoute exact path="/messages" component={Dashboard} />
               <ProtectedRoute exact path="/notifications" component={Dashboard} />
-              <ProtectedRoute exact path="/new-contest" component={Dashboard} />
+              <ProtectedRoute exact path="/new-contest" component={NewContest} />
               <ProtectedRoute exact path="/profile" component={Dashboard} />
               <ProtectedRoute exact path="/logout" component={Dashboard} />
               <Route path="*">
