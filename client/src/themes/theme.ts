@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 export const theme = createMuiTheme({
   typography: {
@@ -20,7 +20,7 @@ export const theme = createMuiTheme({
     secondary: { main: '#FFFFFF' },
     text: {
       primary: '#000000',
-      secondary: '#FFFFFF',
+      secondary: '#CCCCCC',
     },
   },
   shape: {

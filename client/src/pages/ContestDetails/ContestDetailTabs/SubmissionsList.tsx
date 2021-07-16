@@ -16,7 +16,10 @@ export function SubmissionsGrid(): JSX.Element {
                 ${submission.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
             loading="lazy"
           />
-          <ImageListItemBar title={'@' + submission.username} />
+          <ImageListItemBar
+            title={'By @' + submission.username}
+            style={{ fontWeight: 600, backgroundColor: 'transparent', textAlign: 'center' }}
+          />
         </ImageListItem>
       ))}
     </ImageList>

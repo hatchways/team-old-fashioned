@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     // },
   },
   breadcrumb: {
-    color: '#cccccc',
+    color: theme.palette.text.secondary,
   },
   navigation: {
     backgroundColor: theme.palette.text.primary,
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '75px 0',
   },
   prize: {
-    color: theme.palette.text.secondary,
+    color: theme.palette.secondary.main,
     fontSize: 26,
     paddingBottom: 20,
     fontWeight: 600,

@@ -60,7 +60,7 @@ export default function FullWidthTabs(): JSX.Element {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="transparent">
+      <AppBar position="static" color="transparent" elevation={0}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -78,6 +78,7 @@ export default function FullWidthTabs(): JSX.Element {
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
+        style={{ backgroundColor: '#ffffff' }}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
           <SubmissionsGrid />
