@@ -12,6 +12,8 @@ import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import demoProfilePhoto from '../../Images/demo-profile-photo.png';
 import FullWidthTabs from './ContestDetailTabs/ContestDetailTabs';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Button from '@material-ui/core/Button';
 
 export default function ContestDetails(): JSX.Element {
   const classes = useStyles();
@@ -38,11 +40,11 @@ export default function ContestDetails(): JSX.Element {
         <Grid container alignItems="center" justify="center">
           <Grid item xs={12} sm={10} md={8}>
             <Link to="/contest/all" className={classes.breadcrumb}>
-              Back to contests list
+              <ArrowBackIosIcon fontSize="inherit" /> Back to contests list
             </Link>
           </Grid>
-          <Grid item xs={12} sm={10} md={8}>
-            <Box display="flex" flexWrap="nowrap" p={1} m={1} alignItems="center" bgcolor="transparent">
+          <Grid item xs={12} sm={10} md={8} style={{ paddingTop: 32 }}>
+            <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
               <Box>
                 <Typography className={classes.contestTitle} component="h1" variant="h5">
                   {/* Replace with Contest Title variable */}
@@ -50,22 +52,29 @@ export default function ContestDetails(): JSX.Element {
                 </Typography>
               </Box>
               <Box flexGrow={1}>
-                <Typography className={classes.prize} component="h1" variant="h5">
+                <Button variant="contained" color="primary" disableElevation className={classes.prize}>
+                  {/* <Typography className={classes.prize} component="h1" variant="h5"> */}
                   {/* Replace with Prize variable */}
                   $150
-                </Typography>
+                  {/* </Typography> */}
+                </Button>
               </Box>
-              <Box>Select Winner</Box>
+              <Box>
+                <Button variant="outlined" color="primary" style={{ borderRadius: 0 }}>
+                  SELECT WINNER
+                </Button>
+              </Box>
             </Box>
-            <Grid item xs={12} sm={10} md={8}>
-              <Box display="flex">
+            <Grid item xs={12} sm={10} md={8} style={{ paddingTop: 8 }}>
+              <Box display="flex" alignItems="center">
                 {/* Replace with user variables sa photo and name */}
                 <Box>
                   <Avatar className={classes.profilePhoto} src={demoProfilePhoto} alt="Profile Photo" />
                 </Box>
-                <Box>By Kenneth Stewart</Box>
+                <Box style={{ paddingLeft: 8, fontWeight: 600 }}>By Kenneth Stewart</Box>
               </Box>
             </Grid>
+            <Grid style={{ paddingTop: 32 }}></Grid>
             <FullWidthTabs />
           </Grid>
         </Grid>

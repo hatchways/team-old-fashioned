@@ -6,6 +6,8 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiInput-underline:before': {
       borderBottom: '1.2px solid rgba(0, 0, 0, 0.2)',
     },
+    paddingTop: 40,
+    paddingBottom: 20,
     // '& a': {
     //   textDecoration: 'none',
     //   color: theme.palette.text.secondary,
@@ -16,10 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   breadcrumb: {
     color: theme.palette.text.secondary,
-  },
-  navigation: {
-    backgroundColor: theme.palette.text.primary,
-    height: '70px',
+    fontWeight: 600,
   },
   link: {
     display: 'inline-block',
@@ -39,20 +38,19 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid #fff',
   },
   contestTitle: {
-    fontSize: 26,
-    paddingBottom: 20,
     color: '#000000',
     fontWeight: 600,
     textAlign: 'left',
-    margin: '75px 0',
+    paddingRight: 20,
+    alignContent: 'center',
   },
   prize: {
     color: theme.palette.secondary.main,
-    fontSize: 26,
-    paddingBottom: 20,
     fontWeight: 600,
     textAlign: 'left',
-    margin: '75px 0',
+    backgroundColor: theme.palette.primary.main,
+    pointerEvents: 'none',
+    borderRadius: 0,
   },
   profilePhoto: {},
   formPaper: {
