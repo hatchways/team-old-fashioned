@@ -1,3 +1,5 @@
+// Adapted from https://material-ui.com/components/tabs/
+
 import React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import AppBar from '@material-ui/core/AppBar';
@@ -7,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import useStyles from './useStyles';
 import { useTheme } from '@material-ui/core/styles';
+import { SubmissionsGrid, submissionCount } from './SubmissionsList';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -57,7 +60,7 @@ export default function FullWidthTabs(): JSX.Element {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
+      <AppBar position="static" color="transparent">
         <Tabs
           value={value}
           onChange={handleChange}
@@ -66,7 +69,8 @@ export default function FullWidthTabs(): JSX.Element {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Designs" {...a11yProps(0)} />
+          {/* Replace with var for total number of submissions */}
+          <Tab label={'Designs ' + '(' + submissionCount() + ')'} {...a11yProps(0)} />
           <Tab label="Brief" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
@@ -76,7 +80,11 @@ export default function FullWidthTabs(): JSX.Element {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          Designs
+          <SubmissionsGrid />
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
+          {/* Replace with var for design brief */}
+          Tattoo Design Brief
         </TabPanel>
       </SwipeableViews>
     </div>
