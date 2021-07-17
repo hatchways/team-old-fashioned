@@ -26,7 +26,7 @@ function App(): JSX.Element {
               <Route path="/" component={NavBar} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
-              <ProtectedRoute exact path="/fileUpload" component={DesignSubmit} />
+              <Route exact path="/fileUpload" component={DesignSubmit} />
               <ProtectedRoute exact path="/setting" component={ProfileSetting} />
               {/* Replace component with Discovery Page */}
               <Route exact path="/" component={Dashboard} />
