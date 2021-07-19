@@ -7,8 +7,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import useStyles from './useStyles';
 import { useTheme } from '@material-ui/core/styles';
+import useStyles from './useStyles';
 import { SubmissionsGrid, submissionCount } from './SubmissionsList';
 
 interface TabPanelProps {
@@ -82,13 +82,15 @@ export default function FullWidthTabs({ submissionList, description }: Props): J
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
-        style={{ backgroundColor: '#ffffff' }}
+        className={classes.panel}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
           <SubmissionsGrid submissionList={submissionList} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          {description}
+          <Typography variant="body1" className={classes.description}>
+            {description}
+          </Typography>
         </TabPanel>
       </SwipeableViews>
     </div>

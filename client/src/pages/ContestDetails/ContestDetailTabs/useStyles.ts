@@ -4,17 +4,17 @@ const useStyles = makeStyles(() => ({
   root: {
     backgroundColor: 'transparent',
   },
-  vignette: {
-    position: 'relative',
-    '&:after': {
-      content: '',
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      boxShadow: '0 0 150px 30px rgba(0, 0, 0, 1) inset',
-    },
+  panel: {
+    backgroundColor: '#ffffff',
+  },
+  caption: {
+    fontWeight: 600,
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+  },
+  description: {
+    margin: 'auto',
+    maxWidth: 720,
   },
 }));
 

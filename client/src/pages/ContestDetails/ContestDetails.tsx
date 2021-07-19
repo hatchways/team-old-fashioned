@@ -1,19 +1,19 @@
-import Grid from '@material-ui/core/Grid';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { useAuth } from '../../context/useAuthContext';
-import { useSocket } from '../../context/useSocketContext';
-import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
-import useStyles from './useStyles';
+import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
-import demoProfilePhoto from '../../Images/demo-profile-photo.png';
-import FullWidthTabs from './ContestDetailTabs/ContestDetailTabs';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FullWidthTabs from './ContestDetailTabs/ContestDetailTabs';
+import { useAuth } from '../../context/useAuthContext';
+import { useSocket } from '../../context/useSocketContext';
+import useStyles from './useStyles';
+import demoProfilePhoto from '../../Images/demo-profile-photo.png';
 import sampleContestData from './SampleContestData';
 
 export default function ContestDetails(): JSX.Element {
@@ -45,7 +45,7 @@ export default function ContestDetails(): JSX.Element {
               <ArrowBackIosIcon fontSize="inherit" /> Back to contests list
             </Link>
           </Grid>
-          <Grid item xs={12} sm={10} md={8} style={{ paddingTop: 32 }}>
+          <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
             <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
               <Box>
                 <Typography className={classes.contestTitle} component="h1" variant="h5">
@@ -58,20 +58,20 @@ export default function ContestDetails(): JSX.Element {
                 </Button>
               </Box>
               <Box>
-                <Button variant="outlined" color="primary" style={{ borderRadius: 0 }}>
+                <Button variant="outlined" color="primary" className={classes.winnerButton}>
                   SELECT WINNER
                 </Button>
               </Box>
             </Box>
-            <Grid item xs={12} sm={10} md={8} style={{ paddingTop: 8 }}>
+            <Grid item xs={12} sm={10} md={8} className={classes.ownerColumn}>
               <Box display="flex" alignItems="center">
                 <Box>
                   <Avatar className={classes.profilePhoto} src={demoProfilePhoto} alt="Profile Photo" />
                 </Box>
-                <Box style={{ paddingLeft: 8, fontWeight: 600 }}>By {user}</Box>
+                <Box className={classes.userText}>By {user}</Box>
               </Box>
             </Grid>
-            <Grid style={{ paddingTop: 32 }}></Grid>
+            <Grid className={classes.spacer}></Grid>
             <FullWidthTabs submissionList={submissions} description={description} />
           </Grid>
         </Grid>
