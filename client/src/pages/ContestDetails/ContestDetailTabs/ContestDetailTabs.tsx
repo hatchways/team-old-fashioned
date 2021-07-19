@@ -45,11 +45,16 @@ function a11yProps(index: number) {
   };
 }
 
-export default function FullWidthTabs(): JSX.Element {
+interface Props {
+  submissionList: Array<{ img: string; username: string }>;
+  description: string;
+}
+
+export default function FullWidthTabs({ submissionList, description }: Props): JSX.Element {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-
+  const count = submissionCount({ submissionList });
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
   };
@@ -69,8 +74,7 @@ export default function FullWidthTabs(): JSX.Element {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          {/* Replace with var for total number of submissions */}
-          <Tab label={'Designs ' + '(' + submissionCount() + ')'} {...a11yProps(0)} />
+          <Tab label={'Designs ' + '(' + count + ')'} {...a11yProps(0)} />
           <Tab label="Brief" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
@@ -81,11 +85,10 @@ export default function FullWidthTabs(): JSX.Element {
         style={{ backgroundColor: '#ffffff' }}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <SubmissionsGrid />
+          <SubmissionsGrid submissionList={submissionList} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          {/* Replace with var for design brief */}
-          Tattoo Design Brief
+          {description}
         </TabPanel>
       </SwipeableViews>
     </div>

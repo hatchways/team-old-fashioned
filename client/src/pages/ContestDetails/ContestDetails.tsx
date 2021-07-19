@@ -14,6 +14,7 @@ import demoProfilePhoto from '../../Images/demo-profile-photo.png';
 import FullWidthTabs from './ContestDetailTabs/ContestDetailTabs';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Button from '@material-ui/core/Button';
+import sampleContestData from './SampleContestData';
 
 export default function ContestDetails(): JSX.Element {
   const classes = useStyles();
@@ -21,6 +22,7 @@ export default function ContestDetails(): JSX.Element {
   const { initSocket } = useSocket();
 
   const history = useHistory();
+  const { title, description, prizeAmount, user, submissions } = sampleContestData();
 
   useEffect(() => {
     initSocket();
@@ -47,16 +49,12 @@ export default function ContestDetails(): JSX.Element {
             <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
               <Box>
                 <Typography className={classes.contestTitle} component="h1" variant="h5">
-                  {/* Replace with Contest Title variable */}
-                  Contest Title
+                  {title}
                 </Typography>
               </Box>
               <Box flexGrow={1}>
                 <Button variant="contained" color="primary" disableElevation className={classes.prize}>
-                  {/* <Typography className={classes.prize} component="h1" variant="h5"> */}
-                  {/* Replace with Prize variable */}
-                  $150
-                  {/* </Typography> */}
+                  {prizeAmount}
                 </Button>
               </Box>
               <Box>
@@ -67,15 +65,14 @@ export default function ContestDetails(): JSX.Element {
             </Box>
             <Grid item xs={12} sm={10} md={8} style={{ paddingTop: 8 }}>
               <Box display="flex" alignItems="center">
-                {/* Replace with user variables sa photo and name */}
                 <Box>
                   <Avatar className={classes.profilePhoto} src={demoProfilePhoto} alt="Profile Photo" />
                 </Box>
-                <Box style={{ paddingLeft: 8, fontWeight: 600 }}>By Kenneth Stewart</Box>
+                <Box style={{ paddingLeft: 8, fontWeight: 600 }}>By {user}</Box>
               </Box>
             </Grid>
             <Grid style={{ paddingTop: 32 }}></Grid>
-            <FullWidthTabs />
+            <FullWidthTabs submissionList={submissions} description={description} />
           </Grid>
         </Grid>
       </Grid>

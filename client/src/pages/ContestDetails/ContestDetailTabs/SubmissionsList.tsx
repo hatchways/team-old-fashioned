@@ -3,13 +3,14 @@ import * as React from 'react';
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
-import SubmissionData from './SubmissionData';
 
-export function SubmissionsGrid(): JSX.Element {
-  const submissionList = SubmissionData();
+interface Props {
+  submissionList: Array<{ img: string; username: string }>;
+}
+export function SubmissionsGrid({ submissionList }: Props): JSX.Element {
   return (
     <ImageList cols={4}>
-      {submissionList.map((submission) => (
+      {submissionList.map((submission: { img: string; username: string }) => (
         <ImageListItem key={submission.img}>
           <img
             srcSet={`${submission.img}?w=248&fit=crop&auto=format 1x,
@@ -26,9 +27,6 @@ export function SubmissionsGrid(): JSX.Element {
   );
 }
 
-// Replace with array of objects with img and username keys
-
-export function submissionCount(): number {
-  const submissionList = SubmissionData();
+export function submissionCount({ submissionList }: Props): number {
   return submissionList.length;
 }
