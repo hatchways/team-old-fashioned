@@ -1,4 +1,5 @@
 import React from 'react';
+import PersonalInformation from './PersonalInformation/PersonalInformation';
 import useStyles from './useStyles';
 import { AppBar, Box, Grid, Tab, Tabs, Typography } from '@material-ui/core';
 
@@ -67,7 +68,7 @@ export default function ProfileSetting() {
         Profile
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Personal Information
+        <PersonalInformation />
       </TabPanel>
       <TabPanel value={value} index={2}>
         Payment details
