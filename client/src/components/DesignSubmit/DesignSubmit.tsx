@@ -9,11 +9,11 @@ import { Contest } from '../../interface/Contest';
 
 import useStyles from './useStyles';
 
-export interface Props {
+interface Props {
   contest: Contest;
 }
 
-export default function DesignSubmit({ contest }: Props): JSX.Element {
+const DesignSubmit = ({ contest }: Props): JSX.Element => {
   const classes = useStyles();
   const [uploadImages, setUploadImages] = useState<File>();
   const [uploadImagesList, setUploadImagesList] = useState<FileList>();
@@ -56,9 +56,9 @@ export default function DesignSubmit({ contest }: Props): JSX.Element {
         formData.append('designImg', img);
       }
     }
-    console.log(formData);
+
     const result = await uploadImageAPI(formData);
-    console.log(result);
+
     if (result.error) {
       updateSnackBarMessage(result.error.message);
     }
@@ -67,7 +67,6 @@ export default function DesignSubmit({ contest }: Props): JSX.Element {
     }
     if (result.success) {
       const returnData = await contestImgSubmitAPI(contest._id, result.success.urlArray);
-      console.log(returnData);
     }
     setisLoading(false);
   };
@@ -92,7 +91,7 @@ export default function DesignSubmit({ contest }: Props): JSX.Element {
           {preview ? (
             <Button type="submit" disableFocusRipple disableRipple onClick={handleImageDelete}>
               <DeleteOutlineIcon />
-              <Typography color="textSecondary">Delete</Typography>
+              <Typography color="primary">Delete</Typography>
             </Button>
           ) : null}
           <Typography variant="h5" display="block" className={classes.submitText} gutterBottom>
@@ -117,4 +116,6 @@ export default function DesignSubmit({ contest }: Props): JSX.Element {
       </Box>
     </div>
   );
-}
+};
+
+export default DesignSubmit;

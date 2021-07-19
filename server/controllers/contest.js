@@ -68,22 +68,36 @@ exports.createSubmissionByContestId = asyncHandler(async (req, res, next) => {
   const contestId = req.params.id;
   const s3UrlArray = req.body.data;
   const userId = req.user.id;
-  if (!ObjectId.isValid(userId)) {
+  if (!ObjectId.isValid(contestId)) {
     return res.status(400).json({
-      error: 'User ID is invalid.',
+      error: 'Contest ID is invalid.',
     });
   }
   try {
-    const submissionData = await Submission.create({
-      contestId: contestId,
-      userId: userId,
-      files: s3UrlArray,
-      isActive: true,
-    });
-    if (submissionData) {
+    const userExist = await Submission.findOne({ userId: userId, contestId: contestId });
+    if (userExist) {
+      const submissionData = await Submission.findByIdAndUpdate(
+        userExist._id,
+        { files: s3UrlArray },
+        {
+          new: true,
+        },
+      );
       res.status(200).json({
         submission: submissionData,
       });
+    } else {
+      const submissionData = await Submission.create({
+        contestId: contestId,
+        userId: userId,
+        files: s3UrlArray,
+        isActive: true,
+      });
+      if (submissionData) {
+        res.status(200).json({
+          submission: submissionData,
+        });
+      }
     }
   } catch (error) {
     res.status(400);
