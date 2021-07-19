@@ -28,6 +28,17 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#000',
     fontWeight: 'bold',
   },
+  title: {
+    fontSize: 26,
+    paddingBottom: 20,
+    color: '#000000',
+    fontWeight: 700,
+    textAlign: 'center',
+    margin: '75px 0',
+  },
+  paper: {
+    padding: '50px 0',
+  },
 }));
 
 export default useStyles;

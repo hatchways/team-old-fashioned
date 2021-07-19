@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#000',
     fontWeight: 'bold',
   },
+  '& label': {
+    backgroundColor: 'red',
+  },
 }));
 
 export default useStyles;

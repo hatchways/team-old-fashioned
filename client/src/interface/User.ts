@@ -7,3 +7,9 @@ export interface SearchUsersApiData {
   users?: User[];
   error?: { message: string };
 }
+
+export interface UserPersonalInformation {
+  headline: string;
+  bio: string;
+  location: string;
+}
