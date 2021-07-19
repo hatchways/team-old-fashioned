@@ -1,6 +1,7 @@
 import React from 'react';
 import useStyles from './useStyles';
 import { AppBar, Box, Grid, Tab, Tabs, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -64,7 +65,7 @@ export default function ProfileSetting() {
         </AppBar>
       </Box>
       <TabPanel value={value} index={0}>
-        Profile
+        <Link to="/contest-details">Contest details</Link>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Personal Information
