@@ -76,9 +76,10 @@ exports.createSubmissionByContestId = asyncHandler(async (req, res, next) => {
   try {
     const userExist = await Submission.findOne({ userId: userId, contestId: contestId });
     if (userExist) {
+      const newFilesData = userExist.files.concat(s3UrlArray);
       const submissionData = await Submission.findByIdAndUpdate(
         userExist._id,
-        { files: s3UrlArray },
+        { files: newFilesData },
         {
           new: true,
         },
@@ -94,13 +95,13 @@ exports.createSubmissionByContestId = asyncHandler(async (req, res, next) => {
         isActive: true,
       });
       if (submissionData) {
-        res.status(200).json({
+        res.status(201).json({
           submission: submissionData,
         });
       }
     }
   } catch (error) {
-    res.status(400);
+    res.status(500);
     throw new Error(error);
   }
 });

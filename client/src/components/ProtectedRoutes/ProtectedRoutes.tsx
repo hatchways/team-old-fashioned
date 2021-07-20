@@ -1,18 +1,20 @@
-import { Route, RouteProps, RouteComponentProps } from 'react-router-dom';
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
 import { useAuth } from '../../context/useAuthContext';
 
-const ProtectedRoute = ({ children, component: Component, ...routeProps }: RouteProps): JSX.Element => {
+interface RouteProps {
+  component: React.ComponentType<any>;
+  exact?: boolean;
+  path?: string;
+}
+
+const ProtectedRoute = ({ component: Component, ...rest }: RouteProps): JSX.Element => {
   const { loggedInUser } = useAuth();
   return (
     <Route
-      {...routeProps}
-      render={({ location, ...restProps }: RouteComponentProps) =>
-        loggedInUser && children
-          ? children
-          : loggedInUser && Component && <Component {...restProps} location={location} />
-      }
+      render={(props) => (loggedInUser ? <Component {...rest} {...props} /> : <Redirect to="/login" />)}
+      {...rest}
     />
   );
 };
-
 export default ProtectedRoute;
