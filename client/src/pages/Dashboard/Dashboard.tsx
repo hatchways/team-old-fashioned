@@ -24,5 +24,5 @@ export default function Dashboard(): JSX.Element {
     return <CircularProgress />;
   }
 
-  return <AuthHeader linkTo="/fileUpload" asideText="testing upload file page" btnText="open uploadFile page" />;
+  return <AuthHeader linkTo="/messages" asideText="testing upload file page" btnText="open uploadFile page" />;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import useStyles from './useStyles';
 import { AppBar, Box, Grid, Tab, Tabs, Typography } from '@material-ui/core';
+import AuthHeader from '../../components/AuthHeader/AuthHeader';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -45,6 +46,7 @@ export default function ProfileSetting() {
 
   return (
     <Grid container className={classes.root}>
+      <AuthHeader linkTo="/messages" asideText="testing upload file page" btnText="open uploadFile page" />
       <Box className={classes.tabContainer}>
         <AppBar position="static" color="secondary" className={classes.tabDisplay}>
           <Tabs

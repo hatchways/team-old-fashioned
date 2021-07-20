@@ -2,16 +2,17 @@
 export interface Conversation {
   conversationId: string;
   imageURL: string | any;
-  imageAlt: string;
+  fullName: string;
   title: string;
   createdAt: string;
   messages: Message[];
   lastMessageText: string;
+  isOnline: boolean;
 }
 
 export interface Message {
   imageURL: string | null;
-  imageAlt: string | null;
+  fullName: string | null;
   messageText: string;
   createdAt: string;
   isMyMessage: boolean;
