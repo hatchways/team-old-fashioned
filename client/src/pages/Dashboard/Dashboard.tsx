@@ -6,6 +6,7 @@ import { useSocket } from '../../context/useSocketContext';
 import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import AuthHeader from '../../components/AuthHeader/AuthHeader';
+import { Link } from 'react-router-dom';
 
 export default function Dashboard(): JSX.Element {
   const { loggedInUser } = useAuth();
@@ -24,5 +25,10 @@ export default function Dashboard(): JSX.Element {
     return <CircularProgress />;
   }
 
-  return <AuthHeader linkTo="/fileUpload" asideText="testing upload file page" btnText="open uploadFile page" />;
+  return (
+    <div>
+      <AuthHeader linkTo="/fileUpload" asideText="testing upload file page" btnText="open uploadFile page" />
+      <Link to="/contest-details">Contest Details</Link>
+    </div>
+  );
 }
