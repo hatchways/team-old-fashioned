@@ -1,6 +1,9 @@
 export interface User {
   email: string;
   username: string;
+  headline: string;
+  bio: string;
+  location: string;
 }
 
 export interface SearchUsersApiData {
@@ -8,8 +11,7 @@ export interface SearchUsersApiData {
   error?: { message: string };
 }
 
-export interface UserPersonalInformation {
-  headline: string;
-  bio: string;
-  location: string;
+export interface UserApiData {
+  error?: { message: string };
+  success?: boolean;
 }

@@ -1,37 +1,45 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent } from 'react';
+import { useAuth } from '../../../../context/useAuthContext';
 import { Button, TextField, Grid, CircularProgress, FormLabel, Box, Paper, Typography } from '@material-ui/core';
 import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { UserPersonalInformation } from '../../../../interface/User';
-import userPersonalInformation from '../../../../helpers/APICalls/userPersonalInformation';
+import updatePersonalInformation from '../../../../helpers/APICalls/updatePersonalInformation';
+import { useSnackBar } from '../../../../context/useSnackbarContext';
+
 import useStyles from './useStyles';
 
+interface UserPersonalInformation {
+  headline: string;
+  bio: string;
+  location: string;
+}
 const PersonalInformationForm: FunctionComponent = (): JSX.Element => {
   const classes = useStyles();
-  const [personalInfo, setPersonalInfo] = useState<UserPersonalInformation | null>();
-
-  useEffect(() => {
-    const upi = async () => {
-      return await userPersonalInformation();
-    };
-    upi().then((data) => {
-      setPersonalInfo(data);
-    });
-  }, [setPersonalInfo]);
+  const { loggedInUser } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
 
   const formSubmitHandler = (
     { headline, bio, location }: UserPersonalInformation,
     { setSubmitting }: FormikHelpers<UserPersonalInformation>,
   ) => {
-    // TODO: form submission
+    if (loggedInUser) {
+      updatePersonalInformation(loggedInUser.email, headline, bio, location).then((data) => {
+        if (data.error) {
+          updateSnackBarMessage(data.error.message);
+        } else {
+          updateSnackBarMessage('Saved');
+        }
+        setSubmitting(false);
+      });
+    }
   };
 
   return (
     <Formik
       initialValues={{
-        headline: personalInfo ? personalInfo.headline : '',
-        bio: personalInfo ? personalInfo.bio : '',
-        location: personalInfo ? personalInfo.location : '',
+        headline: loggedInUser ? loggedInUser.headline : '',
+        bio: loggedInUser ? loggedInUser.bio : '',
+        location: loggedInUser ? loggedInUser.location : '',
       }}
       validationSchema={Yup.object().shape({
         headline: Yup.string().max(40).required('Headline is required'),

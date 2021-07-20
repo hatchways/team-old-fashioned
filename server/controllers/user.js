@@ -22,22 +22,19 @@ exports.searchUsers = asyncHandler(async (req, res, next) => {
   res.status(200).json({ users: users });
 });
 
-exports.getUserPersonalInformation = asyncHandler(async (req, res, next) => {
+// @route POST /users/info
+// @desc Update user personal info
+// @access Public
+exports.updatePersonalInformation = asyncHandler(async (req, res, next) => {
+  const { email, headline, bio, location } = req.body;
   try {
-    //const userId = req.params.id;
-    res.status(200).json({
-      headline: 'Tattoos last forever',
-      bio: 'I like tattoos',
-      location: 'Denver, CO USA',
+    const user = User.findOneAndUpdate({ email }, { headline, bio, location });
+    res.status(202).json({
+      success: true,
     });
-    // const user = await User.findById(userId);
-    // res.status(200).json({
-    //   headline: user.personalInformationHeadline,
-    //   bio: user.personalInformationBio,
-    //   location: user.personalInformationLocation,
-    // });
-  } catch (error) {
-    res.status(500);
-    throw new Error('failed to get user');
+  } catch (err) {
+    res.status(400);
+    throw new Error('Failed to update personal information');
   }
+  next();
 });

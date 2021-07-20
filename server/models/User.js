@@ -20,14 +20,17 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  personalInformationHeadline: {
+  headline: {
     type: String,
+    required: false,
   },
-  personalInformationBio: {
+  bio: {
     type: String,
+    required: false,
   },
-  personalInformationLocation: {
+  location: {
     type: String,
+    required: false,
   },
 });
 
