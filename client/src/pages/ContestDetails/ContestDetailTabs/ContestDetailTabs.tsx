@@ -74,7 +74,7 @@ export default function FullWidthTabs({ submissionList, description }: Props): J
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label={'Designs ' + '(' + count + ')'} {...a11yProps(0)} />
+          <Tab label={`Designs (${count})`} {...a11yProps(0)} />
           <Tab label="Brief" {...a11yProps(1)} />
         </Tabs>
       </AppBar>

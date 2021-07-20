@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
   ownerColumn: {
     paddingTop: 8,
   },
-  profilePhoto: {},
   userText: {
     paddingLeft: 8,
     fontWeight: 600,
