@@ -1,9 +1,8 @@
 import { Avatar, Badge, Box, createStyles, makeStyles, Theme, withStyles } from '@material-ui/core';
-import React from 'react';
 import { Conversation } from '../../../../interface/Message';
 
 export interface ConversationListProps {
-  conversationItem: Conversation;
+  conversationItem?: Conversation;
 }
 
 const StyledBadge = withStyles((theme: Theme) =>
@@ -45,6 +44,11 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: theme.spacing(1),
       },
     },
+    avatar: {
+      height: 40,
+      width: 40,
+      marginRight: 11,
+    },
   }),
 );
 
@@ -52,7 +56,7 @@ export default function ConversationItem({ conversationItem }: ConversationListP
   const classes = useStyles();
   return (
     <Box className={classes.root}>
-      {conversationItem.isOnline ? (
+      {conversationItem?.isOnline ? (
         <StyledBadge
           overlap="circle"
           anchorOrigin={{
@@ -61,7 +65,11 @@ export default function ConversationItem({ conversationItem }: ConversationListP
           }}
           variant="dot"
         >
-          <Avatar alt={conversationItem.fullName} src={conversationItem.imageURL.default} />
+          <Avatar
+            className={classes.avatar}
+            alt={conversationItem?.fullName}
+            src={conversationItem?.imageURL.default}
+          />
         </StyledBadge>
       ) : (
         <Badge
@@ -71,7 +79,11 @@ export default function ConversationItem({ conversationItem }: ConversationListP
             horizontal: 'right',
           }}
         >
-          <Avatar alt={conversationItem.fullName} src={conversationItem.imageURL.default} />
+          <Avatar
+            className={classes.avatar}
+            alt={conversationItem?.fullName}
+            src={conversationItem?.imageURL.default}
+          />
         </Badge>
       )}
     </Box>

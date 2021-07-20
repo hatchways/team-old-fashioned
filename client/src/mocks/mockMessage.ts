@@ -13,10 +13,11 @@ export const mockMessage: Conversation[] = [
       {
         imageURL: null,
         fullName: null,
-        messageText: "I'll send you details",
-        createdAt: 'July 19',
-        isMyMessage: false,
+        messageText: "Hey Kevin! I like tattoo sketch you've created! Can I ask you to draw one more sketch?",
+        createdAt: 'Apr 18',
+        isMyMessage: true,
       },
+
       {
         imageURL: null,
         fullName: null,
@@ -27,8 +28,8 @@ export const mockMessage: Conversation[] = [
       {
         imageURL: null,
         fullName: null,
-        messageText: "Hey Kevin! I like tattoo sketch you've created! Can I ask you to draw one more sketch?",
-        createdAt: 'Apr 18',
+        messageText: "I'll send you details",
+        createdAt: 'July 19',
         isMyMessage: true,
       },
     ],
