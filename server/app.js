@@ -3,12 +3,14 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
+const socketCookieParser = require('./utils/socketCookieParser');
 const cors = require('cors');
 const { notFound, errorHandler } = require('./middleware/error');
 const connectDB = require('./db');
 const { join } = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const jwt = require('jsonwebtoken');
 
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
@@ -24,14 +26,16 @@ const server = http.createServer(app);
 const NEW_MSG = 'new_msg';
 const io = socketio(server, {
   cors: {
-    origin: '*',
+    origin: 'http://localhost:3000',
     credentials: true,
   },
 });
-app.use(cors());
+
 io.on('connection', (socket) => {
   console.log('connected');
-  //socket.handshake.headers.cookie
+  let cookies = socketCookieParser(socket.handshake.headers.cookie);
+  let verifiedToken = jwt.verify(cookies.token, process.env.JWT_SECRET);
+  console.log('verifiedToken', verifiedToken);
 
   socket.on(NEW_MSG, (data) => {
     console.log('data', data);
