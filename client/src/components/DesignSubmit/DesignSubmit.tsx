@@ -4,10 +4,16 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import uploadImageAPI from '../../helpers/APICalls/uploadImages';
+import contestImgSubmitAPI from '../../helpers/APICalls/contest';
+import { Contest } from '../../interface/Contest';
 
 import useStyles from './useStyles';
 
-export default function DesignSubmit(): JSX.Element {
+interface Props {
+  contest: Contest;
+}
+
+const DesignSubmit = ({ contest }: Props): JSX.Element => {
   const classes = useStyles();
   const [uploadImages, setUploadImages] = useState<File>();
   const [uploadImagesList, setUploadImagesList] = useState<FileList>();
@@ -50,12 +56,17 @@ export default function DesignSubmit(): JSX.Element {
         formData.append('designImg', img);
       }
     }
+
     const result = await uploadImageAPI(formData);
+
     if (result.error) {
       updateSnackBarMessage(result.error.message);
     }
     if (result.success) {
       updateSnackBarMessage('Your design images have been uploaded successfully');
+    }
+    if (result.success) {
+      const returnData = await contestImgSubmitAPI(contest._id, result.success.urlArray);
     }
     setisLoading(false);
   };
@@ -80,7 +91,7 @@ export default function DesignSubmit(): JSX.Element {
           {preview ? (
             <Button type="submit" disableFocusRipple disableRipple onClick={handleImageDelete}>
               <DeleteOutlineIcon />
-              <Typography color="textSecondary">Delete</Typography>
+              <Typography color="primary">Delete</Typography>
             </Button>
           ) : null}
           <Typography variant="h5" display="block" className={classes.submitText} gutterBottom>
@@ -105,4 +116,6 @@ export default function DesignSubmit(): JSX.Element {
       </Box>
     </div>
   );
-}
+};
+
+export default DesignSubmit;

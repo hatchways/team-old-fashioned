@@ -1,5 +1,7 @@
 const asyncHandler = require('express-async-handler');
+const ObjectId = require('mongoose').Types.ObjectId;
 const Contest = require('../models/Contest');
+const Submission = require('../models/Submission');
 
 // handler for creating a new contest object
 exports.createContest = asyncHandler(async (req, res, next) => {
@@ -58,5 +60,48 @@ exports.getContests = asyncHandler(async (req, res, next) => {
   } catch (error) {
     res.status(500);
     throw new Error('failed to get contests');
+  }
+});
+
+// handler for create submission by contest id
+exports.createSubmissionByContestId = asyncHandler(async (req, res, next) => {
+  const contestId = req.params.id;
+  const s3UrlArray = req.body.data;
+  const userId = req.user.id;
+  if (!ObjectId.isValid(contestId)) {
+    return res.status(400).json({
+      error: 'Contest ID is invalid.',
+    });
+  }
+  try {
+    const userExist = await Submission.findOne({ userId: userId, contestId: contestId });
+    if (userExist) {
+      const newFilesData = userExist.files.concat(s3UrlArray);
+      const submissionData = await Submission.findByIdAndUpdate(
+        userExist._id,
+        { files: newFilesData },
+        {
+          new: true,
+        },
+      );
+      res.status(200).json({
+        submission: submissionData,
+      });
+    } else {
+      const submissionData = await Submission.create({
+        contestId: contestId,
+        userId: userId,
+        files: s3UrlArray,
+        isActive: true,
+      });
+      if (submissionData) {
+        res.status(201).json({
+          submission: submissionData,
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
   }
 });
