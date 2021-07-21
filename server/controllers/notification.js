@@ -3,7 +3,6 @@ const Notification = require('../models/Notification');
 const Contest = require('../models/Contest');
 const mongoose = require('mongoose');
 
-// handler for creating/sending a notification
 exports.createNotification = asyncHandler(async (req, res, next) => {
   const { type } = req.body;
   const typeList = ['submission', 'message'];
@@ -20,23 +19,35 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
     }
     const notification = await Notification.create({ type, receiverId, senderId, contestId, submissionId, timeSent });
 
-    if (notification) {
-      res.status(201).json(notification);
-    } else {
+    if (!notification) {
       res.status(500);
       throw new Error('invalid notification data');
     }
+
+    res.status(201).json(notification);
   }
 });
 
 exports.markAsRead = asyncHandler(async (req, res, next) => {
   const notificationId = req.params.id;
 
-  try {
-    const notification = await Notification.findByIdAndUpdate(notificationId, { readStatus: true }, { new: true });
-    res.status(200).json(notification);
-  } catch (error) {
+  const notification = await Notification.findByIdAndUpdate(notificationId, { readStatus: true }, { new: true });
+
+  if (!notification) {
     res.status(500);
     throw new Error(`Failed to mark notification as read`);
   }
+  res.status(200).json(notification);
+});
+
+exports.getNotifications = asyncHandler(async (req, res, next) => {
+  const userId = req.user.id;
+  console.log(userId);
+  const notifications = await Notification.find({ receiverId: mongoose.Types.ObjectId(userId) });
+
+  if (!notifications) {
+    res.status(500);
+    throw new Error('failed to get notifications');
+  }
+  res.status(200).json(notifications);
 });
