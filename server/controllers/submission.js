@@ -4,8 +4,8 @@ const Contest = require('../models/Contest');
 const Submission = require('../models/Submission');
 
 //@GET /:id
-//Get all submissions only for the contest owner
-exports.getAllSubmissionForOwner = asyncHandler((req, res, next) => {
+//Get all submissions for contest owner or submitter
+exports.getAllSubmissions = asyncHandler((req, res, next) => {
   const userId = req.user.id;
   const contestId = req.params.id;
 
@@ -20,19 +20,10 @@ exports.getAllSubmissionForOwner = asyncHandler((req, res, next) => {
     if (isOwner) {
       const submissions = Submission.find({ contestId: contestId });
       res.status(200).json({ submission: submissions });
+    } else {
+      const submissions = Submission.find({ userId: userId });
+      res.status(200).json({ submission: submissions });
     }
-  } catch (error) {
-    res.status(500);
-    throw new Error(error);
-  }
-});
-
-//@Get /submitter
-exports.getSubmissonForSubmitter = asyncHander((req, res, next) => {
-  const userId = req.user.id;
-  try {
-    const submissions = Submission.find({ userId: userId });
-    res.status(200).json({ submission: submissions });
   } catch (error) {
     res.status(500);
     throw new Error(error);
