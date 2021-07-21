@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ConversationItem({ conversationItem }: ConversationListProps): JSX.Element {
   const classes = useStyles();
+  console.log(conversationItem);
   return (
     <Box className={classes.root}>
       {conversationItem?.isOnline ? (

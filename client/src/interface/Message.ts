@@ -11,8 +11,7 @@ export interface Conversation {
 }
 
 export interface Message {
-  imageURL: string | null;
-  fullName: string | null;
+  messageId: string;
   messageText: string;
   createdAt: string;
   isMyMessage: boolean;

@@ -11,23 +11,20 @@ export const mockMessage: Conversation[] = [
     isOnline: true,
     messages: [
       {
-        imageURL: null,
-        fullName: null,
+        messageId: '1',
         messageText: "Hey Kevin! I like tattoo sketch you've created! Can I ask you to draw one more sketch?",
         createdAt: 'Apr 18',
         isMyMessage: true,
       },
 
       {
-        imageURL: null,
-        fullName: null,
-        messageText: `"Hey Kenneth! Sure!"`,
+        messageId: '2',
+        messageText: 'Hey Kenneth! Sure!',
         createdAt: 'Apr 16',
         isMyMessage: false,
       },
       {
-        imageURL: null,
-        fullName: null,
+        messageId: '3',
         messageText: "I'll send you details",
         createdAt: 'July 19',
         isMyMessage: true,

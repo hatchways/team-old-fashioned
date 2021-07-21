@@ -2,10 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    justifyContent: 'space-between',
     marginLeft: 20,
-    flexGrow: 1,
     marginRight: '1rem',
   },
   fullName: {

@@ -10,7 +10,7 @@ export interface HeaderProps {
 export default function Header({ header }: HeaderProps): JSX.Element {
   const classes = useStyles();
   return (
-    <Box className={classes.root}>
+    <Box display="flex" alignItems="center" justifyContent="space-between" className={classes.root}>
       <Grid className={classes.headerInfo}>
         <AvatarIcon conversationItem={header} />
         <Typography className={classes.headerName}>{header?.fullName}</Typography>

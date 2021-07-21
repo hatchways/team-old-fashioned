@@ -2,10 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    alignItems: 'center',
     marginBottom: '5rem',
-    justifyContent: 'space-between',
     height: 76,
     boxShadow: '0 2px 20px 0 rgba(88,133,196,0.10)',
     top: '12.6%',

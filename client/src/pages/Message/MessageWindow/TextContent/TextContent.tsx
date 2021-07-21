@@ -14,9 +14,14 @@ export default function TextContent({ text }: MessageProps): JSX.Element {
     <Box className={classes.root}>
       {text?.messages.map((message) => {
         return message.isMyMessage ? (
-          <OwnerBubble text={message.messageText} />
+          <OwnerBubble text={message.messageText} key={message.messageId} />
         ) : (
-          <UserBubble userName={text.fullName} text={message.messageText} imageUrl={text.imageURL.default} />
+          <UserBubble
+            userName={text.fullName}
+            text={message.messageText}
+            imageUrl={text.imageURL.default}
+            key={message.messageId}
+          />
         );
       })}
     </Box>

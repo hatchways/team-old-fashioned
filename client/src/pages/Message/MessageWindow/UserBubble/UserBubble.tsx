@@ -5,8 +5,9 @@ export interface UserTextProps {
   userName: string;
   text: string;
   imageUrl: any;
+  key: string;
 }
-export default function UserBubble({ userName, text, imageUrl }: UserTextProps): JSX.Element {
+export default function UserBubble({ userName, text, imageUrl, key }: UserTextProps): JSX.Element {
   const classes = useStyles();
   return (
     <Box className={classes.root}>

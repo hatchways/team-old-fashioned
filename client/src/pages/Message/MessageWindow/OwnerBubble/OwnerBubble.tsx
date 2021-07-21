@@ -3,12 +3,13 @@ import useStyles from './useStyles';
 
 export interface OwnerTextProps {
   text: string;
+  key: string;
 }
 
-export default function OwnerBubble({ text }: OwnerTextProps): JSX.Element {
+export default function OwnerBubble({ text, key }: OwnerTextProps): JSX.Element {
   const classes = useStyles();
   return (
-    <Box className={classes.root}>
+    <Box display="flex" flexDirection="column" alignItems="flex-end" className={classes.root}>
       <Box className={classes.bubbleContainer}>
         <Typography className={classes.text}>{text}</Typography>
       </Box>
