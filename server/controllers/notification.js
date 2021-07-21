@@ -28,3 +28,15 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
     }
   }
 });
+
+exports.markAsRead = asyncHandler(async (req, res, next) => {
+  const notificationId = req.params.id;
+
+  try {
+    const notification = await Notification.findByIdAndUpdate(notificationId, { readStatus: true }, { new: true });
+    res.status(200).json(notification);
+  } catch (error) {
+    res.status(500);
+    throw new Error(`Failed to mark notification as read`);
+  }
+});
