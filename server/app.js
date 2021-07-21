@@ -32,11 +32,10 @@ const io = socketio(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log('connected');
   let cookies = socketCookieParser(socket.handshake.headers.cookie);
   try {
     let verifiedToken = jwt.verify(cookies.token, process.env.JWT_SECRET);
-    console.log('verifiedToken', verifiedToken);
+    console.log('connected - verifiedToken', verifiedToken);
   } catch (err) {
     socket.disconnect();
     console.log('invalid token - socket disconnected');
