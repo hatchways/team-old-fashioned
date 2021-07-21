@@ -5,6 +5,7 @@ import Login from './pages/Login/Login';
 import Signup from './pages/SignUp/SignUp';
 import Dashboard from './pages/Dashboard/Dashboard';
 import NewContest from './pages/Contest/NewContest';
+import ContestDetails from './pages/ContestDetails/ContestDetails';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
@@ -13,6 +14,7 @@ import NavBar from './components/NavBar/NavBar';
 
 import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
+import ProfileSetting from './pages/ProfileSetting/ProfileSetting';
 
 function App(): JSX.Element {
   return (
@@ -26,13 +28,16 @@ function App(): JSX.Element {
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
               <ProtectedRoute exact path="/fileUpload" component={DesignSubmit} />
+              <ProtectedRoute exact path="/setting" component={ProfileSetting} />
               {/* Replace component with Discovery Page */}
               <Route exact path="/" component={Dashboard} />
               {/* Replace the components once created */}
               <ProtectedRoute exact path="/messages" component={Dashboard} />
               <ProtectedRoute exact path="/notifications" component={Dashboard} />
+              {/* Update to "/contest/:id" once contest db has been set up*/}
+              <ProtectedRoute exact path="/contest-details" component={ContestDetails} />
+              <ProtectedRoute exact path="/profile" component={ProfileSetting} />
               <ProtectedRoute exact path="/new-contest" component={NewContest} />
-              <ProtectedRoute exact path="/profile" component={Dashboard} />
               <ProtectedRoute exact path="/logout" component={Dashboard} />
               <Route path="*">
                 <Redirect to="/" />

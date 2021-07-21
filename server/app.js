@@ -11,7 +11,6 @@ const { join } = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const jwt = require('jsonwebtoken');
-
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const s3Router = require('./routes/s3');
