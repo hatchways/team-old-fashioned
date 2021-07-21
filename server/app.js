@@ -3,12 +3,14 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
+const socketCookieParser = require('./utils/socketCookieParser');
+const cors = require('cors');
 const { notFound, errorHandler } = require('./middleware/error');
 const connectDB = require('./db');
 const { join } = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
+const jwt = require('jsonwebtoken');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const s3Router = require('./routes/s3');
@@ -20,14 +22,31 @@ connectDB();
 const app = express();
 const server = http.createServer(app);
 
+const NEW_MSG = 'new_msg';
 const io = socketio(server, {
   cors: {
-    origin: '*',
+    origin: 'http://localhost:3000',
+    credentials: true,
   },
 });
 
 io.on('connection', (socket) => {
-  console.log('connected');
+  let cookies = socketCookieParser(socket.handshake.headers.cookie);
+  try {
+    let verifiedToken = jwt.verify(cookies.token, process.env.JWT_SECRET);
+    console.log('connected - verifiedToken', verifiedToken);
+  } catch (err) {
+    socket.disconnect();
+    console.log('invalid token - socket disconnected');
+  }
+
+  socket.on(NEW_MSG, (data) => {
+    console.log('data', data);
+  });
+
+  socket.on('disconnect', () => {
+    //socket.leave(room);
+  });
 });
 
 if (process.env.NODE_ENV === 'development') {
