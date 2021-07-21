@@ -1,10 +1,10 @@
 import { FunctionComponent } from 'react';
-import { useAuth } from '../../../../context/useAuthContext';
-import { Button, TextField, Grid, CircularProgress, FormLabel, Box, Paper, Typography } from '@material-ui/core';
+import { useAuth } from '../../../context/useAuthContext';
+import { Button, TextField, Grid, CircularProgress, FormLabel, Box, Paper } from '@material-ui/core';
 import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import updatePersonalInformation from '../../../../helpers/APICalls/updatePersonalInformation';
-import { useSnackBar } from '../../../../context/useSnackbarContext';
+import updatePersonalInformation from '../../../helpers/APICalls/updatePersonalInformation';
+import { useSnackBar } from '../../../context/useSnackbarContext';
 
 import useStyles from './useStyles';
 
@@ -50,8 +50,8 @@ const PersonalInformationForm: FunctionComponent = (): JSX.Element => {
     >
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
-          <Box textAlign="center">
-            <Typography className={classes.title}>Personal Information</Typography>
+          <Box textAlign="center" className={classes.title}>
+            Personal Information
           </Box>
           <Paper className={classes.paper} elevation={6} square>
             <Grid container direction="row" justify="center" spacing={4}>

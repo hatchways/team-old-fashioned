@@ -4,6 +4,6 @@ const protect = require('../middleware/auth');
 const { searchUsers, updatePersonalInformation } = require('../controllers/user');
 
 router.route('/').get(protect, searchUsers);
-router.route('/info').post(updatePersonalInformation);
+router.route('/info').post(protect, updatePersonalInformation);
 
 module.exports = router;

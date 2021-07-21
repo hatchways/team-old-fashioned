@@ -1,5 +1,5 @@
 import React from 'react';
-import PersonalInformation from './PersonalInformation/PersonalInformation';
+import PersonalInformationForm from './PersonalInformationForm/PersonalInformationForm';
 import useStyles from './useStyles';
 import { AppBar, Box, Grid, Tab, Tabs, Typography } from '@material-ui/core';
 
@@ -36,7 +36,7 @@ function a11yProps(index: any) {
   };
 }
 
-export default function ProfileSetting() {
+export default function ProfileSetting(): JSX.Element {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -68,7 +68,7 @@ export default function ProfileSetting() {
         Profile
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <PersonalInformation />
+        {value == 1 && <PersonalInformationForm />}
       </TabPanel>
       <TabPanel value={value} index={2}>
         Payment details

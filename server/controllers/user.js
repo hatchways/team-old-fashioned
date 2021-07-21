@@ -28,7 +28,8 @@ exports.searchUsers = asyncHandler(async (req, res, next) => {
 exports.updatePersonalInformation = asyncHandler(async (req, res, next) => {
   const { email, headline, bio, location } = req.body;
   try {
-    const user = User.findOneAndUpdate({ email }, { headline, bio, location });
+    // const user = User.findOneAndUpdate({ email }, { headline: headline, bio: bio, location: location }, { new: true });
+    const user = await User.updateOne({ email }, { headline: headline, bio: bio, location: location });
     res.status(202).json({
       success: true,
     });
@@ -36,5 +37,4 @@ exports.updatePersonalInformation = asyncHandler(async (req, res, next) => {
     res.status(400);
     throw new Error('Failed to update personal information');
   }
-  next();
 });
