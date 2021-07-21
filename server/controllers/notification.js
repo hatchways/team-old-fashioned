@@ -4,6 +4,7 @@ const Contest = require('../models/Contest');
 const mongoose = require('mongoose');
 
 exports.createNotification = asyncHandler(async (req, res, next) => {
+  const senderId = req.user.id;
   const { type } = req.body;
   const typeList = ['submission', 'message'];
   if (!typeList.includes(type)) {
@@ -11,13 +12,16 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
     throw new Error('Unsupported notification type');
   } else {
     if (type === 'submission') {
-      var { files, _id: submissionId, contestId, userId: senderId, submitDate: timeSent } = req.body;
-      var receiverId = await Contest.findById(contestId).then((contest) => {
+      const { _id: submissionId, contestId, submitDate: timeSent } = req.body;
+      const receiverId = await Contest.findById(contestId).then((contest) => {
         return contest.user;
       });
+      var params = { type, receiverId, senderId, contestId, submissionId, timeSent };
     } else if (type === 'message') {
+      const { receiverId, sendDate: timeSent } = req.body;
+      var params = { type, receiverId, senderId, timeSent };
     }
-    const notification = await Notification.create({ type, receiverId, senderId, contestId, submissionId, timeSent });
+    const notification = await Notification.create(params);
 
     if (!notification) {
       res.status(500);
