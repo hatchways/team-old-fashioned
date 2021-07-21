@@ -15,6 +15,7 @@ const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const s3Router = require('./routes/s3');
 const contestRouter = require('./routes/contest');
+const submissionRouter = require('./routes/submission');
 
 const { json, urlencoded } = express;
 require('dotenv').config();
@@ -66,6 +67,7 @@ app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/upload', s3Router);
 app.use('/contest', contestRouter);
+app.use('/submission', submissionRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/build')));
