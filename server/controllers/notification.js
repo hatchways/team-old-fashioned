@@ -12,11 +12,13 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
     throw new Error('Unsupported notification type');
   } else {
     if (type === 'submission') {
-      const { _id: submissionId, contestId, submitDate: timeSent } = req.body;
+      const { files, _id: submissionId, contestId, submitDate: timeSent } = req.body;
+      // Use first file in submission while submission featured photo is not yet set
+      const photo = files[0];
       const receiverId = await Contest.findById(contestId).then((contest) => {
         return contest.user;
       });
-      var params = { type, receiverId, senderId, contestId, submissionId, timeSent };
+      var params = { type, receiverId, senderId, contestId, submissionId, timeSent, photo };
     } else if (type === 'message') {
       const { receiverId, sendDate: timeSent } = req.body;
       var params = { type, receiverId, senderId, timeSent };
