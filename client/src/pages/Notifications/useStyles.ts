@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
   root: {
-    minHeight: '100vh',
+    minHeight: '80vh',
     paddingTop: 40,
     paddingBottom: 20,
   },
@@ -12,6 +12,13 @@ const useStyles = makeStyles(() => ({
   },
   spacer: {
     paddingTop: 32,
+  },
+  customBadge: {
+    color: '#90ee90',
+  },
+  notificationsPaper: {
+    paddingTop: 50,
+    minHeight: '60vh',
   },
 }));
 

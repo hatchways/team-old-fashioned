@@ -9,6 +9,7 @@ import { useAuth } from '../../context/useAuthContext';
 import { useSocket } from '../../context/useSocketContext';
 import useStyles from './useStyles';
 import { Notification, NotificationsList } from '../../interface/Notifications';
+import Paper from '@material-ui/core/Paper';
 // import { getNotifications } from '../../helpers/APICalls/getNotifications';
 import { NotificationsGrid } from './NotificationsGrid';
 
@@ -72,8 +73,10 @@ export default function NotificationsPage(): JSX.Element {
   return (
     <Grid container component="main" className={classes.root} direction="column">
       <CssBaseline />
+
       <Grid container alignItems="center" justify="center">
         <Grid item xs={12} sm={10} md={8}></Grid>
+
         <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
           <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
             Notifications
@@ -81,7 +84,9 @@ export default function NotificationsPage(): JSX.Element {
             {/* {isLoading ? <CircularProgress /> : notifications} */}
           </Box>
           <Grid className={classes.spacer}></Grid>
-          <NotificationsGrid notifications={notifications} />
+          <Paper elevation={6} square className={classes.notificationsPaper}>
+            <NotificationsGrid notifications={notifications} />
+          </Paper>
         </Grid>
       </Grid>
     </Grid>

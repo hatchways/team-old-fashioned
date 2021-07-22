@@ -1,9 +1,15 @@
 export interface Notification {
   _id: string;
   type: string;
-  senderId: string;
+  senderId: {
+    _id: string;
+    username: string;
+  };
   receiverId: string;
-  contestId?: string;
+  contestId: {
+    _id: string;
+    title: string;
+  };
   submissionId?: string;
   timeSent: Date | string;
   readStatus: boolean;
