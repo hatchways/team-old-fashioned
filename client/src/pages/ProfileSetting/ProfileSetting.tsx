@@ -1,7 +1,8 @@
 import React from 'react';
-import PersonalInformationForm from './PersonalInformationForm/PersonalInformationForm';
 import useStyles from './useStyles';
 import { AppBar, Box, Grid, Tab, Tabs, Typography } from '@material-ui/core';
+import AuthHeader from '../../components/AuthHeader/AuthHeader';
+import { Link } from 'react-router-dom';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -36,7 +37,7 @@ function a11yProps(index: any) {
   };
 }
 
-export default function ProfileSetting(): JSX.Element {
+export default function ProfileSetting() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -46,6 +47,7 @@ export default function ProfileSetting(): JSX.Element {
 
   return (
     <Grid container className={classes.root}>
+      <AuthHeader linkTo="/messages" asideText="testing upload file page" btnText="open uploadFile page" />
       <Box className={classes.tabContainer}>
         <AppBar position="static" color="secondary" className={classes.tabDisplay}>
           <Tabs
