@@ -27,6 +27,7 @@ const PersonalInformationForm: FunctionComponent = (): JSX.Element => {
         if (data.error) {
           updateSnackBarMessage(data.error.message);
         } else {
+          //TODO: update the user via context
           updateSnackBarMessage('Saved');
         }
         setSubmitting(false);

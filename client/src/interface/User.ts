@@ -14,4 +14,5 @@ export interface SearchUsersApiData {
 export interface UserApiData {
   error?: { message: string };
   success?: boolean;
+  user?: User;
 }

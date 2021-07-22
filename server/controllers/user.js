@@ -28,10 +28,14 @@ exports.searchUsers = asyncHandler(async (req, res, next) => {
 exports.updatePersonalInformation = asyncHandler(async (req, res, next) => {
   const { email, headline, bio, location } = req.body;
   try {
-    // const user = User.findOneAndUpdate({ email }, { headline: headline, bio: bio, location: location }, { new: true });
-    const user = await User.updateOne({ email }, { headline: headline, bio: bio, location: location });
+    const user = await User.findOneAndUpdate(
+      { email },
+      { headline: headline, bio: bio, location: location },
+      { new: true },
+    );
     res.status(202).json({
       success: true,
+      user: { email, username: user.get('username'), headline, bio, location },
     });
   } catch (err) {
     res.status(400);
