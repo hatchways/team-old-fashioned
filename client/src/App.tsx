@@ -11,6 +11,7 @@ import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
 import ProtectedRoute from './components/ProtectedRoutes/ProtectedRoutes';
 import NavBar from './components/NavBar/NavBar';
+import NotificationsPage from './pages/Notifications/Notifications';
 
 import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
@@ -33,7 +34,7 @@ function App(): JSX.Element {
               <Route exact path="/" component={Dashboard} />
               {/* Replace the components once created */}
               <ProtectedRoute exact path="/messages" component={Dashboard} />
-              <ProtectedRoute exact path="/notifications" component={Dashboard} />
+              <ProtectedRoute exact path="/notifications" component={NotificationsPage} />
               {/* Update to "/contest/:id" once contest db has been set up*/}
               <ProtectedRoute exact path="/contest-details" component={ContestDetails} />
               <ProtectedRoute exact path="/profile" component={ProfileSetting} />
