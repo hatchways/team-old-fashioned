@@ -8,10 +8,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useAuth } from '../../context/useAuthContext';
 import { useSocket } from '../../context/useSocketContext';
 import useStyles from './useStyles';
-import { Notification, NotificationsList } from '../../interface/Notifications';
+import { Notification, NotificationsArray } from '../../interface/Notifications';
 import Paper from '@material-ui/core/Paper';
 // import { getNotifications } from '../../helpers/APICalls/getNotifications';
-import { NotificationsGrid } from './NotificationsGrid';
+import { NotificationsList } from './NotificationsList/NotificationsList';
 
 import { FetchOptions } from '../../interface/FetchOptions';
 
@@ -85,7 +85,7 @@ export default function NotificationsPage(): JSX.Element {
           </Box>
           <Grid className={classes.spacer}></Grid>
           <Paper elevation={6} square className={classes.notificationsPaper}>
-            <NotificationsGrid notifications={notifications} />
+            <NotificationsList notifications={notifications} />
           </Paper>
         </Grid>
       </Grid>

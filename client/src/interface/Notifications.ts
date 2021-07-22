@@ -16,6 +16,6 @@ export interface Notification {
   photo: string;
 }
 
-export interface NotificationsList {
+export interface NotificationsArray {
   notifications: Notification[];
 }

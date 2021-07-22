@@ -1,7 +1,7 @@
 import { FetchOptions } from '../../interface/FetchOptions';
-import { NotificationsList } from '../../interface/Notifications';
+import { NotificationsArray } from '../../interface/Notifications';
 
-export async function getNotifications(): Promise<NotificationsList> {
+export async function getNotifications(): Promise<NotificationsArray> {
   const fetchOptions: FetchOptions = {
     method: 'GET',
     credentials: 'include',
