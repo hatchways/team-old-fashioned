@@ -38,7 +38,6 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
 
 exports.getUserConversations = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
-  console.log(email);
   try {
     if (!email) {
       res.status(400).json({
@@ -56,8 +55,11 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
     }
     const userId = user.get('_id');
     const conversations = await Conversation.find({
-      $or: [{ user1: mongoose.Types.ObjectId(userId) }, { user2: mongoose.Types.ObjectId(userId) }],
-    }).sort({ updated: 'desc' });
+      $or: [{ fromUser: mongoose.Types.ObjectId(userId) }, { toUser: mongoose.Types.ObjectId(userId) }],
+    })
+      .populate('fromUser', 'username')
+      .populate('toUser', 'username')
+      .sort({ updated: 'desc' });
 
     res.status(201).json({
       success: true,
@@ -113,5 +115,28 @@ exports.addMessage = asyncHandler(async (req, res, next) => {
 
 exports.getMessagesForConversation = asyncHandler(async (req, res, next) => {
   const { conversationId } = req.body;
-  console.log(conversationId);
+  try {
+    if (!conversationId) {
+      res.status(400).json({
+        error: 'conversationId is required',
+      });
+      throw new Error('conversationId is required');
+    }
+    const conversation = await Conversation.findById(conversationId);
+    if (!conversation) {
+      res.status(400).json({
+        error: 'invalid conversation id',
+      });
+      throw new Error('invalid conversation id');
+    }
+
+    const messages = await Message.find({ conversation: conversation.get('_id') })
+      .populate('user', 'username')
+      .sort({ created: 'desc' });
+
+    res.status(201).json({
+      success: true,
+      messages,
+    });
+  } catch (error) {}
 });
