@@ -67,10 +67,10 @@ export default function ProfileSetting() {
         </AppBar>
       </Box>
       <TabPanel value={value} index={0}>
-        <Link to="/contest-details">Contest details</Link>
+        Profile
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Personal Information
+        {value == 1 && <PersonalInformationForm />}
       </TabPanel>
       <TabPanel value={value} index={2}>
         Payment details

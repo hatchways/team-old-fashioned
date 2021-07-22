@@ -82,8 +82,6 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
     '11:00 pm',
   ];
 
-  //<label htmlFor="title">What do you need designed?</label>
-  //<br />;
   return (
     <Formik
       initialValues={{
