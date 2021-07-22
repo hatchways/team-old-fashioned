@@ -17,7 +17,6 @@ import DesignSubmit from './components/DesignSubmit/DesignSubmit';
 import ProfileSetting from './pages/ProfileSetting/ProfileSetting';
 import Message from './pages/Message/Message';
 
-
 function App(): JSX.Element {
   return (
     <MuiThemeProvider theme={theme}>

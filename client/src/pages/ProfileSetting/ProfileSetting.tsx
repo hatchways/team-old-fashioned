@@ -2,6 +2,7 @@ import React from 'react';
 import useStyles from './useStyles';
 import { AppBar, Box, Grid, Tab, Tabs, Typography } from '@material-ui/core';
 import AuthHeader from '../../components/AuthHeader/AuthHeader';
+import PersonalInformationForm from './PersonalInformationForm/PersonalInformationForm';
 import { Link } from 'react-router-dom';
 
 interface TabPanelProps {
