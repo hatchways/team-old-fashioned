@@ -16,6 +16,7 @@ import NotificationsPage from './pages/Notifications/Notifications';
 import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
 import ProfileSetting from './pages/ProfileSetting/ProfileSetting';
+import Message from './pages/Message/Message';
 
 function App(): JSX.Element {
   return (
