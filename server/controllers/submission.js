@@ -5,7 +5,7 @@ const Submission = require('../models/Submission');
 
 //@GET /:id
 //Get all submissions for contest owner or submitter
-exports.getAllSubmissions = asyncHandler((req, res, next) => {
+exports.getAllSubmissions = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
   const contestId = req.params.id;
 
