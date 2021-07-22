@@ -12,13 +12,13 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
     throw new Error('Unsupported notification type');
   } else {
     if (type === 'submission') {
-      const { files, _id: submissionId, contestId, submitDate: timeSent } = req.body;
-      // Use first file in submission while submission featured photo is not yet set
-      const photo = files[0];
+      const { files, _id: submissionId, contestId } = req.body;
+      // Use last file in submission array while submission featured photo is not yet set
+      const photo = files[files.length - 1];
       const receiverId = await Contest.findById(contestId).then((contest) => {
         return contest.user;
       });
-      var params = { type, receiverId, senderId, contestId, submissionId, timeSent, photo };
+      var params = { type, receiverId, senderId, contestId, submissionId, photo };
     } else if (type === 'message') {
       const { receiverId, sendDate: timeSent } = req.body;
       var params = { type, receiverId, senderId, timeSent };
@@ -49,8 +49,11 @@ exports.markAsRead = asyncHandler(async (req, res, next) => {
 exports.getNotifications = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
   console.log(userId);
-  const notifications = await Notification.find({ receiverId: mongoose.Types.ObjectId(userId) });
-
+  let notifications = await Notification.find({ receiverId: mongoose.Types.ObjectId(userId) }).populate([
+    { path: 'userId', model: 'user', select: 'username' },
+    { path: 'contestId', model: 'Contest', select: ['title'] },
+    { path: 'senderId', model: 'user', select: 'username' },
+  ]);
   if (!notifications) {
     res.status(500);
     throw new Error('failed to get notifications');
