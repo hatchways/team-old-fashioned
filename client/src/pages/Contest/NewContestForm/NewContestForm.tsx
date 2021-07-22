@@ -30,7 +30,7 @@ interface Props {
       title: string;
       description: string;
       prizeAmount: string;
-      date: string;
+      date: Date | null;
       time: string;
       timezone: string;
     },
@@ -40,7 +40,7 @@ interface Props {
       title: string;
       description: string;
       prizeAmount: string;
-      date: string;
+      date: Date | null;
       time: string;
       timezone: string;
     }>,
@@ -90,7 +90,7 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
         title: '',
         description: '',
         prizeAmount: '',
-        date: '',
+        date: selectedDate,
         time: '',
         timezone: '',
       }}
@@ -99,8 +99,6 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
         description: Yup.string().required('Description is required'),
         prizeAmount: Yup.number().required('Prize amount is required').min(1).max(1000000),
         date: Yup.date().required('Date is required'),
-        time: Yup.string().required('Time is required'),
-        timezone: Yup.string().required('Timezone is required'),
       })}
       onSubmit={handleSubmit}
     >

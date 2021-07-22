@@ -5,9 +5,9 @@ const Submission = require('../models/Submission');
 
 // handler for creating a new contest object
 exports.createContest = asyncHandler(async (req, res, next) => {
-  const { title, description, user, prizeAmount, deadline } = req.body;
+  const { title, description, prizeAmount, date, time, timezone } = req.body;
 
-  const contest = await Contest.create({ title, description, prizeAmount, deadline });
+  const contest = await Contest.create({ title, description, prizeAmount, deadline: date });
 
   if (contest) {
     res.status(201).json(contest);
