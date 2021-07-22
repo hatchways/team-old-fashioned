@@ -8,35 +8,59 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useAuth } from '../../context/useAuthContext';
 import { useSocket } from '../../context/useSocketContext';
 import useStyles from './useStyles';
-import { Notifications } from '../../interface/Notifications';
-import { getNotifications } from '../../helpers/APICalls/getNotifications';
-import { NotificationsList } from './NotificationsList';
+import { Notification, NotificationsList } from '../../interface/Notifications';
+// import { getNotifications } from '../../helpers/APICalls/getNotifications';
+import { NotificationsGrid } from './NotificationsGrid';
+
+import { FetchOptions } from '../../interface/FetchOptions';
 
 export default function NotificationsPage(): JSX.Element {
-  const [notifications, setNotifications] = useState<Notifications['notifications']>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const classes = useStyles();
   const { loggedInUser } = useAuth();
   const { initSocket } = useSocket();
-  const [isLoading, setisLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const history = useHistory();
-  // const { title, description, prizeAmount, user, submissions } = sampleContestData();
 
   useEffect(() => {
-    initSocket();
-    async function fetchNotifications() {
-      setisLoading(true);
-      const response = await getNotifications();
-      if (response) {
-        setNotifications(response['notifications']);
-      } else {
-        console.log(`Unable to fetch`);
+    const saveNotifications = (notifications: Notification[]) => {
+      setNotifications(notifications);
+    };
+    // initSocket();
+    let active = true;
+    // async function fetchNotifications() {
+    //   // setLoading(true);
+    //   const response = await getNotifications();
+    //   if (active && response.notifications) {
+    //     saveNotifications(response.notifications);
+    //   } else {
+    //     console.log(response);
+    //   }
+    //   // setLoading(false);
+    // }
+    // fetchNotifications();
+    const getNotifications = async () => {
+      const fetchOptions: FetchOptions = {
+        method: 'GET',
+        credentials: 'include',
+      };
+      try {
+        const response = await fetch(`/notifications`, fetchOptions);
+        const json = await response.json();
+        console.log(json);
+        saveNotifications(json);
+      } catch (error) {
+        console.log('error', error);
       }
-      setisLoading(false);
-    }
-    fetchNotifications();
-  }, [initSocket]);
+    };
+    getNotifications();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   if (loggedInUser === undefined) return <CircularProgress />;
   if (!loggedInUser) {
@@ -52,10 +76,12 @@ export default function NotificationsPage(): JSX.Element {
         <Grid item xs={12} sm={10} md={8}></Grid>
         <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
           <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
-            Notifications {console.log(notifications)}
+            Notifications
+            {console.log(notifications)}
+            {/* {isLoading ? <CircularProgress /> : notifications} */}
           </Box>
           <Grid className={classes.spacer}></Grid>
-          {/* <NotificationsList notifications={notifications} /> */}
+          <NotificationsGrid notifications={notifications} />
         </Grid>
       </Grid>
     </Grid>

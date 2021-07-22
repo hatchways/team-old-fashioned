@@ -1,10 +1,10 @@
 import * as React from 'react';
 // import useStyles from './useStyles';
-import { Notifications } from '../../interface/Notifications';
+import { NotificationsList } from '../../interface/Notifications';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 
-export function NotificationsList({ notifications }: Notifications): JSX.Element {
+export function NotificationsGrid({ notifications }: NotificationsList): JSX.Element {
   // const classes = useStyles();
   return (
     <Grid container alignItems="center" justify="center">
