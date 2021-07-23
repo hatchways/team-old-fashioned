@@ -88,8 +88,8 @@ exports.getMessagesForConversation = asyncHandler(async (req, res, next) => {
       throw new Error('invalid conversation');
     }
 
-    const messages = await Message.find({ conversation: conversation.get('_id') })
-      .populate('user', 'username')
+    const messages = await Message.find({ conversation: mongoose.Types.ObjectId(conversationId) })
+      .populate('sender', 'username')
       .sort({ created: 'desc' });
 
     res.status(201).json({
