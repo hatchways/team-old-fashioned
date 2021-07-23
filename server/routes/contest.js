@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const protect = require('../middleware/auth');
-const { validateContest, validateUpdateContest, validateGetContest } = require('../validate');
 const {
   createContest,
   updateContest,
@@ -10,10 +9,10 @@ const {
   createSubmissionByContestId,
 } = require('../controllers/contest');
 
-router.route('/').post(validateContest, createContest);
-router.route('/:id').post(validateUpdateContest, updateContest);
-router.route('/:id').get(validateGetContest, getContest);
-router.route('/all').get(getContests);
+router.post('/', protect, createContest);
+router.post('/:id', protect, updateContest);
+router.get('/:id', protect, getContest);
+router.get('/all', protect, getContests);
 router.post('/:id/submission', protect, createSubmissionByContestId);
 
 module.exports = router;

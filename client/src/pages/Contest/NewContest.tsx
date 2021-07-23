@@ -45,6 +45,7 @@ const NewContest: FunctionComponent = (): JSX.Element => {
         setSubmitting(false);
         updateSnackBarMessage(data.error.message);
       } else if (data.success) {
+        console.log(data);
         updateSnackBarMessage(data.success.message);
       } else {
         setSubmitting(false);
