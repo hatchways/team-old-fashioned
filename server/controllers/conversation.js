@@ -1,61 +1,39 @@
-const mongoose = require('mongoose');
+const { ObjectId } = require('mongoose');
 const asyncHandler = require('express-async-handler');
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
 const User = require('../models/User');
 
 exports.createConversation = asyncHandler(async (req, res, next) => {
-  const { from, to } = req.body;
+  const { to } = req.body;
 
   try {
-    if (!from || !to) {
-      res.status(400).json({
-        error: 'from and to are required',
-      });
-      throw new Error('from and to are required');
-    }
-
-    const fromUser = await User.findOne({ email: from });
-    const toUser = await User.findOne({ email: to });
-    if (!fromUser || !toUser) {
-      res.status(400).json({
-        error: 'unknown user',
-      });
-      throw new Error('unknown user');
+    const from = req.user.id;
+    if (!to) {
+      throw new Error('recipient is required');
     }
 
     const conversation = await Conversation.create({
-      fromUser: fromUser.get('_id'),
-      toUser: toUser.get('_id'),
+      fromUser: ObjectId(from),
+      toUser: ObjectId(to),
     });
 
     res.status(201).json({
       success: true,
       conversation,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
 });
 
 exports.getUserConversations = asyncHandler(async (req, res, next) => {
-  const { email } = req.body;
   try {
-    if (!email) {
-      res.status(400).json({
-        error: 'email is required',
-      });
-      throw new Error('email is required');
-    }
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      res.status(400).json({
-        error: 'unknown user',
-      });
-      throw new Error('unknown user');
-    }
-    const userId = user.get('_id');
+    const userId = req.user.id;
     const conversations = await Conversation.find({
-      $or: [{ fromUser: mongoose.Types.ObjectId(userId) }, { toUser: mongoose.Types.ObjectId(userId) }],
+      $or: [{ fromUser: ObjectId(userId) }, { toUser: ObjectId(userId) }],
     })
       .populate('fromUser', 'username')
       .populate('toUser', 'username')
@@ -65,44 +43,29 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
       success: true,
       conversations,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
 });
 
 exports.addMessage = asyncHandler(async (req, res, next) => {
-  const { conversationId, email, message } = req.body;
+  const { conversationId, message } = req.body;
   try {
+    const userId = req.user.id;
+
     if (!conversationId) {
-      res.status(400).json({
-        error: 'conversationId is required',
-      });
       throw new Error('conversationId is required');
     }
     const conversation = await Conversation.findById(conversationId);
     if (!conversation) {
-      res.status(400).json({
-        error: 'invalid conversation id',
-      });
       throw new Error('invalid conversation id');
-    }
-
-    if (!email) {
-      res.status(400).json({
-        error: 'email is required',
-      });
-      throw new Error('email is required');
-    }
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      res.status(400).json({
-        error: 'unknown user',
-      });
-      throw new Error('unknown user');
     }
 
     const newMessage = await Message.create({
       conversation: conversation.get('_id'),
-      user: user.get('_id'),
+      user: ObjectId(userId),
       message,
     });
 
@@ -110,23 +73,22 @@ exports.addMessage = asyncHandler(async (req, res, next) => {
       success: true,
       message: newMessage,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
 });
 
 exports.getMessagesForConversation = asyncHandler(async (req, res, next) => {
-  const { conversationId } = req.body;
   try {
+    conversationId = req.params.id;
+
     if (!conversationId) {
-      res.status(400).json({
-        error: 'conversationId is required',
-      });
       throw new Error('conversationId is required');
     }
     const conversation = await Conversation.findById(conversationId);
     if (!conversation) {
-      res.status(400).json({
-        error: 'invalid conversation id',
-      });
       throw new Error('invalid conversation id');
     }
 
@@ -138,5 +100,9 @@ exports.getMessagesForConversation = asyncHandler(async (req, res, next) => {
       success: true,
       messages,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
 });
