@@ -12,6 +12,7 @@ import AuthMenu from '../AuthMenu/AuthMenu';
 import { useAuth } from '../../context/useAuthContext';
 import CustomButton from './CustomButton';
 import NotifsMsgDropdown from '../NotifsMsgDropdown/NotifsMsgDropdown';
+import Typography from '@material-ui/core/Typography';
 
 const NavBar = (): JSX.Element => {
   const classes = useStyles();
@@ -36,16 +37,18 @@ const NavBar = (): JSX.Element => {
                   </Link>
                 </Box>
                 <Box p={0}>
-                  <Link component={RouterLink} variant="subtitle1" className={classes.link} to="/messages">
-                    <span> Messages </span>
-                    <NotifsMsgDropdown type="message" />
-                  </Link>
+                  <NotifsMsgDropdown type="message">
+                    <Typography variant="subtitle1" className={classes.link}>
+                      Messages
+                    </Typography>
+                  </NotifsMsgDropdown>
                 </Box>
                 <Box p={0}>
-                  <Link component={RouterLink} variant="subtitle1" className={classes.link} to="/notifications">
-                    Notifications
-                    <NotifsMsgDropdown type="submission" />
-                  </Link>
+                  <NotifsMsgDropdown type="submission">
+                    <Typography variant="subtitle1" className={classes.link}>
+                      Notifications
+                    </Typography>
+                  </NotifsMsgDropdown>
                 </Box>
               </>
             ) : (
