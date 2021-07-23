@@ -39,13 +39,7 @@ export function NotificationsList({ notifications }: NotificationsArray): JSX.El
           <>
             <ListItem
               button
-              key={
-                (notification.type,
-                notification.photo,
-                notification.senderId.username,
-                notification.type,
-                notification.contestId.title)
-              }
+              key={(notification.type, notification.photo, notification.senderId.username, notification.type)}
             >
               <Grid container alignItems="center" justify="center">
                 <Grid item xs={3}>
