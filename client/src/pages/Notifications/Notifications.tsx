@@ -41,7 +41,9 @@ export default function NotificationsPage(): JSX.Element {
       active = false;
     };
   }, []);
-
+  const notificationsOnly = notifications.filter(function (notif) {
+    return notif.type === 'submission';
+  });
   return (
     <Grid container component="main" className={classes.root} direction="column">
       <CssBaseline />
@@ -50,12 +52,12 @@ export default function NotificationsPage(): JSX.Element {
         <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
           <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
             Notifications
-            {console.log(notifications)}
+            {console.log(notificationsOnly)}
             {/* {isLoading ? <CircularProgress /> : notifications} */}
           </Box>
           <Grid className={classes.spacer}></Grid>
           <Paper elevation={6} square className={classes.notificationsPaper}>
-            <NotificationsList notifications={notifications} />
+            <NotificationsList notifications={notificationsOnly} />
           </Paper>
         </Grid>
       </Grid>
