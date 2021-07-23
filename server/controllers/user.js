@@ -1,5 +1,5 @@
-const User = require("../models/User");
-const asyncHandler = require("express-async-handler");
+const User = require('../models/User');
+const asyncHandler = require('express-async-handler');
 
 // @route POST /users
 // @desc Search for users
@@ -10,14 +10,35 @@ exports.searchUsers = asyncHandler(async (req, res, next) => {
   let users;
   if (searchString) {
     users = await User.find({
-      username: { $regex: searchString, $options: "i" }
+      username: { $regex: searchString, $options: 'i' },
     });
   }
 
   if (!users) {
     res.status(404);
-    throw new Error("No users found in search");
+    throw new Error('No users found in search');
   }
 
   res.status(200).json({ users: users });
+});
+
+// @route POST /users/info
+// @desc Update user personal info
+// @access Public
+exports.updatePersonalInformation = asyncHandler(async (req, res, next) => {
+  const { email, headline, bio, location } = req.body;
+  try {
+    const user = await User.findOneAndUpdate(
+      { email },
+      { headline: headline, bio: bio, location: location },
+      { new: true },
+    );
+    res.status(202).json({
+      success: true,
+      user: { email, username: user.get('username'), headline, bio, location },
+    });
+  } catch (err) {
+    res.status(400);
+    throw new Error('Failed to update personal information');
+  }
 });
