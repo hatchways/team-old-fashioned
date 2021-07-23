@@ -11,6 +11,7 @@ import useStyles from './useStyles';
 import AuthMenu from '../AuthMenu/AuthMenu';
 import { useAuth } from '../../context/useAuthContext';
 import CustomButton from './CustomButton';
+import NotifsMsgDropdown from '../NotifsMsgDropdown/NotifsMsgDropdown';
 
 const NavBar = (): JSX.Element => {
   const classes = useStyles();
@@ -36,12 +37,14 @@ const NavBar = (): JSX.Element => {
                 </Box>
                 <Box p={0}>
                   <Link component={RouterLink} variant="subtitle1" className={classes.link} to="/messages">
-                    Messages
+                    <span> Messages </span>
+                    <NotifsMsgDropdown type="message" />
                   </Link>
                 </Box>
                 <Box p={0}>
                   <Link component={RouterLink} variant="subtitle1" className={classes.link} to="/notifications">
                     Notifications
+                    <NotifsMsgDropdown type="submission" />
                   </Link>
                 </Box>
               </>
