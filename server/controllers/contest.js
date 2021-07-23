@@ -105,3 +105,27 @@ exports.createSubmissionByContestId = asyncHandler(async (req, res, next) => {
     throw new Error(error);
   }
 });
+
+exports.getUserContests = asyncHandler(async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    if (!email) {
+      throw new Error('email is required');
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error('unknown user');
+    }
+
+    const contests = await Contest.find({ user: ObjectId(user.get('_id')) }).sort({ deadline: 'desc' });
+    res.status(200).json({
+      success: true,
+      contests,
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+});

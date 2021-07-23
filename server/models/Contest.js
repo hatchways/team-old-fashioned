@@ -23,12 +23,12 @@ const contestSchema = new mongoose.Schema({
 
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
   },
 
   created: {
     type: Date,
-    Default: Date.now,
+    default: Date.now,
   },
 });
 
