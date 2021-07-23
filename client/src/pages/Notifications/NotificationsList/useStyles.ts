@@ -4,6 +4,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '60vh',
     backgroundColor: theme.palette.background.paper,
+    minWidth: 400,
   },
 
   titleColumn: {

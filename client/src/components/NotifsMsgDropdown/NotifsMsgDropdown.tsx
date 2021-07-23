@@ -2,19 +2,21 @@ import React, { useState, MouseEvent, useEffect } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import FiberManualRecordOutlinedIcon from '@material-ui/icons/FiberManualRecordOutlined';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import useStyles from './useStyles';
 import { Notification } from '../../interface/Notifications';
 import { FetchOptions } from '../../interface/FetchOptions';
 import { NotificationsList } from '../../pages/Notifications/NotificationsList/NotificationsList';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 interface Props {
   type: 'submission' | 'message';
+  children: JSX.Element;
 }
 
-const NotifsMsgDropdown = ({ type }: Props): JSX.Element => {
+const NotifsMsgDropdown = ({ type, children }: Props): JSX.Element => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -35,7 +37,6 @@ const NotifsMsgDropdown = ({ type }: Props): JSX.Element => {
         const response = await fetch(`/notifications`, fetchOptions);
         const json = await response.json();
         if (active && json) {
-          console.log(json);
           saveNotifications(json);
         }
       } catch (error) {
@@ -60,7 +61,7 @@ const NotifsMsgDropdown = ({ type }: Props): JSX.Element => {
     .filter(function (notif) {
       return notif.type === type && notif.readStatus === false;
     })
-    .slice(length - 5);
+    .slice(length - 12);
 
   return (
     <div>
@@ -68,11 +69,12 @@ const NotifsMsgDropdown = ({ type }: Props): JSX.Element => {
         aria-label="notifications dropdown"
         aria-controls="notifs-msg-dropdown"
         aria-haspopup="true"
-        className={classes.dropDown}
+        // className={classes.dropDown}
         onClick={handleClick}
       >
         {/* While fetching unread is still not integrated */}
-        <FiberManualRecordOutlinedIcon className={classes.dropDownIcon} />
+        {/* <FiberManualRecordOutlinedIcon className={classes.dropDownIcon} /> */}
+        {children}
       </IconButton>
       <Menu
         id="auth-menu"
@@ -86,8 +88,19 @@ const NotifsMsgDropdown = ({ type }: Props): JSX.Element => {
         }}
         getContentAnchorEl={null}
       >
-        <MenuItem component={Link} to={'/profile'}>
-          <NotificationsList notifications={unread} />
+        <MenuItem
+          component={RouterLink}
+          to={type === 'message' ? '/messages' : '/notifications'}
+          disableGutters={true}
+          onClick={handleClose}
+          className={classes.link}
+        >
+          <Typography variant="subtitle1">See all {type === 'message' ? 'messages' : 'notifications'}</Typography>
+        </MenuItem>
+        <MenuItem disableGutters={true} alignItems="center">
+          <Grid item xs={12} className={classes.dropDown}>
+            <NotificationsList notifications={unread} type="dropdown" />
+          </Grid>
         </MenuItem>
       </Menu>
     </div>

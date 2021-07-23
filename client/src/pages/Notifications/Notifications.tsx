@@ -6,7 +6,7 @@ import useStyles from './useStyles';
 import { Notification } from '../../interface/Notifications';
 import Paper from '@material-ui/core/Paper';
 import { NotificationsList } from './NotificationsList/NotificationsList';
-
+import Typography from '@material-ui/core/Typography';
 import { FetchOptions } from '../../interface/FetchOptions';
 
 export default function NotificationsPage(): JSX.Element {
@@ -51,13 +51,15 @@ export default function NotificationsPage(): JSX.Element {
         <Grid item xs={12} sm={10} md={8}></Grid>
         <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
           <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
-            Notifications
+            <Typography className={classes.pageTitle} component="h1" variant="h5">
+              Notifications
+            </Typography>
             {console.log(notificationsOnly)}
             {/* {isLoading ? <CircularProgress /> : notifications} */}
           </Box>
           <Grid className={classes.spacer}></Grid>
           <Paper elevation={6} square className={classes.notificationsPaper}>
-            <NotificationsList notifications={notificationsOnly} />
+            <NotificationsList notifications={notificationsOnly} type="page" />
           </Paper>
         </Grid>
       </Grid>

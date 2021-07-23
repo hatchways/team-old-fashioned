@@ -1,4 +1,4 @@
-const timeSince = (baseDate: string): string => {
+const timeSince = (baseDate: Date | string): string => {
   const date = new Date(baseDate);
   const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
 

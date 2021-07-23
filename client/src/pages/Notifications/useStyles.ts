@@ -6,9 +6,12 @@ const useStyles = makeStyles(() => ({
     paddingTop: 40,
     paddingBottom: 20,
   },
-
   titleColumn: {
     paddingTop: 32,
+    maxWidth: 600,
+  },
+  pageTitle: {
+    fontWeight: 600,
   },
   spacer: {
     paddingTop: 32,
@@ -18,6 +21,7 @@ const useStyles = makeStyles(() => ({
   },
   notificationsPaper: {
     minHeight: '60vh',
+    padding: 24,
   },
 }));
 
