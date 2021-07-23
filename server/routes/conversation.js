@@ -8,9 +8,9 @@ const {
   getMessagesForConversation,
 } = require('../controllers/conversation');
 
-router.route(protect, '/all').get(getUserConversations);
-router.route(protect, '/new-conversation').post(createConversation);
-router.route(protect, '/add-message').post(addMessage);
-router.route(protect, ':id/messages').get(getMessagesForConversation);
+router.route('/all').get(protect, getUserConversations);
+router.route('/new-conversation').post(protect, createConversation);
+router.route('/add-message').post(protect, addMessage);
+router.route('/:id/messages').get(protect, getMessagesForConversation);
 
 module.exports = router;

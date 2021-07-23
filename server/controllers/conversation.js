@@ -1,4 +1,4 @@
-const { ObjectId } = require('mongoose');
+const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
@@ -9,13 +9,14 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
 
   try {
     const from = req.user.id;
-    if (!to) {
-      throw new Error('recipient is required');
+
+    if (!to || !mongoose.isValidObjectId(to)) {
+      throw new Error('invalid recipient');
     }
 
     const conversation = await Conversation.create({
-      fromUser: ObjectId(from),
-      toUser: ObjectId(to),
+      fromUser: mongoose.Types.ObjectId(from),
+      toUser: mongoose.Types.ObjectId(to),
     });
 
     res.status(201).json({
@@ -33,7 +34,7 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
   try {
     const userId = req.user.id;
     const conversations = await Conversation.find({
-      $or: [{ fromUser: ObjectId(userId) }, { toUser: ObjectId(userId) }],
+      $or: [{ fromUser: mongoose.Types.ObjectId(userId) }, { toUser: mongoose.Types.ObjectId(userId) }],
     })
       .populate('fromUser', 'username')
       .populate('toUser', 'username')
@@ -55,17 +56,17 @@ exports.addMessage = asyncHandler(async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    if (!conversationId) {
-      throw new Error('conversationId is required');
+    if (!conversationId || !mongoose.isValidObjectId(conversationId)) {
+      throw new Error('invalid conversation');
     }
     const conversation = await Conversation.findById(conversationId);
     if (!conversation) {
-      throw new Error('invalid conversation id');
+      throw new Error('conversation not found');
     }
 
     const newMessage = await Message.create({
       conversation: conversation.get('_id'),
-      user: ObjectId(userId),
+      sender: mongoose.Types.ObjectId(userId),
       message,
     });
 
@@ -83,13 +84,8 @@ exports.addMessage = asyncHandler(async (req, res, next) => {
 exports.getMessagesForConversation = asyncHandler(async (req, res, next) => {
   try {
     conversationId = req.params.id;
-
-    if (!conversationId) {
-      throw new Error('conversationId is required');
-    }
-    const conversation = await Conversation.findById(conversationId);
-    if (!conversation) {
-      throw new Error('invalid conversation id');
+    if (!conversationId || !mongoose.isValidObjectId(conversationId)) {
+      throw new Error('invalid conversation');
     }
 
     const messages = await Message.find({ conversation: conversation.get('_id') })
