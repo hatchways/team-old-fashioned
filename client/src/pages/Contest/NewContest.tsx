@@ -18,14 +18,14 @@ const NewContest: FunctionComponent = (): JSX.Element => {
       title,
       description,
       prizeAmount,
-      date,
+      deadline,
       time,
       timezone,
     }: {
       title: string;
       description: string;
       prizeAmount: string;
-      date: Date | null;
+      deadline: Date | null;
       time: string;
       timezone: string;
     },
@@ -35,17 +35,17 @@ const NewContest: FunctionComponent = (): JSX.Element => {
       title: string;
       description: string;
       prizeAmount: string;
-      date: Date | null;
+      deadline: Date | null;
       time: string;
       timezone: string;
     }>,
   ) => {
-    createContestAPI(title, description, prizeAmount, date, time, timezone).then((data) => {
+    createContestAPI(title, description, prizeAmount, deadline).then((data) => {
       if (data.error) {
         setSubmitting(false);
         updateSnackBarMessage(data.error.message);
-      } else if (data) {
-        updateSnackBarMessage('New contest has been created successfully.');
+      } else if (data.success) {
+        updateSnackBarMessage(data.success.message);
       } else {
         setSubmitting(false);
         updateSnackBarMessage('An unexpected error occurred. Please try again');

@@ -5,17 +5,16 @@ export async function createContestAPI(
   title: string,
   description: string,
   prizeAmount: string,
-  date: Date | null,
-  time: string,
-  timezone: string,
-): Promise<AuthApiData> {
-  const fetchOptions: FetchOptions = {
+  deadline: Date | null,
+): Promise<any> {
+  const ContestfetchOptions: FetchOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title, description, prizeAmount, date, time, timezone }),
+    body: JSON.stringify({ title, description, prizeAmount, deadline }),
     credentials: 'include',
   };
-  return await fetch(`/contest`, fetchOptions)
+
+  return await fetch(`/contest`, ContestfetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
