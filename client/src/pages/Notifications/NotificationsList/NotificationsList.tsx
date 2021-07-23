@@ -3,20 +3,18 @@ import useStyles from './useStyles';
 import { NotificationsArray } from '../../../interface/Notifications';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-import Badge from '@material-ui/core/Badge';
-import Box from '@material-ui/core/Box';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 
 export function NotificationsList({ notifications }: NotificationsArray): JSX.Element {
   const classes = useStyles();
   const [invisible, setInvisible] = React.useState(false);
 
+  //if notification is read
   const handleBadgeVisibility = () => {
-    setInvisible(!invisible);
+    setInvisible(true);
   };
   return (
     <List component="nav" className={classes.root} aria-label="notifications">
@@ -65,7 +63,7 @@ export function NotificationsList({ notifications }: NotificationsArray): JSX.El
                   </Grid>
                 )}
                 <Grid item xs={1}>
-                  <FiberManualRecordIcon className={classes.customBadge} />{' '}
+                  {notification.readStatus ? '  ' : <FiberManualRecordIcon className={classes.readIndicator} />}
                 </Grid>
               </Grid>
             </ListItem>

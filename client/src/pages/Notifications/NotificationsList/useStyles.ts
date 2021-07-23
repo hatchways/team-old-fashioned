@@ -12,8 +12,8 @@ const useStyles = makeStyles((theme) => ({
   spacer: {
     paddingTop: 32,
   },
-  customBadge: {
-    color: '#90ee90',
+  readIndicator: {
+    color: '#00ff00',
   },
   notificationsPaper: {
     minHeight: '60vh',
