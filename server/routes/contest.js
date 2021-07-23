@@ -11,8 +11,6 @@ const {
 } = require('../controllers/contest');
 
 router.route('/').post(validateContest, createContest);
-router.route('/:id').post(validateUpdateContest, updateContest);
-router.route('/:id').get(validateGetContest, getContest);
 router.route('/all').get(getContests);
 router.post('/:id/submission', protect, createSubmissionByContestId);
 

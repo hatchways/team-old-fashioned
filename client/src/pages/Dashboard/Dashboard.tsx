@@ -15,7 +15,7 @@ export default function Dashboard(): JSX.Element {
   const history = useHistory();
 
   useEffect(() => {
-    initSocket();
+    //initSocket();
   }, [initSocket]);
 
   if (loggedInUser === undefined) return <CircularProgress />;
