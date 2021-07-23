@@ -7,7 +7,7 @@ const Submission = require('../models/Submission');
 exports.createContest = asyncHandler(async (req, res, next) => {
   const { title, description, prizeAmount, deadline } = req.body;
   const userId = req.user.id;
-  console.log(userId);
+
   const contest = await Contest.create({ title, description, prizeAmount, deadline, userId });
 
   if (contest) {
