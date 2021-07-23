@@ -6,6 +6,7 @@ interface Props {
   imgSrc: string;
   imgCount: number;
   headline: string;
+  deadline: Date;
   byline: string;
   prizeAmt: number;
   completed?: boolean;
@@ -15,18 +16,24 @@ const ContestItem: FC<Props> = ({
   imgSrc,
   imgCount,
   headline,
+  deadline,
   byline,
   prizeAmt,
   completed = false,
 }: Props): JSX.Element => {
   const classes = useStyles();
+  const formatedDeadline =
+    (new Date(deadline) > new Date() ? 'ends ' : 'ended ') +
+    new Date(deadline).toLocaleDateString() +
+    ' ' +
+    new Date(deadline).toLocaleTimeString();
   return (
     <Grid container className={classes.contestItemContainer}>
       <Grid item>
         <ImageList cols={1}>
           <ImageListItem key={1}>
             <img src={imgSrc} alt={headline} className={classes.contestImg} />
-            <ImageListItemBar title={imgCount + ' SKETCH' + (imgCount > 1 ? 'ES' : '')} />
+            <ImageListItemBar title={imgCount + ' SKETCH' + (imgCount === 0 || imgCount > 1 ? 'ES' : '')} />
           </ImageListItem>
         </ImageList>
       </Grid>
@@ -36,6 +43,7 @@ const ContestItem: FC<Props> = ({
         <Box>
           <Button className={classes.btn}>{completed ? 'COMPLETED' : `$${prizeAmt}`}</Button>
         </Box>
+        <Box className={classes.deadline}>{formatedDeadline}</Box>
       </Grid>
     </Grid>
   );

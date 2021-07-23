@@ -1,9 +1,10 @@
-import { FC, useState } from 'react';
-import { useAuth } from '../../../context/useAuthContext';
+import { FC, useState, useEffect } from 'react';
 import ContestItem from '../../../components/ContestItem/ContestItem';
-import { Button, Grid, Box, Tabs, Tab, Avatar, Typography } from '@material-ui/core';
+import { Button, Grid, Box, Tabs, Tab, Avatar, Typography, Container } from '@material-ui/core';
 import demoProfilePhoto from '../../../Images/demo-profile-photo.png';
-import mockContestPic from '../../../Images/68f55f7799df6c8078a874cfe0a61a5e6e9e1687.png';
+import { getUserContests } from '../../../helpers/APICalls/contest';
+import { ContestAPIData } from '../../../interface/Contest';
+
 import useStyles from './useStyles';
 
 interface TabPanelProps {
@@ -23,39 +24,75 @@ const TabPanel = (props: TabPanelProps) => {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
+        <Container>
+          <Box p={3}>{children}</Box>
+        </Container>
       )}
     </div>
   );
 };
 
-const mockContests = [
-  {
-    imgSrc: mockContestPic,
-    imgCount: 25,
-    headline: 'Lion tattoo concept in minimal style',
-    byline: 'Looking for a cool simple ideas',
-    prizeAmt: 150,
-  },
-  {
-    imgSrc: mockContestPic,
-    imgCount: 9,
-    headline: 'Anchors, like all the pirates',
-    byline: 'Artistic anchors or anchor related art',
-    prizeAmt: 75,
-  },
-];
-
 const Profile: FC = (): JSX.Element => {
   const classes = useStyles();
-  const { loggedInUser } = useAuth();
   const [value, setValue] = useState(0);
+  const [contests, setContests] = useState<ContestAPIData[]>([]);
+
+  useEffect(() => {
+    const getContests = async () => {
+      const response = await getUserContests();
+      if (response.success) {
+        if (response.contests) {
+          setContests(response.contests);
+        }
+      }
+    };
+    getContests();
+  }, [setContests]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
   };
+
+  const openContests = [];
+  const closedContests = [];
+  for (const contest of contests) {
+    let firstImgSrc;
+    let imageCnt = 0;
+    for (let i = 0; i < contest.subs.length; i++) {
+      if (contest.subs[i].files.length > 0) {
+        if (!firstImgSrc) {
+          firstImgSrc = contest.subs[i].files[0];
+        }
+        imageCnt += contest.subs[i].files.length;
+      }
+    }
+    if (new Date(contest.deadline) > new Date()) {
+      openContests.push(
+        <ContestItem
+          key={`activeContest-${contest._id}`}
+          imgSrc={firstImgSrc || demoProfilePhoto}
+          imgCount={imageCnt}
+          headline={contest.title}
+          deadline={contest.deadline}
+          byline={contest.description}
+          prizeAmt={contest.prizeAmount}
+        />,
+      );
+    } else {
+      closedContests.push(
+        <ContestItem
+          key={`activeContest-${contest._id}`}
+          imgSrc={firstImgSrc || demoProfilePhoto}
+          imgCount={imageCnt}
+          headline={contest.title}
+          deadline={contest.deadline}
+          byline={contest.description}
+          prizeAmt={contest.prizeAmount}
+          completed
+        />,
+      );
+    }
+  }
 
   return (
     <Grid container direction="column" className={classes.profileContainer}>
@@ -82,29 +119,10 @@ const Profile: FC = (): JSX.Element => {
             <Tab label="COMPLETED" />
           </Tabs>
           <TabPanel value={value} index={0}>
-            {mockContests.map((contest, index) => (
-              <ContestItem
-                key={`activeContest-${index}`}
-                imgSrc={contest.imgSrc}
-                imgCount={contest.imgCount}
-                headline={contest.headline}
-                byline={contest.byline}
-                prizeAmt={contest.prizeAmt}
-              />
-            ))}
+            {openContests.length > 0 ? openContests : <div key="1">No contests to display</div>}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {mockContests.map((contest, index) => (
-              <ContestItem
-                key={`activeContest-${index}`}
-                imgSrc={contest.imgSrc}
-                imgCount={contest.imgCount}
-                headline={contest.headline}
-                byline={contest.byline}
-                prizeAmt={contest.prizeAmt}
-                completed
-              />
-            ))}
+            {closedContests.length > 0 ? closedContests : <div key="1">No contests to display</div>}
           </TabPanel>
         </Box>
       </Grid>

@@ -9,11 +9,30 @@ export interface Contest {
   imageArray: string[];
 }
 
+export interface SubmissionAPIData {
+  _id: string;
+  files: string[];
+  contestId: string;
+  userId: string;
+  isActive: boolean;
+  submitDate: Date;
+  __v: number;
+}
+
 export interface ContestAPIData {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   prizeAmount: number;
   deadline: Date;
-  creator: User;
+  __v: number;
+  user: User;
+  created: Date | string;
+  subs: SubmissionAPIData[];
+}
+
+export interface ContestAPIResponse {
+  success?: boolean;
+  error?: boolean;
+  contests?: ContestAPIData[];
 }

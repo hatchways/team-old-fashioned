@@ -1,5 +1,5 @@
 import { FetchOptions } from '../../interface/FetchOptions';
-import { ContestAPIData } from '../../interface/Contest';
+import { ContestAPIResponse } from '../../interface/Contest';
 
 export default async function contestImgSubmitAPI(id: string, data: any): Promise<any> {
   const S3FetchOptions: FetchOptions = {
@@ -17,14 +17,11 @@ export default async function contestImgSubmitAPI(id: string, data: any): Promis
     }));
 }
 
-export const getUserContests = async (email: string): Promise<ContestAPIData> => {
+export const getUserContests = async (): Promise<ContestAPIResponse> => {
   const fetchOptions: FetchOptions = {
-    method: 'POST',
+    method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({
-      email,
-    }),
   };
   return await fetch(`/contest/contests`, fetchOptions)
     .then((res) => res.json())

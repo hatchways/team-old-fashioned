@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const ObjectId = require('mongoose').Types.ObjectId;
+const mongoose = require('mongoose');
 const Contest = require('../models/Contest');
 const Submission = require('../models/Submission');
 
@@ -107,18 +108,20 @@ exports.createSubmissionByContestId = asyncHandler(async (req, res, next) => {
 });
 
 exports.getUserContests = asyncHandler(async (req, res, next) => {
-  const { email } = req.body;
   try {
-    if (!email) {
-      throw new Error('email is required');
-    }
+    const userId = req.user.id;
+    const contests = await Contest.aggregate([
+      { $match: { user: mongoose.Types.ObjectId(userId) } },
+      {
+        $lookup: {
+          from: 'submissions',
+          localField: '_id',
+          foreignField: 'contestId',
+          as: 'subs',
+        },
+      },
+    ]);
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      throw new Error('unknown user');
-    }
-
-    const contests = await Contest.find({ user: ObjectId(user.get('_id')) }).sort({ deadline: 'desc' });
     res.status(200).json({
       success: true,
       contests,
