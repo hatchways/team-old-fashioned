@@ -24,7 +24,7 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
       conversation,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error: error.message,
     });
   }
@@ -45,7 +45,7 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
       conversations,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error: error.message,
     });
   }
@@ -75,7 +75,7 @@ exports.addMessage = asyncHandler(async (req, res, next) => {
       message: newMessage,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error: error.message,
     });
   }
@@ -97,7 +97,7 @@ exports.getMessagesForConversation = asyncHandler(async (req, res, next) => {
       messages,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error: error.message,
     });
   }
