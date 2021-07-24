@@ -127,7 +127,7 @@ exports.getUserContests = asyncHandler(async (req, res, next) => {
       contests,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error: error.message,
     });
   }

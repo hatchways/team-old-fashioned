@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button, Grid, Box, ImageList, ImageListItem, ImageListItemBar } from '@material-ui/core';
+import { Button, Grid, Box, ImageList, ImageListItem, ImageListItemBar, Typography } from '@material-ui/core';
 import useStyles from './useStyles';
 
 interface Props {
@@ -38,12 +38,12 @@ const ContestItem: FC<Props> = ({
         </ImageList>
       </Grid>
       <Grid item className={classes.infoContainer}>
-        <Box className={classes.headline}>{headline}</Box>
-        <Box className={classes.byline}>{byline}</Box>
+        <Typography className={classes.headline}>{headline}</Typography>
+        <Typography className={classes.byline}>{byline}</Typography>
         <Box>
           <Button className={classes.btn}>{completed ? 'COMPLETED' : `$${prizeAmt}`}</Button>
         </Box>
-        <Box className={classes.deadline}>{formatedDeadline}</Box>
+        <Typography className={classes.deadline}>{formatedDeadline}</Typography>
       </Grid>
     </Grid>
   );

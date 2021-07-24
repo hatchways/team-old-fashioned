@@ -81,7 +81,7 @@ const Profile: FC = (): JSX.Element => {
     } else {
       closedContests.push(
         <ContestItem
-          key={`activeContest-${contest._id}`}
+          key={`inactiveContest-${contest._id}`}
           imgSrc={firstImgSrc || demoProfilePhoto}
           imgCount={imageCnt}
           headline={contest.title}

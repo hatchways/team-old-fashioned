@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme) => ({
   },
   contestImg: {
     width: 175,
-    //height: 150,
   },
   infoContainer: {
     textAlign: 'left',
