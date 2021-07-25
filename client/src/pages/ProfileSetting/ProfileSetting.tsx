@@ -1,11 +1,8 @@
 import React, { FC } from 'react';
 import useStyles from './useStyles';
-import { AppBar, Box, Grid, Tab, Tabs, Container } from '@material-ui/core';
-import AuthHeader from '../../components/AuthHeader/AuthHeader';
+import { Box, Tab, Tabs } from '@material-ui/core';
 import PersonalInformationForm from './PersonalInformationForm/PersonalInformationForm';
 import Profile from './Profile/Profile';
-import { Link } from 'react-router-dom';
-import { classExpression } from '@babel/types';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -23,12 +20,9 @@ function TabPanel(props: TabPanelProps) {
       id={`profile-settings-tabs-${index}`}
       aria-labelledby={`profile-settings-tab-${index}`}
       {...other}
+      style={{ width: '100vw' }}
     >
-      {value === index && (
-        <Box p={3} style={{ width: '100%', backgroundColor: 'blue' }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }
@@ -47,16 +41,15 @@ const ProfileSetting: FC = (): JSX.Element => {
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
   };
-  console.log('render');
 
   return (
-    <Grid container className={classes.root}>
+    <Box className={classes.root}>
       <Tabs
         orientation="vertical"
         variant="standard"
         value={value}
         onChange={handleChange}
-        aria-label="Vertical tabs example"
+        aria-label="Profile Settings"
         className={classes.tabs}
         indicatorColor="primary"
       >
@@ -81,7 +74,7 @@ const ProfileSetting: FC = (): JSX.Element => {
       <TabPanel value={value} index={4}>
         Password Change
       </TabPanel>
-    </Grid>
+    </Box>
   );
 };
 
