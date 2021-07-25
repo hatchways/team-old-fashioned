@@ -119,10 +119,18 @@ const Profile: FC = (): JSX.Element => {
             <Tab label="COMPLETED" />
           </Tabs>
           <TabPanel value={value} index={0}>
-            {openContests.length > 0 ? openContests : <div key="1">No contests to display</div>}
+            {value === 0 && openContests.length > 0 ? (
+              openContests
+            ) : (
+              <div key="activeContest-1">No contests to display</div>
+            )}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {closedContests.length > 0 ? closedContests : <div key="1">No contests to display</div>}
+            {value === 1 && closedContests.length > 0 ? (
+              closedContests
+            ) : (
+              <div key="inactiveContest-1">No contests to display</div>
+            )}
           </TabPanel>
         </Box>
       </Grid>
