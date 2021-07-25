@@ -20,6 +20,17 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: 'grey',
     },
   },
+  tabPanelRoot: {
+    width: '100%',
+  },
+  container: {
+    display: 'flex',
+    height: '100%',
+    width: '100%',
+  },
+  panel: {
+    width: '100%',
+  },
 }));
 
 export default useStyles;
