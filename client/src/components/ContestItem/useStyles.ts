@@ -4,8 +4,12 @@ const useStyles = makeStyles((theme) => ({
   contestItemContainer: {
     marginBottom: 25,
   },
-  contestImg: {
+  item: {
     width: 175,
+    height: 175,
+  },
+  contestImg: {
+    objectFit: 'cover',
   },
   infoContainer: {
     textAlign: 'left',

@@ -31,7 +31,7 @@ const ContestItem: FC<Props> = ({
     <Grid container className={classes.contestItemContainer}>
       <Grid item>
         <ImageList cols={1}>
-          <ImageListItem key={1}>
+          <ImageListItem key={1} classes={{ item: classes.item }}>
             <img src={imgSrc} alt={headline} className={classes.contestImg} />
             <ImageListItemBar title={imgCount + ' SKETCH' + (imgCount === 0 || imgCount > 1 ? 'ES' : '')} />
           </ImageListItem>
