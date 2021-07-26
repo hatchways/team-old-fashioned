@@ -66,7 +66,9 @@ const DesignSubmit = ({ contest }: Props): JSX.Element => {
       updateSnackBarMessage('Your design images have been uploaded successfully');
     }
     if (result.success) {
-      const returnData = await contestImgSubmitAPI(contest._id, result.success.urlArray);
+      //for testing by adding contest id, will change back to parmas.id when contest details page done
+      const returnData = await contestImgSubmitAPI('60fa08e84f14460a342ad347', result.success.urlArray);
+      console.log(returnData);
     }
     setisLoading(false);
   };
