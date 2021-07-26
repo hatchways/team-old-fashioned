@@ -8,16 +8,13 @@ const useStyles = makeStyles(() => ({
   },
   titleColumn: {
     paddingTop: 32,
-    maxWidth: 600,
+    maxWidth: 720,
   },
   pageTitle: {
     fontWeight: 600,
   },
   spacer: {
     paddingTop: 32,
-  },
-  customBadge: {
-    color: '#90ee90',
   },
   notificationsPaper: {
     minHeight: '60vh',

@@ -1,15 +1,14 @@
 import React, { useState, MouseEvent, useEffect } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Link as RouterLink } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { Notification } from '../../interface/Notifications';
 import { FetchOptions } from '../../interface/FetchOptions';
 import { NotificationsList } from '../../pages/Notifications/NotificationsList/NotificationsList';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
 interface Props {
   type: 'submission' | 'message';
@@ -28,6 +27,7 @@ const NotifsMsgDropdown = ({ type, children }: Props): JSX.Element => {
   useEffect(() => {
     let active = true;
 
+    // APICall currently inlined. Receiving null array in 'notifications' when importing APICall, although response shows receipt of notifications array.
     const getNotifications = async () => {
       const fetchOptions: FetchOptions = {
         method: 'GET',
@@ -57,6 +57,8 @@ const NotifsMsgDropdown = ({ type, children }: Props): JSX.Element => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  // Show only last 12 unread notifications in the dropdown
   const unread = notifications
     .filter(function (notif) {
       return notif.type === type && notif.readStatus === false;
@@ -69,12 +71,11 @@ const NotifsMsgDropdown = ({ type, children }: Props): JSX.Element => {
         aria-label="notifications dropdown"
         aria-controls="notifs-msg-dropdown"
         aria-haspopup="true"
-        // className={classes.dropDown}
         onClick={handleClick}
       >
-        {/* While fetching unread is still not integrated */}
-        {/* <FiberManualRecordOutlinedIcon className={classes.dropDownIcon} /> */}
+        {/* Navbar item */}
         {children}
+        {/* TODO: Incorporate badge indicator for unread notifications */}
       </IconButton>
       <Menu
         id="auth-menu"
@@ -88,6 +89,7 @@ const NotifsMsgDropdown = ({ type, children }: Props): JSX.Element => {
         }}
         getContentAnchorEl={null}
       >
+        {/* Link to all Notifications / Messages page */}
         <MenuItem
           component={RouterLink}
           to={type === 'message' ? '/messages' : '/notifications'}

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { Notification } from '../../interface/Notifications';
+import { FetchOptions } from '../../interface/FetchOptions';
+import { NotificationsList } from './NotificationsList/NotificationsList';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import useStyles from './useStyles';
-import { Notification } from '../../interface/Notifications';
 import Paper from '@material-ui/core/Paper';
-import { NotificationsList } from './NotificationsList/NotificationsList';
 import Typography from '@material-ui/core/Typography';
-import { FetchOptions } from '../../interface/FetchOptions';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import useStyles from './useStyles';
 
 export default function NotificationsPage(): JSX.Element {
   const classes = useStyles();
@@ -19,6 +19,7 @@ export default function NotificationsPage(): JSX.Element {
   useEffect(() => {
     let active = true;
 
+    // APICall currently inlined. Receiving null array in 'notifications' when importing APICall, although response shows receipt of notifications array.
     const getNotifications = async () => {
       const fetchOptions: FetchOptions = {
         method: 'GET',
@@ -35,27 +36,28 @@ export default function NotificationsPage(): JSX.Element {
         console.log('Unable to connect to server. Please try again.', error);
       }
     };
+
     getNotifications();
 
     return () => {
       active = false;
     };
   }, []);
+
+  // Filter since notifications also includes message notifications
   const notificationsOnly = notifications.filter(function (notif) {
     return notif.type === 'submission';
   });
+
   return (
     <Grid container component="main" className={classes.root} direction="column">
       <CssBaseline />
       <Grid container alignItems="center" justify="center">
-        <Grid item xs={12} sm={10} md={8}></Grid>
         <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
           <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
             <Typography className={classes.pageTitle} component="h1" variant="h5">
               Notifications
             </Typography>
-            {console.log(notificationsOnly)}
-            {/* {isLoading ? <CircularProgress /> : notifications} */}
           </Box>
           <Grid className={classes.spacer}></Grid>
           <Paper elevation={6} square className={classes.notificationsPaper}>

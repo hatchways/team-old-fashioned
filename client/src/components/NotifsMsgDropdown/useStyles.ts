@@ -1,15 +1,12 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   link: {
     paddingLeft: 24,
   },
   dropDown: {
     width: 400,
     margin: 'auto',
-  },
-  dropDownIcon: {
-    color: '#00ff00',
   },
 }));
 

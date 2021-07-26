@@ -7,17 +7,8 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 400,
   },
 
-  titleColumn: {
-    paddingTop: 32,
-  },
-  spacer: {
-    paddingTop: 32,
-  },
   readIndicator: {
     color: '#00ff00',
-  },
-  notificationsPaper: {
-    minHeight: '60vh',
   },
 }));
 
