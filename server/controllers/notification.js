@@ -1,7 +1,7 @@
+const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
 const Notification = require('../models/Notification');
 const Contest = require('../models/Contest');
-const mongoose = require('mongoose');
 
 exports.createNotification = asyncHandler(async (req, res, next) => {
   const senderId = req.user.id;
@@ -9,7 +9,7 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
   const typeList = ['submission', 'message'];
   if (!typeList.includes(type)) {
     res.status(400);
-    throw new Error('Unsupported notification type');
+    throw new Error('No such notification type.');
   } else {
     if (type === 'submission') {
       const { files, _id: submissionId, contestId } = req.body;
@@ -23,11 +23,12 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
       const { receiverId, sendDate: timeSent } = req.body;
       var params = { type, receiverId, senderId, timeSent };
     }
+
     const notification = await Notification.create(params);
 
     if (!notification) {
       res.status(500);
-      throw new Error('invalid notification data');
+      throw new Error('Invalid notification data');
     }
 
     res.status(201).json(notification);
@@ -49,14 +50,18 @@ exports.markAsRead = asyncHandler(async (req, res, next) => {
 exports.getNotifications = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
   console.log(userId);
+
+  // Lists notifications for the user as the receiver
   let notifications = await Notification.find({ receiverId: mongoose.Types.ObjectId(userId) }).populate([
     { path: 'userId', model: 'user', select: 'username' },
     { path: 'contestId', model: 'Contest', select: ['title'] },
     { path: 'senderId', model: 'user', select: 'username' },
   ]);
+
   if (!notifications) {
     res.status(500);
     throw new Error('failed to get notifications');
   }
+
   res.status(200).json(notifications);
 });
