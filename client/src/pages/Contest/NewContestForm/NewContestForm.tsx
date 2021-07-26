@@ -30,7 +30,7 @@ interface Props {
       title: string;
       description: string;
       prizeAmount: string;
-      deadline: Date | null;
+      deadline: Date;
       time: string;
       timezone: string;
     },
@@ -40,7 +40,7 @@ interface Props {
       title: string;
       description: string;
       prizeAmount: string;
-      deadline: Date | null;
+      deadline: Date;
       time: string;
       timezone: string;
     }>,
@@ -88,7 +88,7 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
         title: '',
         description: '',
         prizeAmount: '',
-        deadline: selectedDate,
+        deadline: new Date(),
         time: '',
         timezone: '',
       }}

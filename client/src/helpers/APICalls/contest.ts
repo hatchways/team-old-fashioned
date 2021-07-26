@@ -5,7 +5,7 @@ export async function createContestAPI(
   title: string,
   description: string,
   prizeAmount: string,
-  deadline: Date | null,
+  deadline: Date,
 ): Promise<any> {
   const ContestfetchOptions: FetchOptions = {
     method: 'POST',
