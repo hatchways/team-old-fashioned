@@ -1,8 +1,9 @@
 import { FC, useState } from 'react';
 import { useAuth } from '../../../context/useAuthContext';
 import ContestItem from '../../../components/ContestItem/ContestItem';
-import { Button, Grid, Box, Tabs, Tab, Avatar, Typography } from '@material-ui/core';
-import demoProfilePhoto from '../../../Images/demo-profile-photo.png';
+import { Button, CircularProgress, Grid, Box, Tabs, Tab, Avatar, Typography } from '@material-ui/core';
+import { useSnackBar } from '../../../context/useSnackbarContext';
+import uploadImagesAPI from '../../../helpers/APICalls/uploadImages';
 import mockContestPic from '../../../Images/68f55f7799df6c8078a874cfe0a61a5e6e9e1687.png';
 import useStyles from './useStyles';
 
@@ -52,19 +53,40 @@ const Profile: FC = (): JSX.Element => {
   const classes = useStyles();
   const { loggedInUser } = useAuth();
   const [value, setValue] = useState(0);
+  const { updateSnackBarMessage } = useSnackBar();
+  const [isLoading, setisLoading] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
+  };
+
+  const profilePicUploadHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (fileList) {
+      setisLoading(true);
+      const formData = new FormData();
+      formData.append('designImg', fileList[0]);
+      const result = await uploadImagesAPI(formData);
+      if (result.error) {
+        updateSnackBarMessage(result.error.message);
+      }
+      if (result.success) {
+        updateSnackBarMessage('Profile picture uploaded');
+        console.log('url', result.success.urlArray[0]);
+      }
+      setisLoading(false);
+    }
   };
 
   return (
     <Grid container direction="column" className={classes.profileContainer}>
       <Grid xs={12} md={10} item className={classes.avatarContainer}>
         <Box textAlign="center">
-          <Avatar className={classes.profileImg} src={demoProfilePhoto} alt="Profile Photo" />
-          <Typography className={classes.name}>Kenneth Stewart</Typography>
-          <Button size="large" variant="contained" color="primary" className={classes.btn}>
-            Edit profile
+          <Avatar className={classes.profileImg} src={loggedInUser?.profilePicUrl} />
+          <Typography className={classes.name}>{loggedInUser?.username}</Typography>
+          <Button size="small" variant="contained" component="label" color="primary" className={classes.btn}>
+            <input type="file" accept="image/*" hidden onChange={profilePicUploadHandler} />
+            {isLoading ? <CircularProgress color="secondary" size={20} /> : 'upload picture'}
           </Button>
         </Box>
       </Grid>

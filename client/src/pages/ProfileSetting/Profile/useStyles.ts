@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+  profileContainer: {
+    marginTop: 35,
+  },
   btn: {
     margin: theme.spacing(3, 2, 2),
     padding: 10,
@@ -11,9 +14,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 9,
     backgroundColor: '#000',
     fontWeight: 'bold',
-  },
-  profileContainer: {
-    marginTop: 35,
   },
   avatarContainer: {
     width: '100%',
@@ -30,10 +30,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
   profileImg: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
+    width: theme.spacing(12),
+    height: theme.spacing(12),
     display: 'block',
     margin: 'auto',
+    '& .MuiAvatar-fallback': {
+      color: theme.palette.secondary,
+    },
   },
 }));
 
