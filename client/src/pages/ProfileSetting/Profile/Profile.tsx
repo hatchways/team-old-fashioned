@@ -4,6 +4,7 @@ import ContestItem from '../../../components/ContestItem/ContestItem';
 import { Button, CircularProgress, Grid, Box, Tabs, Tab, Avatar, Typography } from '@material-ui/core';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import uploadImagesAPI from '../../../helpers/APICalls/uploadImages';
+import updateProfilePicture from '../../../helpers/APICalls/updateProfilePicture';
 import mockContestPic from '../../../Images/68f55f7799df6c8078a874cfe0a61a5e6e9e1687.png';
 import useStyles from './useStyles';
 
@@ -51,7 +52,7 @@ const mockContests = [
 
 const Profile: FC = (): JSX.Element => {
   const classes = useStyles();
-  const { loggedInUser } = useAuth();
+  const { loggedInUser, updateLoggedInUser } = useAuth();
   const [value, setValue] = useState(0);
   const { updateSnackBarMessage } = useSnackBar();
   const [isLoading, setisLoading] = useState(false);
@@ -72,7 +73,10 @@ const Profile: FC = (): JSX.Element => {
       }
       if (result.success) {
         updateSnackBarMessage('Profile picture uploaded');
-        console.log('url', result.success.urlArray[0]);
+        const response = await updateProfilePicture(result.success.urlArray[0]);
+        if (response.success && response.user) {
+          updateLoggedInUser(response.user);
+        }
       }
       setisLoading(false);
     }

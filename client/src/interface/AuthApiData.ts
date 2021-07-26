@@ -9,4 +9,5 @@ export interface AuthApiDataSuccess {
 export interface AuthApiData {
   error?: { message: string };
   success?: AuthApiDataSuccess;
+  user?: User;
 }
