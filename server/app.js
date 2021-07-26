@@ -13,6 +13,7 @@ const logger = require('morgan');
 const jwt = require('jsonwebtoken');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
+const conversationRouter = require('./routes/conversation');
 const s3Router = require('./routes/s3');
 const contestRouter = require('./routes/contest');
 const notificationRouter = require('./routes/notification');
@@ -69,6 +70,7 @@ app.use('/users', userRouter);
 app.use('/upload', s3Router);
 app.use('/contest', contestRouter);
 app.use('/notifications', notificationRouter);
+app.use('/conversation', conversationRouter);
 app.use('/submission', submissionRouter);
 
 if (process.env.NODE_ENV === 'production') {
