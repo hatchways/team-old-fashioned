@@ -78,40 +78,4 @@ const ProfileSetting: FC = (): JSX.Element => {
   );
 };
 
-{
-  /* <Box className={classes.tabContainer}>
-        <AppBar position="static" color="secondary" className={classes.tabDisplay}>
-          <Tabs
-            className={classes.tabs}
-            value={value}
-            onChange={handleChange}
-            orientation="vertical"
-            textColor="primary"
-            indicatorColor="primary"
-          >
-            <Tab label="Profile" {...a11yProps(0)} />
-            <Tab label="Personal Information" {...a11yProps(1)} />
-            <Tab label="Payment details" {...a11yProps(2)} />
-            <Tab label="Notifications" {...a11yProps(3)} />
-            <Tab label="Password" {...a11yProps(4)} />
-          </Tabs>
-        </AppBar>
-      </Box>
-      <TabPanel value={value} index={0}>
-        Profile
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        {value == 1 && <PersonalInformationForm />}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Payment details
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Notifications
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Password
-      </TabPanel> */
-}
-
 export default ProfileSetting;
