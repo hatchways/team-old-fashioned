@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useHistory, RouteComponentProps } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
@@ -15,18 +15,27 @@ import { useSocket } from '../../context/useSocketContext';
 import useStyles from './useStyles';
 import demoProfilePhoto from '../../Images/demo-profile-photo.png';
 import sampleContestData from './SampleContestData';
+import { getAllSubmissions } from '../../helpers/APICalls/submission';
+import { Submission } from '../../interface/Submission';
 
-export default function ContestDetails(): JSX.Element {
+export default function ContestDetails({ match }: RouteComponentProps): JSX.Element {
   const classes = useStyles();
+  const [submissionObj, setSubmissionObj] = useState<Submission[]>(Object);
+  const [contestId, setContestId] = useState<string>('');
   const { loggedInUser } = useAuth();
   const { initSocket } = useSocket();
 
   const history = useHistory();
-  const { title, description, prizeAmount, user, submissions } = sampleContestData();
+  const { title, description, prizeAmount, user } = sampleContestData();
 
   useEffect(() => {
     initSocket();
-  }, [initSocket]);
+    const params = match.params as { id: string };
+    setContestId(params.id);
+    getAllSubmissions(params.id).then((data) => {
+      setSubmissionObj(data.submission);
+    });
+  }, [initSocket, match]);
 
   if (loggedInUser === undefined) return <CircularProgress />;
   if (!loggedInUser) {
@@ -36,44 +45,54 @@ export default function ContestDetails(): JSX.Element {
   }
 
   return (
-    <Grid container component="main" className={classes.root} direction="column">
-      <CssBaseline />
-      <Grid container alignItems="center" justify="center">
-        <Grid item xs={12} sm={10} md={8}>
-          <Link to="/contest/all" className={classes.breadcrumb}>
-            <ArrowBackIosIcon fontSize="inherit" /> Back to contests list
-          </Link>
-        </Grid>
-        <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
-          <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
-            <Box>
-              <Typography className={classes.contestTitle} component="h1" variant="h5">
-                {title}
-              </Typography>
-            </Box>
-            <Box flexGrow={1}>
-              <Button variant="contained" color="primary" disableElevation className={classes.prize}>
-                {prizeAmount}
-              </Button>
-            </Box>
-            <Box>
-              <Button variant="outlined" color="primary" className={classes.winnerButton}>
-                SELECT WINNER
-              </Button>
-            </Box>
-          </Box>
-          <Grid item xs={12} sm={10} md={8} className={classes.ownerColumn}>
-            <Box display="flex" alignItems="center">
-              <Box>
-                <Avatar src={demoProfilePhoto} alt="Profile Photo" />
+    <>
+      {submissionObj.length ? (
+        <Grid container component="main" className={classes.root} direction="column">
+          <CssBaseline />
+          <Grid container alignItems="center" justify="center">
+            <Grid item xs={12} sm={10} md={8}>
+              <Link to="/contest/all" className={classes.breadcrumb}>
+                <ArrowBackIosIcon fontSize="inherit" /> Back to contests list
+              </Link>
+            </Grid>
+            <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
+              <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
+                <Box>
+                  <Typography className={classes.contestTitle} component="h1" variant="h5">
+                    {title}
+                  </Typography>
+                </Box>
+                <Box flexGrow={1}>
+                  <Button variant="contained" color="primary" disableElevation className={classes.prize}>
+                    {prizeAmount}
+                  </Button>
+                </Box>
+                <div>
+                  <Button
+                    component={Link}
+                    to={`/fileUpload/${contestId}`}
+                    variant="outlined"
+                    color="primary"
+                    className={classes.winnerButton}
+                  >
+                    SUBMIT DESIGN
+                  </Button>
+                </div>
               </Box>
-              <Box className={classes.userText}>By {user}</Box>
-            </Box>
+              <Grid item xs={12} sm={10} md={8} className={classes.ownerColumn}>
+                <Box display="flex" alignItems="center">
+                  <Box>
+                    <Avatar src={demoProfilePhoto} alt="Profile Photo" />
+                  </Box>
+                  <Box className={classes.userText}>By {user}</Box>
+                </Box>
+              </Grid>
+              <Grid className={classes.spacer}></Grid>
+              <FullWidthTabs submissionList={submissionObj} description={description} />
+            </Grid>
           </Grid>
-          <Grid className={classes.spacer}></Grid>
-          <FullWidthTabs submissionList={submissions} description={description} />
         </Grid>
-      </Grid>
-    </Grid>
+      ) : null}
+    </>
   );
 }
