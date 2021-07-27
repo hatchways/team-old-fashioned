@@ -23,7 +23,7 @@ export const getUserContests = async (): Promise<ContestAPIResponse> => {
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   };
-  return await fetch(`/contest/contests`, fetchOptions)
+  return await fetch(`/contest/user-contests`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: 'Unable to connect to server. Please try again',

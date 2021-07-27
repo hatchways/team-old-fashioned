@@ -14,6 +14,6 @@ const {
 router.route('/').post(validateContest, createContest);
 router.route('/all').get(getContests);
 router.post('/:id/submission', protect, createSubmissionByContestId);
-router.route('/contests').get(protect, getUserContests);
+router.route('/user-contests').get(protect, getUserContests);
 
 module.exports = router;
