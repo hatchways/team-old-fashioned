@@ -1,9 +1,8 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useContext } from 'react';
 import ContestItem from '../../../components/ContestItem/ContestItem';
 import { Button, Grid, Box, Tabs, Tab, Avatar, Typography, Container } from '@material-ui/core';
 import demoProfilePhoto from '../../../Images/demo-profile-photo.png';
-import { getUserContests } from '../../../helpers/APICalls/contest';
-import { ContestAPIData } from '../../../interface/Contest';
+import { ContestContext } from '../../../context/useContestContext';
 
 import useStyles from './useStyles';
 
@@ -35,19 +34,7 @@ const TabPanel = (props: TabPanelProps) => {
 const Profile: FC = (): JSX.Element => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const [contests, setContests] = useState<ContestAPIData[]>([]);
-
-  useEffect(() => {
-    const getContests = async () => {
-      const response = await getUserContests();
-      if (response.success) {
-        if (response.contests) {
-          setContests(response.contests);
-        }
-      }
-    };
-    getContests();
-  }, [setContests]);
+  const { activeContests, inactiveContests } = useContext(ContestContext);
 
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
@@ -55,7 +42,7 @@ const Profile: FC = (): JSX.Element => {
 
   const openContests = [];
   const closedContests = [];
-  for (const contest of contests) {
+  for (const contest of activeContests.concat(inactiveContests)) {
     let firstImgSrc;
     let imageCnt = 0;
     for (let i = 0; i < contest.subs.length; i++) {
@@ -119,18 +106,10 @@ const Profile: FC = (): JSX.Element => {
             <Tab label="COMPLETED" />
           </Tabs>
           <TabPanel value={value} index={0}>
-            {value === 0 && openContests.length > 0 ? (
-              openContests
-            ) : (
-              <div key="activeContest-1">No contests to display</div>
-            )}
+            {openContests.length > 0 ? openContests : <div key="activeContest-1">No contests to display</div>}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {value === 1 && closedContests.length > 0 ? (
-              closedContests
-            ) : (
-              <div key="inactiveContest-1">No contests to display</div>
-            )}
+            {closedContests.length > 0 ? closedContests : <div key="inactiveContest-1">No contests to display</div>}
           </TabPanel>
         </Box>
       </Grid>
