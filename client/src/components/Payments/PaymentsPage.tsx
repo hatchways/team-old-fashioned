@@ -3,13 +3,17 @@ import Grid from '@material-ui/core/Grid';
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-// import { BrowserRouter } from 'react-router-dom';
 
 import CardForm from './CardForm';
 
-const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
-
 const PaymentsPage = (): JSX.Element => {
+  const makeStripePromise = async () => {
+    const response = await fetch('/payments/public-key');
+    const { public_key: publicKey } = await response.json();
+    return await loadStripe(publicKey.toString());
+  };
+
+  const stripePromise = makeStripePromise();
   return (
     <Grid container component="main">
       <Grid item xs={12} sm={10} md={8}>
