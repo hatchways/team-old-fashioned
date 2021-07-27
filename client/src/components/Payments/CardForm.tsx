@@ -18,9 +18,13 @@ const CardForm = (): JSX.Element => {
       return;
     }
 
-    const payload = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement,
+    const response = await fetch('/payments/secret');
+    const { client_secret: clientSecret } = await response.json();
+
+    const payload = await stripe.confirmCardSetup(clientSecret, {
+      payment_method: {
+        card: cardElement,
+      },
     });
 
     console.log('[PaymentMethod]', payload);
