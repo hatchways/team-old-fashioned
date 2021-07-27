@@ -35,6 +35,9 @@ const userSchema = new mongoose.Schema({
   stripe_id: {
     type: String,
   },
+  stripe_intent_id: {
+    type: String,
+  },
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
