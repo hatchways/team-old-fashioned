@@ -71,7 +71,7 @@ app.use('/upload', s3Router);
 app.use('/contest', contestRouter);
 app.use('/conversation', conversationRouter);
 app.use('/submission', submissionRouter);
-app.use('/create-payment-intent', paymentRouter);
+app.use('/payments', paymentRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/build')));
