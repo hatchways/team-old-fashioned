@@ -8,11 +8,11 @@ const CardForm = (): JSX.Element => {
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
+    // disables submission while stripe / elements haven't been loaded
     if (!stripe || !elements) {
-      // Stripe.js has not loaded yet. Make sure to disable
-      // form submission until Stripe.js has loaded.
       return;
     }
+    // Ensures cardElement is not null
     const cardElement = elements.getElement(CardElement);
     if (!cardElement) {
       return;
