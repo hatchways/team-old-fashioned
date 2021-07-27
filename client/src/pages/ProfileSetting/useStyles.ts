@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   tabDisplay: {
     width: 'auto',
   },
+
   tabs: {
     '& .MuiTab-wrapper': {
       alignItems: 'end',
@@ -19,6 +20,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       padding: '20px',
       color: 'grey',
     },
+  },
+  payments: {
+    minWidth: '60%',
   },
 }));
 

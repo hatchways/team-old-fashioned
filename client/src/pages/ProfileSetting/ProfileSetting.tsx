@@ -4,6 +4,7 @@ import { AppBar, Box, Grid, Tab, Tabs, Typography } from '@material-ui/core';
 import AuthHeader from '../../components/AuthHeader/AuthHeader';
 import PersonalInformationForm from './PersonalInformationForm/PersonalInformationForm';
 import { Link } from 'react-router-dom';
+import PaymentsPage from '../../components/Payments/PaymentsPage';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -48,7 +49,7 @@ export default function ProfileSetting() {
 
   return (
     <Grid container className={classes.root}>
-      <AuthHeader linkTo="/messages" asideText="testing upload file page" btnText="open uploadFile page" />
+      {/* <AuthHeader linkTo="/messages" asideText="testing upload file page" btnText="open uploadFile page" /> */}
       <Box className={classes.tabContainer}>
         <AppBar position="static" color="secondary" className={classes.tabDisplay}>
           <Tabs
@@ -67,21 +68,23 @@ export default function ProfileSetting() {
           </Tabs>
         </AppBar>
       </Box>
-      <TabPanel value={value} index={0}>
-        Profile
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        {value == 1 && <PersonalInformationForm />}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Payment details
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Notifications
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Password
-      </TabPanel>
+      <Box className={classes.payments}>
+        <TabPanel value={value} index={0}>
+          Profile
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          {value == 1 && <PersonalInformationForm />}
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <PaymentsPage />
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          Notifications
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          Password
+        </TabPanel>
+      </Box>
     </Grid>
   );
 }
