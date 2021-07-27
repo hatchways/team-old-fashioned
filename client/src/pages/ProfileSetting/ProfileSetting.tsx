@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import useStyles from './useStyles';
 import { Box, Tab, Tabs } from '@material-ui/core';
 import PersonalInformationForm from './PersonalInformationForm/PersonalInformationForm';
-import { Link } from 'react-router-dom';
 import PaymentsPage from '../../components/Payments/PaymentsPage';
 import Profile from './Profile/Profile';
 

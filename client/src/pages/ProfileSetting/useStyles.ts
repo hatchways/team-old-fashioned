@@ -17,9 +17,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: theme.palette.secondary,
     },
   },
-  payments: {
-    minWidth: '60%',
-  },
 }));
 
 export default useStyles;
