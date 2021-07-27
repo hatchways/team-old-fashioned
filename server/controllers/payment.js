@@ -3,40 +3,24 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const Contest = require('../models/Contest');
 
-// Create parameters used for API testing purposes only
-exports.test = asyncHandler(async (req, res, next) => {
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: 1099,
-    currency: 'cad',
-    payment_method_types: ['card'],
-  });
-  if (paymentIntent) {
-    res.status(201).json(paymentIntent);
-  } else {
-    res.status(500);
-    throw new Error('unable to create payment intent');
-  }
-});
-
-exports.getPublicKey = (req, res) => {
-  res.json({ public_key: process.env.STRIPE_PUBLIC_KEY });
-};
-
 exports.setupUserForPayments = asyncHandler(async (req, res, next) => {
   const customer = await stripe.customers.create();
-
   const intent = await stripe.setupIntents.create({
     customer: customer.id,
     payment_method_types: ['card'],
   });
   if (intent) {
     const user = await User.findByIdAndUpdate(req.user.id, { stripe_id: customer.id, stripe_intent_id: intent.id });
-    res.status(201).json({ customer_id: intent.customer, intent_id: intent.id, client_secret: intent.client_secret });
+    res.status(201).json({ user });
   } else {
     res.status(500);
     throw new Error('unable to set up payment intent');
   }
 });
+
+exports.getPublicKey = (req, res) => {
+  res.json({ public_key: process.env.STRIPE_PUBLIC_KEY });
+};
 
 exports.getSecret = asyncHandler(async (req, res, next) => {
   const intent_id = await User.findById(req.user.id).then((user) => {
@@ -71,7 +55,6 @@ exports.chargeCard = asyncHandler(async (req, res, next) => {
   const customerId = await User.findById(req.user.id).then((user) => {
     return user.stripe_id;
   });
-  console.log(customerId);
   const { contestId, cardId } = req.body;
   const prizeAmount = await Contest.findById(contestId).then((contest) => {
     return contest.prizeAmount;
