@@ -52,7 +52,7 @@ const mockContests = [
 
 const Profile: FC = (): JSX.Element => {
   const classes = useStyles();
-  const { loggedInUser, updateLoggedInUser } = useAuth();
+  const { loggedInUser, updateLoginContext } = useAuth();
   const [value, setValue] = useState(0);
   const { updateSnackBarMessage } = useSnackBar();
   const [isLoading, setisLoading] = useState(false);
@@ -74,8 +74,8 @@ const Profile: FC = (): JSX.Element => {
       if (result.success) {
         updateSnackBarMessage('Profile picture uploaded');
         const response = await updateProfilePicture(result.success.urlArray[0]);
-        if (response.success && response.user) {
-          updateLoggedInUser(response.user);
+        if (response.user) {
+          updateLoginContext(response);
         }
       }
       setisLoading(false);

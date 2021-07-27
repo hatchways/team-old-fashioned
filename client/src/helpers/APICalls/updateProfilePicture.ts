@@ -1,7 +1,7 @@
-import { UserApiData } from '../../interface/User';
+import { AuthApiDataSuccess } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
 
-const updateProfilePicture = async (url: string): Promise<UserApiData> => {
+const updateProfilePicture = async (url: string): Promise<AuthApiDataSuccess> => {
   const fetchOptions: FetchOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

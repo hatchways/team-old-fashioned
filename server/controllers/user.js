@@ -54,7 +54,7 @@ exports.updateProfilePicture = asyncHandler(async (req, res, next) => {
       { new: true },
     );
     res.status(200).json({
-      success: true,
+      message: 'profile picture updated',
       user: {
         email: user.get('email'),
         username: user.get('username'),

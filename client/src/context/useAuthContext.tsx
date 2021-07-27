@@ -8,14 +8,12 @@ import logoutAPI from '../helpers/APICalls/logout';
 interface IAuthContext {
   loggedInUser: User | null | undefined;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
-  updateLoggedInUser: (data: User) => void;
   logout: () => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
   loggedInUser: undefined,
   updateLoginContext: () => null,
-  updateLoggedInUser: () => null,
   logout: () => null,
 });
 
@@ -27,14 +25,12 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const updateLoginContext = useCallback(
     (data: AuthApiDataSuccess) => {
       setLoggedInUser(data.user);
-      history.push('/dashboard');
+      if (data.token) {
+        history.push('/dashboard');
+      }
     },
     [history],
   );
-
-  const updateLoggedInUser = useCallback((data: User) => {
-    setLoggedInUser(data);
-  }, []);
 
   const logout = useCallback(async () => {
     // needed to remove token cookie
@@ -63,11 +59,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     checkLoginWithCookies();
   }, [updateLoginContext, history]);
 
-  return (
-    <AuthContext.Provider value={{ loggedInUser, updateLoginContext, updateLoggedInUser, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ loggedInUser, updateLoginContext, logout }}>{children}</AuthContext.Provider>;
 };
 
 export function useAuth(): IAuthContext {
