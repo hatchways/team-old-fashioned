@@ -15,7 +15,7 @@ interface UserPersonalInformation {
 }
 const PersonalInformationForm: FunctionComponent = (): JSX.Element => {
   const classes = useStyles();
-  const { loggedInUser } = useAuth();
+  const { loggedInUser, updateLoginContext } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
 
   const formSubmitHandler = (
@@ -26,8 +26,11 @@ const PersonalInformationForm: FunctionComponent = (): JSX.Element => {
       updatePersonalInformation(loggedInUser.email, headline, bio, location).then((data) => {
         if (data.error) {
           updateSnackBarMessage(data.error.message);
-        } else {
-          //TODO: update the user via context
+        } else if (data.success && data.user) {
+          updateLoginContext({
+            message: 'profile information updated',
+            user: data.user,
+          });
           updateSnackBarMessage('Saved');
         }
         setSubmitting(false);
