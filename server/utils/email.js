@@ -1,9 +1,9 @@
-const asyncHandler = require('express-async-handler');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-exports.sendEmail = asyncHandler(async (req, res, next) => {
-  const { to, subject, text, html } = req.body;
+// To can be a string or string[]
+// string[] will seperate emails to each recipient
+const sendEmail = async ({ to, subject, text, html }) => {
   const msg = {
     to,
     from: process.env.SENDGRID_VERIFIED_EMAIL,
@@ -14,8 +14,10 @@ exports.sendEmail = asyncHandler(async (req, res, next) => {
   };
   try {
     const email = await sgMail.send(msg);
-    res.status(200).json({ success: true });
+    return { success: true };
   } catch (error) {
-    res.status(500).json(error);
+    return { error: error.message };
   }
-});
+};
+
+module.exports = sendEmail;
