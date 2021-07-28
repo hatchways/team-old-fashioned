@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const ObjectId = require('mongoose').Types.ObjectId;
 const Contest = require('../models/Contest');
 const Submission = require('../models/Submission');
+const User = require('../models/User');
 
 // handler for creating a new contest object
 exports.createContest = asyncHandler(async (req, res, next) => {
@@ -60,9 +61,24 @@ exports.getContest = asyncHandler(async (req, res, next) => {
 
 // handler for getting all the contests
 exports.getContests = asyncHandler(async (req, res, next) => {
+  const contestList = [];
   try {
     const contests = await Contest.find({});
-    res.status(200).json(contests);
+    contests.map(async (contest) => {
+      const user = await User.findOne({ _id: contest.userId });
+      const contestData = {
+        _id: contest._id,
+        ownerName: user.username,
+        profileImg: user.profilePicUrl,
+        title: contest.title,
+        description: contest.description,
+        prizeAmount: contest.prizeAmount,
+      };
+      contestList.push(contestData);
+      if (contestList.length === contests.length) {
+        res.status(200).json({ contest: contestList });
+      }
+    });
   } catch (error) {
     res.status(500);
     throw new Error('failed to get contests');

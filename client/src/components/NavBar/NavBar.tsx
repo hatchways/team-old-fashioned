@@ -30,7 +30,7 @@ const NavBar = (): JSX.Element => {
             {loggedInUser ? (
               <>
                 <Box p={0}>
-                  <Link component={RouterLink} variant="subtitle1" className={classes.link} to="/">
+                  <Link component={RouterLink} variant="subtitle1" className={classes.link} to="/discovery">
                     Discover
                   </Link>
                 </Box>

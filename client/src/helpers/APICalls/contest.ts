@@ -36,3 +36,17 @@ export default async function contestImgSubmitAPI(id: string, data: any): Promis
       error: 'Unable to connect to server. Please try again',
     }));
 }
+
+export async function getAllContests(): Promise<any> {
+  const ContestfetchOptions: FetchOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  };
+
+  return await fetch(`/contest/all/contests`, ContestfetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: { message: 'Unable to connect to server. Please try again' },
+    }));
+}

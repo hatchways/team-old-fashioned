@@ -16,6 +16,7 @@ import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
 import ProfileSetting from './pages/ProfileSetting/ProfileSetting';
 import Message from './pages/Message/Message';
+import Discovery from './pages/Discovery/Discovery';
 
 function App(): JSX.Element {
   return (
@@ -31,7 +32,7 @@ function App(): JSX.Element {
               <ProtectedRoute exact path="/fileUpload" component={DesignSubmit} />
               <ProtectedRoute exact path="/setting" component={ProfileSetting} />
               {/* Replace component with Discovery Page */}
-              <Route exact path="/" component={Dashboard} />
+              <ProtectedRoute exact path="/discovery" component={Discovery} />
               {/* Replace the components once created */}
               <ProtectedRoute exact path="/messages" component={Message} />
               <ProtectedRoute exact path="/notifications" component={Dashboard} />
