@@ -18,6 +18,7 @@ const s3Router = require('./routes/s3');
 const contestRouter = require('./routes/contest');
 const notificationRouter = require('./routes/notification');
 const submissionRouter = require('./routes/submission');
+const emailRouter = require('./routes/email');
 
 const { json, urlencoded } = express;
 require('dotenv').config();
@@ -72,7 +73,7 @@ app.use('/contest', contestRouter);
 app.use('/notifications', notificationRouter);
 app.use('/conversation', conversationRouter);
 app.use('/submission', submissionRouter);
-
+app.use('/email', emailRouter);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/build')));
 

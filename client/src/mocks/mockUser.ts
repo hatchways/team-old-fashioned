@@ -6,6 +6,7 @@ const mockLoggedInUser: User = {
   headline: 'headline',
   bio: 'bio',
   location: 'location',
+  profilePicUrl: 'foo',
 };
 
 const mockOtherUser1: User = {
@@ -14,6 +15,7 @@ const mockOtherUser1: User = {
   headline: 'headline 1',
   bio: 'bio 1',
   location: 'location 1',
+  profilePicUrl: 'foo',
 };
 const mockOtherUser2: User = {
   username: 'Mock test user 2',
@@ -21,6 +23,7 @@ const mockOtherUser2: User = {
   headline: 'headline 2',
   bio: 'bio 2',
   location: 'location 2',
+  profilePicUrl: 'foo',
 };
 const mockOtherUser3: User = {
   username: 'Mock test user 3',
@@ -28,6 +31,7 @@ const mockOtherUser3: User = {
   headline: 'headline 3',
   bio: 'bio 3',
   location: 'location 3',
+  profilePicUrl: 'foo',
 };
 
 const mockOtherUsers: User[] = [mockOtherUser1, mockOtherUser2, mockOtherUser3];

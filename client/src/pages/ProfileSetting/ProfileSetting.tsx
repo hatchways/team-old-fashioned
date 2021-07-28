@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 import useStyles from './useStyles';
-import { AppBar, Box, Grid, Tab, Tabs, Typography } from '@material-ui/core';
-import AuthHeader from '../../components/AuthHeader/AuthHeader';
+import { Box, Tab, Tabs } from '@material-ui/core';
 import PersonalInformationForm from './PersonalInformationForm/PersonalInformationForm';
-import { Link } from 'react-router-dom';
+import Profile from './Profile/Profile';
 
 interface TabPanelProps {
   children?: React.ReactNode;
-  index: any;
-  value: any;
+  index: number;
+  value: number;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -18,27 +17,24 @@ function TabPanel(props: TabPanelProps) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
+      id={`profile-settings-tabs-${index}`}
+      aria-labelledby={`profile-settings-tab-${index}`}
       {...other}
+      style={{ width: '100vw' }}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }
 
-function a11yProps(index: any) {
+function a11yProps(index: number) {
   return {
-    id: `scrollable-auto-tab-${index}`,
-    'aria-controls': `scrollable-auto-tabpanel-${index}`,
+    id: `profile-settings-tab-${index}`,
+    'aria-controls': `profile-settings-tabs-${index}`,
   };
 }
 
-export default function ProfileSetting() {
+const ProfileSetting: FC = (): JSX.Element => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -47,41 +43,39 @@ export default function ProfileSetting() {
   };
 
   return (
-    <Grid container className={classes.root}>
-      <AuthHeader linkTo="/messages" asideText="testing upload file page" btnText="open uploadFile page" />
-      <Box className={classes.tabContainer}>
-        <AppBar position="static" color="secondary" className={classes.tabDisplay}>
-          <Tabs
-            className={classes.tabs}
-            value={value}
-            onChange={handleChange}
-            orientation="vertical"
-            textColor="primary"
-            indicatorColor="primary"
-          >
-            <Tab label="Profile" {...a11yProps(0)} />
-            <Tab label="Personal Information" {...a11yProps(1)} />
-            <Tab label="Payment details" {...a11yProps(2)} />
-            <Tab label="Notifications" {...a11yProps(3)} />
-            <Tab label="Password" {...a11yProps(4)} />
-          </Tabs>
-        </AppBar>
-      </Box>
+    <Box className={classes.root}>
+      <Tabs
+        orientation="vertical"
+        variant="standard"
+        value={value}
+        onChange={handleChange}
+        aria-label="Profile Settings"
+        className={classes.tabs}
+        indicatorColor="primary"
+      >
+        <Tab label="Profile" {...a11yProps(0)} />
+        <Tab label="Personal Information" {...a11yProps(1)} />
+        <Tab label="Payment Details" {...a11yProps(2)} />
+        <Tab label="Notifications" {...a11yProps(3)} />
+        <Tab label="Password" {...a11yProps(4)} />
+      </Tabs>
       <TabPanel value={value} index={0}>
-        Profile
+        {value == 0 && <Profile />}
       </TabPanel>
       <TabPanel value={value} index={1}>
         {value == 1 && <PersonalInformationForm />}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Payment details
+        Payment Details
       </TabPanel>
       <TabPanel value={value} index={3}>
         Notifications
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Password
+        Password Change
       </TabPanel>
-    </Grid>
+    </Box>
   );
-}
+};
+
+export default ProfileSetting;

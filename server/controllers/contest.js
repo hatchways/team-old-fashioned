@@ -1,16 +1,23 @@
 const asyncHandler = require('express-async-handler');
 const ObjectId = require('mongoose').Types.ObjectId;
+const mongoose = require('mongoose');
 const Contest = require('../models/Contest');
 const Submission = require('../models/Submission');
 
 // handler for creating a new contest object
 exports.createContest = asyncHandler(async (req, res, next) => {
-  const { title, description, user, prizeAmount, deadline } = req.body;
+  const { title, description, prizeAmount, deadline } = req.body;
+  const userId = req.user.id;
 
-  const contest = await Contest.create({ title, description, prizeAmount, deadline });
+  const contest = await Contest.create({ title, description, prizeAmount, deadline, userId });
 
   if (contest) {
-    res.status(201).json(contest);
+    res.status(201).json({
+      success: {
+        message: 'New contest has been created successfully.',
+        contest,
+      },
+    });
   } else {
     res.status(500);
     throw new Error('invalid contest data');
@@ -103,5 +110,31 @@ exports.createSubmissionByContestId = asyncHandler(async (req, res, next) => {
   } catch (error) {
     res.status(500);
     throw new Error(error);
+  }
+});
+
+exports.getUserContests = asyncHandler(async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const contests = await Contest.aggregate([
+      { $match: { userId: mongoose.Types.ObjectId(userId) } },
+      {
+        $lookup: {
+          from: 'submissions',
+          localField: '_id',
+          foreignField: 'contestId',
+          as: 'subs',
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      success: true,
+      contests,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
   }
 });
