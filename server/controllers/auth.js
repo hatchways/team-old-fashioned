@@ -78,6 +78,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
           headline: user.headline ? user.headline : '',
           bio: user.bio ? user.bio : '',
           location: user.location ? user.location : '',
+          profilePicUrl: user.profilePicUrl ? user.profilePicUrl : '',
         },
       },
     });
@@ -107,6 +108,7 @@ exports.loadUser = asyncHandler(async (req, res, next) => {
         headline: user.headline,
         bio: user.bio,
         location: user.location,
+        profilePicUrl: user.profilePicUrl,
       },
     },
   });

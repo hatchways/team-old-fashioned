@@ -4,9 +4,12 @@ const useStyles = makeStyles((theme) => ({
   contestItemContainer: {
     marginBottom: 25,
   },
+  item: {
+    width: 175,
+    height: 175,
+  },
   contestImg: {
-    //width: 150,
-    //height: 150,
+    objectFit: 'cover',
   },
   infoContainer: {
     textAlign: 'left',
@@ -20,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
   byline: {
     color: '#999',
     fontSize: 12,
+    marginTop: '10px',
+  },
+  deadline: {
+    color: '#999',
+    fontSize: 10,
     marginTop: '10px',
   },
   btn: {

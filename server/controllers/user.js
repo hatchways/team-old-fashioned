@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
 
 // @route POST /users
@@ -35,10 +36,43 @@ exports.updatePersonalInformation = asyncHandler(async (req, res, next) => {
     );
     res.status(202).json({
       success: true,
-      user: { email, username: user.get('username'), headline, bio, location },
+      user: {
+        email: user.get('email'),
+        username: user.get('username'),
+        headline: user.get('headline'),
+        bio: user.get('bio'),
+        location: user.get('location'),
+        profilePicUrl: user.get('profilePicUrl'),
+      },
     });
   } catch (err) {
     res.status(400);
     throw new Error('Failed to update personal information');
+  }
+});
+
+exports.updateProfilePicture = asyncHandler(async (req, res, next) => {
+  const { url } = req.body;
+  const userId = req.user.id;
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: mongoose.Types.ObjectId(userId) },
+      { profilePicUrl: url },
+      { new: true },
+    );
+    res.status(200).json({
+      message: 'profile picture updated',
+      user: {
+        email: user.get('email'),
+        username: user.get('username'),
+        headline: user.get('headline'),
+        bio: user.get('bio'),
+        location: user.get('location'),
+        profilePicUrl: user.get('profilePicUrl'),
+      },
+    });
+  } catch (err) {
+    res.status(500);
+    throw new Error('Failed to update profile picture url');
   }
 });
