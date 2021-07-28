@@ -66,7 +66,6 @@ const DesignSubmit = ({ match }: RouteComponentProps): JSX.Element => {
     }
     if (result.success) {
       const returnData = await contestImgSubmitAPI(contestId, result.success.urlArray);
-      console.log(returnData);
     }
     setisLoading(false);
   };

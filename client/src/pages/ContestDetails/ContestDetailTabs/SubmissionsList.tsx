@@ -14,9 +14,9 @@ export function SubmissionsGrid({ submissionList }: SubmissionListProps): JSX.El
   const classes = useStyles();
   return (
     <ImageList cols={4}>
-      {submissionList?.map((submission: any) =>
-        submission.files.map((_file: string, _index: number) => (
-          <ImageListItem key={_index}>
+      {submissionList?.map((submission: Submission) =>
+        submission.files.map((_file: string) => (
+          <ImageListItem key={_file}>
             <img
               srcSet={`${_file}?w=248&fit=crop&auto=format 1x,
                 ${_file}?w=248&fit=crop&auto=format&dpr=2 2x`}
@@ -32,7 +32,7 @@ export function SubmissionsGrid({ submissionList }: SubmissionListProps): JSX.El
 
 export function submissionCount({ submissionList }: SubmissionListProps): number {
   let length = 0;
-  submissionList?.forEach((submission: any) => {
+  submissionList?.forEach((submission: Submission) => {
     length += submission.files.length;
   });
   return length;

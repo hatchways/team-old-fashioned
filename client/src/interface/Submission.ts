@@ -1,6 +1,6 @@
 export interface Submission {
   _id: string;
-  fullName: string[];
-  imageArray: string[];
+  name: string;
+  files: string[];
   isOwner: boolean;
 }

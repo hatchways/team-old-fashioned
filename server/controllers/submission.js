@@ -20,33 +20,25 @@ exports.getAllSubmissions = asyncHandler(async (req, res, next) => {
   try {
     const isOwner = await Contest.findOne({ userId: userId });
     if (isOwner) {
-      const submissions = await Submission.find({ contestId: contestId });
-      submissions.map(async (submission) => {
-        const name = await User.findOne({ _id: submission.userId });
+      const submissions = await Submission.find({ contestId: contestId }).populate('userId');
+      submissions.forEach((submission) => {
         const submissionData = {
           _id: submission._id,
-          name: name.username,
+          name: submission.userId.username,
           files: submission.files,
         };
         submissionList.push(submissionData);
-        if (submissionList.length === submissions.length) {
-          res.status(200).json({ submission: submissionList, isOwner: true });
-        }
       });
+      res.status(200).json({ submission: submissionList, isOwner: true });
     } else {
-      const submissions = await Submission.find({ userId: userId });
-      submissions.map(async (submission) => {
-        const name = await User.findOne({ _id: submission.userId });
-        const submissionData = {
-          _id: submission._id,
-          name: name.username,
-          files: submission.files,
-        };
-        submissionList.push(submissionData);
-        if (submissionList.length === submissions.length) {
-          res.status(200).json({ submission: submissionList, isOwner: false });
-        }
-      });
+      const submission = await Submission.findOne({ userId: userId }).populate('userId');
+      const submissionData = {
+        _id: submission._id,
+        name: submission.userId.username,
+        files: submission.files,
+      };
+      submissionList.push(submissionData);
+      res.status(200).json({ submission: submissionList, isOwner: false });
     }
   } catch (error) {
     res.status(500);

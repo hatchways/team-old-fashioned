@@ -11,7 +11,6 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FullWidthTabs from './ContestDetailTabs/ContestDetailTabs';
 import { useAuth } from '../../context/useAuthContext';
-import { useSocket } from '../../context/useSocketContext';
 import useStyles from './useStyles';
 import demoProfilePhoto from '../../Images/demo-profile-photo.png';
 import sampleContestData from './SampleContestData';
@@ -23,19 +22,17 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
   const [submissionObj, setSubmissionObj] = useState<Submission[]>(Object);
   const [contestId, setContestId] = useState<string>('');
   const { loggedInUser } = useAuth();
-  const { initSocket } = useSocket();
 
   const history = useHistory();
   const { title, description, prizeAmount, user } = sampleContestData();
 
   useEffect(() => {
-    initSocket();
     const params = match.params as { id: string };
     setContestId(params.id);
     getAllSubmissions(params.id).then((data) => {
       setSubmissionObj(data.submission);
     });
-  }, [initSocket, match]);
+  }, [match]);
 
   if (loggedInUser === undefined) return <CircularProgress />;
   if (!loggedInUser) {
@@ -70,12 +67,12 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                 <div>
                   <Button
                     component={Link}
-                    to={`/fileUpload/${contestId}`}
+                    to={`/file-upload/${contestId}`}
                     variant="outlined"
                     color="primary"
                     className={classes.winnerButton}
                   >
-                    SUBMIT DESIGN
+                    submit design
                   </Button>
                 </div>
               </Box>
