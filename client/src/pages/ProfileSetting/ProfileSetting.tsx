@@ -3,6 +3,7 @@ import useStyles from './useStyles';
 import { Box, Tab, Tabs } from '@material-ui/core';
 import PersonalInformationForm from './PersonalInformationForm/PersonalInformationForm';
 import Profile from './Profile/Profile';
+import PaymentDetails from './PaymentDetails/PaymentDetails';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -60,13 +61,13 @@ const ProfileSetting: FC = (): JSX.Element => {
         <Tab label="Password" {...a11yProps(4)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        {value == 0 && <Profile />}
+        {value === 0 && <Profile />}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {value == 1 && <PersonalInformationForm />}
+        {value === 1 && <PersonalInformationForm />}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Payment Details
+        {value === 2 && <PaymentDetails />}
       </TabPanel>
       <TabPanel value={value} index={3}>
         Notifications
