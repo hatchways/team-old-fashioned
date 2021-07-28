@@ -10,12 +10,18 @@ import Box from '@material-ui/core/Box';
 import { useTheme } from '@material-ui/core/styles';
 import useStyles from './useStyles';
 import { SubmissionsGrid, submissionCount } from './SubmissionsList';
+import { Submission } from '../../../interface/Submission';
 
 interface TabPanelProps {
   children?: React.ReactNode;
   dir?: string;
   index: number;
   value: number;
+}
+
+interface SubmissionListProps {
+  submissionList: Submission[];
+  description: string;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -45,12 +51,7 @@ function a11yProps(index: number) {
   };
 }
 
-interface Props {
-  submissionList: Array<{ img: string; username: string }>;
-  description: string;
-}
-
-export default function FullWidthTabs({ submissionList, description }: Props): JSX.Element {
+export default function FullWidthTabs({ submissionList, description }: SubmissionListProps): JSX.Element {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
