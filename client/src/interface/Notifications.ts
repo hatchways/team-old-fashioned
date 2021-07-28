@@ -11,7 +11,7 @@ export interface Notification {
     title: string;
   };
   submissionId?: string;
-  timeSent: Date;
+  createdAt: Date;
   readStatus: boolean;
   photo: string;
 }

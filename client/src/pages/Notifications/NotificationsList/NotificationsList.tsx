@@ -38,7 +38,7 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
             title: string;
           };
           submissionId?: string;
-          timeSent: Date;
+          createdAt: Date;
           readStatus: boolean;
           photo: string;
         }) => (
@@ -64,7 +64,7 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
                       </span>
                     )}
                     <br />
-                    <i>{timeSince(notification.timeSent)} ago</i>
+                    <i>{timeSince(notification.createdAt)} ago</i>
                   </Typography>
                 </Grid>
                 <Grid item xs={1} justify="flex-start" alignItems="flex-start">

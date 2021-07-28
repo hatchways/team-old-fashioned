@@ -20,8 +20,8 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
       });
       var params = { type, receiverId, senderId, contestId, submissionId, photo };
     } else if (type === 'message') {
-      const { receiverId, sendDate: timeSent } = req.body;
-      var params = { type, receiverId, senderId, timeSent };
+      const { receiverId } = req.body;
+      var params = { type, receiverId, senderId };
     }
 
     const notification = await Notification.create(params);
