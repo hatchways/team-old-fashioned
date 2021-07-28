@@ -17,6 +17,7 @@ const conversationRouter = require('./routes/conversation');
 const s3Router = require('./routes/s3');
 const contestRouter = require('./routes/contest');
 const notificationRouter = require('./routes/notification');
+const paymentRouter = require('./routes/payment');
 const submissionRouter = require('./routes/submission');
 const emailRouter = require('./routes/email');
 
@@ -73,6 +74,8 @@ app.use('/contest', contestRouter);
 app.use('/notifications', notificationRouter);
 app.use('/conversation', conversationRouter);
 app.use('/submission', submissionRouter);
+app.use('/payments', paymentRouter);
+
 app.use('/email', emailRouter);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/build')));

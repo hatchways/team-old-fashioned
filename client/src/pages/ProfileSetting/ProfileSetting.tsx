@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import useStyles from './useStyles';
 import { Box, Tab, Tabs } from '@material-ui/core';
 import PersonalInformationForm from './PersonalInformationForm/PersonalInformationForm';
+import PaymentsPage from '../../components/Payments/PaymentsPage';
 import Profile from './Profile/Profile';
 
 interface TabPanelProps {
@@ -66,7 +67,7 @@ const ProfileSetting: FC = (): JSX.Element => {
         {value == 1 && <PersonalInformationForm />}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Payment Details
+        <PaymentsPage />
       </TabPanel>
       <TabPanel value={value} index={3}>
         Notifications
