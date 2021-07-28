@@ -27,7 +27,7 @@ const contestSchema = new mongoose.Schema({
 
   created: {
     type: Date,
-    Default: Date.now,
+    default: Date.now,
   },
 });
 
