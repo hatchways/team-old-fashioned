@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   winnerButton: {
     borderRadius: 0,
+    textTransform: 'uppercase',
   },
   ownerColumn: {
     paddingTop: 8,
