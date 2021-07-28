@@ -50,11 +50,9 @@ exports.markAsRead = asyncHandler(async (req, res, next) => {
 
 exports.getNotifications = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
-  console.log(userId);
 
   // Lists notifications for the user as the receiver
   let notifications = await Notification.find({ receiverId: mongoose.Types.ObjectId(userId) }).populate([
-    { path: 'userId', model: 'user', select: 'username' },
     { path: 'contestId', model: 'Contest', select: ['title'] },
     { path: 'senderId', model: 'user', select: 'username' },
   ]);
