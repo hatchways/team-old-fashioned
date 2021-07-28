@@ -36,7 +36,14 @@ exports.updatePersonalInformation = asyncHandler(async (req, res, next) => {
     );
     res.status(202).json({
       success: true,
-      user: { email, username: user.get('username'), headline, bio, location },
+      user: {
+        email: user.get('email'),
+        username: user.get('username'),
+        headline: user.get('headline'),
+        bio: user.get('bio'),
+        location: user.get('location'),
+        profilePicUrl: user.get('profilePicUrl'),
+      },
     });
   } catch (err) {
     res.status(400);
