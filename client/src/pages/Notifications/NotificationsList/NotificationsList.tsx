@@ -35,19 +35,28 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
                 <Avatar alt="Notification Thumbnail" src={notification.photo} />
               </Grid>
               <Grid item xs={9}>
-                <Typography variant="body2" noWrap={type === 'dropdown' ? true : false}>
+                <Typography noWrap={type === 'dropdown' ? true : false}>
+                  <Typography display="inline" variant="body2" className={classes.boldText}>
+                    {notification.senderId.username}
+                  </Typography>
                   {notification.type === 'submission' ? (
-                    <span>
-                      <b>{notification.senderId.username}</b> submitted a design to your contest{' '}
-                      <b>{notification.contestId.title}</b>.
-                    </span>
+                    <>
+                      <Typography display="inline" variant="body2" className={classes.regularText}>
+                        &nbsp; submitted a design to your contest &nbsp;
+                      </Typography>
+                      <Typography display="inline" variant="body2" className={classes.boldText}>
+                        {notification.contestId.title}.
+                      </Typography>
+                    </>
                   ) : (
-                    <span>
-                      <b>{notification.senderId.username}</b> sent you a message.
-                    </span>
+                    <Typography display="inline" variant="body2" className={classes.regularText}>
+                      <>&nbsp; sent you a message.</>
+                    </Typography>
                   )}
-                  <br />
-                  <i>{timeSince(notification.createdAt)} ago</i>
+                  {/* </Box> */}
+                  <Typography variant="body2" className={classes.italicText}>
+                    {timeSince(notification.createdAt)} ago
+                  </Typography>
                 </Typography>
               </Grid>
               <Grid item xs={1} justify="flex-start" alignItems="flex-start">

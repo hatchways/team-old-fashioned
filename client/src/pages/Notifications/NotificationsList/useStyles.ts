@@ -10,6 +10,18 @@ const useStyles = makeStyles((theme) => ({
   readIndicator: {
     color: '#00ff00',
   },
+
+  boldText: {
+    fontWeight: theme.typography.fontWeightBold,
+  },
+
+  regularText: {
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+  italicText: {
+    fontStyle: 'italic',
+    fontWeight: theme.typography.fontWeightRegular,
+  },
 }));
 
 export default useStyles;
