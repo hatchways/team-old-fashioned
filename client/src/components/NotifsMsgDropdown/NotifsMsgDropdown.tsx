@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent, useEffect } from 'react';
+import React, { useState, MouseEvent, useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { Notification } from '../../interface/Notifications';
+import { NotificationsContext } from '../../context/useNotificationsContext';
 import { FetchOptions } from '../../interface/FetchOptions';
 import { NotificationsList } from '../../pages/Notifications/NotificationsList/NotificationsList';
 
@@ -19,36 +20,7 @@ const NotifsMsgDropdown = ({ type, children }: Props): JSX.Element => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const saveNotifications = (notifications: Notification[]) => {
-    setNotifications(notifications);
-  };
-
-  useEffect(() => {
-    let active = true;
-
-    // APICall currently inlined. Receiving null array in 'notifications' when importing APICall, although response shows receipt of notifications array.
-    const getNotifications = async () => {
-      const fetchOptions: FetchOptions = {
-        method: 'GET',
-        credentials: 'include',
-      };
-      try {
-        const response = await fetch(`/notifications`, fetchOptions);
-        const json = await response.json();
-        if (active && json) {
-          saveNotifications(json);
-        }
-      } catch (error) {
-        console.log('Unable to connect to server. Please try again.', error);
-      }
-    };
-    getNotifications();
-
-    return () => {
-      active = false;
-    };
-  }, []);
+  const { notifications } = useContext(NotificationsContext);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

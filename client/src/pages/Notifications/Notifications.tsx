@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Notification } from '../../interface/Notifications';
-import { FetchOptions } from '../../interface/FetchOptions';
+import { useContext } from 'react';
 import { NotificationsList } from './NotificationsList/NotificationsList';
+import { NotificationsContext } from '../../context/useNotificationsContext';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
@@ -11,40 +10,8 @@ import useStyles from './useStyles';
 
 export default function NotificationsPage(): JSX.Element {
   const classes = useStyles();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const saveNotifications = (notifications: Notification[]) => {
-    setNotifications(notifications);
-  };
+  const { notifications } = useContext(NotificationsContext);
 
-  useEffect(() => {
-    let active = true;
-
-    // APICall currently inlined. Receiving null array in 'notifications' when importing APICall, although response shows receipt of notifications array.
-    const getNotifications = async () => {
-      const fetchOptions: FetchOptions = {
-        method: 'GET',
-        credentials: 'include',
-      };
-      try {
-        const response = await fetch(`/notifications`, fetchOptions);
-        const json = await response.json();
-        if (active && json) {
-          console.log(json);
-          saveNotifications(json);
-        }
-      } catch (error) {
-        console.log('Unable to connect to server. Please try again.', error);
-      }
-    };
-
-    getNotifications();
-
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  // Filter since notifications also includes message notifications
   const notificationsOnly = notifications.filter(function (notif) {
     return notif.type === 'submission';
   });
