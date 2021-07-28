@@ -14,16 +14,22 @@ import {
 import useStyles from './useStyles';
 import { Contest } from '../../interface/Contest';
 import { getAllContests } from '../../helpers/APICalls/contest';
+import { useSnackBar } from '../../context/useSnackbarContext';
 
 export default function Discovery(): JSX.Element {
   const classes = useStyles();
   const [contestObj, setContestObj] = useState<Contest[]>();
+  const { updateSnackBarMessage } = useSnackBar();
 
   useEffect(() => {
     getAllContests().then((data) => {
-      setContestObj(data.contest);
+      if (data.error) {
+        updateSnackBarMessage(data.error.message);
+      } else {
+        setContestObj(data.contest);
+      }
     });
-  }, []);
+  }, [updateSnackBarMessage]);
 
   return (
     <div className={classes.root}>
