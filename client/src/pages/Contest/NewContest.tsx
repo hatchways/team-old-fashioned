@@ -6,23 +6,26 @@ import { FormikHelpers } from 'formik';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import NewContestForm from './NewContestForm/NewContestForm';
+import { createContestAPI } from '../../helpers/APICalls/contest';
+import { useSnackBar } from '../../context/useSnackbarContext';
 
 const NewContest: FunctionComponent = (): JSX.Element => {
   const classes = useStyles();
+  const { updateSnackBarMessage } = useSnackBar();
 
   const handleSubmit = (
     {
       title,
       description,
       prizeAmount,
-      date,
+      deadline,
       time,
       timezone,
     }: {
       title: string;
       description: string;
       prizeAmount: string;
-      date: string;
+      deadline: Date;
       time: string;
       timezone: string;
     },
@@ -32,11 +35,20 @@ const NewContest: FunctionComponent = (): JSX.Element => {
       title: string;
       description: string;
       prizeAmount: string;
-      date: string;
+      deadline: Date;
       time: string;
       timezone: string;
     }>,
   ) => {
+    createContestAPI(title, description, prizeAmount, deadline).then((data) => {
+      if (data.error) {
+        updateSnackBarMessage(data.error.message);
+      } else if (data.success) {
+        updateSnackBarMessage(data.success.message);
+      } else {
+        updateSnackBarMessage('An unexpected error occurred. Please try again');
+      }
+    });
     setSubmitting(false);
   };
 

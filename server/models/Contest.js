@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { User } = require('./User');
 
 const contestSchema = new mongoose.Schema({
   title: {
@@ -21,7 +20,7 @@ const contestSchema = new mongoose.Schema({
     required: true,
   },
 
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
