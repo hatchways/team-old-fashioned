@@ -19,6 +19,7 @@ import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
 import ProfileSetting from './pages/ProfileSetting/ProfileSetting';
 import Message from './pages/Message/Message';
+import Discovery from './pages/Discovery/Discovery';
 
 function App(): JSX.Element {
   return (
@@ -33,15 +34,16 @@ function App(): JSX.Element {
                   <Route path="/" component={NavBar} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
-                  <ProtectedRoute exact path="/fileUpload" component={DesignSubmit} />
+                  <ProtectedRoute exact path="/file-upload/:id" component={DesignSubmit} />
                   <ProtectedRoute exact path="/setting" component={ProfileSetting} />
                   {/* Replace component with Discovery Page */}
-                  <Route exact path="/" component={Dashboard} />
+                  <Route exact path="/discovery" component={Discovery} />
                   {/* Replace the components once created */}
                   <ProtectedRoute exact path="/messages" component={Message} />
                   <ProtectedRoute exact path="/notifications" component={NotificationsPage} />
+                  <ProtectedRoute exact path="/notifications" component={Dashboard} />
                   {/* Update to "/contest/:id" once contest db has been set up*/}
-                  <ProtectedRoute exact path="/contest-details" component={ContestDetails} />
+                  <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />
                   <ProtectedRoute exact path="/profile" component={ProfileSetting} />
                   <ProtectedRoute exact path="/new-contest" component={NewContest} />
                   <ProtectedRoute exact path="/logout" component={Dashboard} />

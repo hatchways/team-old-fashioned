@@ -38,6 +38,19 @@ export default async function contestImgSubmitAPI(id: string, data: any): Promis
     }));
 }
 
+export async function getAllContests(): Promise<any> {
+  const ContestfetchOptions: FetchOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  };
+  return await fetch(`/contest/all/contests`, ContestfetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: { message: 'Unable to connect to server. Please try again' },
+    }));
+}
+
 export const getUserContests = async (): Promise<ContestAPIResponse> => {
   const fetchOptions: FetchOptions = {
     method: 'GET',
