@@ -41,7 +41,6 @@ function App(): JSX.Element {
                   {/* Replace the components once created */}
                   <ProtectedRoute exact path="/messages" component={Message} />
                   <ProtectedRoute exact path="/notifications" component={NotificationsPage} />
-                  <ProtectedRoute exact path="/notifications" component={Dashboard} />
                   {/* Update to "/contest/:id" once contest db has been set up*/}
                   <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />
                   <ProtectedRoute exact path="/profile" component={ProfileSetting} />
