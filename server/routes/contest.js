@@ -12,9 +12,9 @@ const {
 
 router.post('/', protect, createContest);
 router.route('/user-contests').get(protect, getUserContests);
-router.get('/all', protect, getContests);
 router.post('/:id', protect, updateContest);
 router.get('/:id', protect, getContest);
+router.get('/all/contests', protect, getContests);
 router.post('/:id/submission', protect, createSubmissionByContestId);
 
 module.exports = router;
