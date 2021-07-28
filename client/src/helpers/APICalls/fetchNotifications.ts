@@ -1,16 +1,13 @@
 import { FetchOptions } from '../../interface/FetchOptions';
-import { NotificationsArray } from '../../interface/Notifications';
+import { Notification } from '../../interface/Notifications';
 
-export async function getNotifications(): Promise<NotificationsArray> {
+export async function fetchNotifications(): Promise<Notification[]> {
   const fetchOptions: FetchOptions = {
     method: 'GET',
     credentials: 'include',
   };
   return await fetch(`/notifications`, fetchOptions)
-    .then((res) => {
-      console.log(res.json());
-      return res.json();
-    })
+    .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
     }));

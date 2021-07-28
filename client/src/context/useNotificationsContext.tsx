@@ -1,6 +1,6 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect } from 'react';
 import { Notification } from '../interface/Notifications';
-import { FetchOptions } from '../interface/FetchOptions';
+import { fetchNotifications } from '../helpers/APICalls/fetchNotifications';
 
 interface INotificationsContext {
   notifications: Notification[];
@@ -14,20 +14,10 @@ export const NotificationsProvider: FunctionComponent = ({ children }): JSX.Elem
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   useEffect(() => {
-    // APICall currently inlined. Receiving null array in 'notifications' when importing APICall, although response shows receipt of notifications array.
     const getNotifications = async () => {
-      const fetchOptions: FetchOptions = {
-        method: 'GET',
-        credentials: 'include',
-      };
-      try {
-        const response = await fetch(`/notifications`, fetchOptions);
-        const json = await response.json();
-        if (json) {
-          setNotifications(json);
-        }
-      } catch (error) {
-        console.log('Unable to connect to server. Please try again.', error);
+      const response = await fetchNotifications();
+      if (response) {
+        setNotifications(response);
       }
     };
 
