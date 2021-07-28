@@ -4,6 +4,7 @@ export interface User {
   headline: string;
   bio: string;
   location: string;
+  profilePicUrl: string;
 }
 
 export interface SearchUsersApiData {

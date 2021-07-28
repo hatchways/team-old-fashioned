@@ -15,7 +15,7 @@ interface UserPersonalInformation {
 }
 const PersonalInformationForm: FunctionComponent = (): JSX.Element => {
   const classes = useStyles();
-  const { loggedInUser } = useAuth();
+  const { loggedInUser, updateLoginContext } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
 
   const formSubmitHandler = (
@@ -26,8 +26,11 @@ const PersonalInformationForm: FunctionComponent = (): JSX.Element => {
       updatePersonalInformation(loggedInUser.email, headline, bio, location).then((data) => {
         if (data.error) {
           updateSnackBarMessage(data.error.message);
-        } else {
-          //TODO: update the user via context
+        } else if (data.success && data.user) {
+          updateLoginContext({
+            message: 'profile information updated',
+            user: data.user,
+          });
           updateSnackBarMessage('Saved');
         }
         setSubmitting(false);
@@ -55,7 +58,7 @@ const PersonalInformationForm: FunctionComponent = (): JSX.Element => {
             Personal Information
           </Box>
           <Paper className={classes.paper} elevation={6} square>
-            <Grid container direction="row" justify="center" spacing={4}>
+            <Grid container direction="row" justifyContent="center" spacing={4}>
               <Grid item xs={11} md={9}>
                 <FormLabel htmlFor="headline">Headline</FormLabel>
                 <TextField

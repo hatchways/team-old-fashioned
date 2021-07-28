@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
   stripe_intent_id: {
     type: String,
   },
+  profilePicUrl: {
+    type: String,
+    required: false,
+  },
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
