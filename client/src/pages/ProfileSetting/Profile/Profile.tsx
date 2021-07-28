@@ -1,6 +1,7 @@
 import { FC, useState, useContext } from 'react';
 import ContestItem from '../../../components/ContestItem/ContestItem';
 import { ContestContext } from '../../../context/useContestContext';
+import { AuthContext } from '../../../context/useAuthContext';
 import { Button, CircularProgress, Grid, Box, Tabs, Tab, Avatar, Typography } from '@material-ui/core';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import demoProfilePhoto from '../../../Images/demo-profile-photo.png';
@@ -24,11 +25,7 @@ const TabPanel = (props: TabPanelProps) => {
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Container>
-          <Box p={3}>{children}</Box>
-        </Container>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 };
@@ -37,6 +34,7 @@ const Profile: FC = (): JSX.Element => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const { activeContests, inactiveContests } = useContext(ContestContext);
+  const { loggedInUser, updateLoginContext } = useContext(AuthContext);
   const { updateSnackBarMessage } = useSnackBar();
   const [isLoading, setisLoading] = useState(false);
 

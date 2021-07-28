@@ -117,7 +117,7 @@ exports.getUserContests = asyncHandler(async (req, res, next) => {
   try {
     const userId = req.user.id;
     const contests = await Contest.aggregate([
-      { $match: { user: mongoose.Types.ObjectId(userId) } },
+      { $match: { userId: mongoose.Types.ObjectId(userId) } },
       {
         $lookup: {
           from: 'submissions',

@@ -11,10 +11,10 @@ const {
 } = require('../controllers/contest');
 
 router.post('/', protect, createContest);
+router.route('/user-contests').get(protect, getUserContests);
+router.get('/all', protect, getContests);
 router.post('/:id', protect, updateContest);
 router.get('/:id', protect, getContest);
-router.get('/all', protect, getContests);
 router.post('/:id/submission', protect, createSubmissionByContestId);
-router.route('/user-contests').get(protect, getUserContests);
 
 module.exports = router;
