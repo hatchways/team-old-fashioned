@@ -11,17 +11,18 @@ exports.createNotification = asyncHandler(async (req, res, next) => {
     res.status(400);
     throw new Error('No such notification type.');
   } else {
+    let params;
     if (type === 'submission') {
       const { files, _id: submissionId, contestId } = req.body;
       // Use last file in submission array while submission featured photo is not yet set
       const photo = files[files.length - 1];
       const receiverId = await Contest.findById(contestId).then((contest) => {
-        return contest.user;
+        return contest.userId;
       });
-      var params = { type, receiverId, senderId, contestId, submissionId, photo };
+      params = { type, receiverId, senderId, contestId, submissionId, photo };
     } else if (type === 'message') {
       const { receiverId } = req.body;
-      var params = { type, receiverId, senderId };
+      params = { type, receiverId, senderId };
     }
 
     const notification = await Notification.create(params);
