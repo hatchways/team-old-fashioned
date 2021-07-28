@@ -64,22 +64,19 @@ exports.getContest = asyncHandler(async (req, res, next) => {
 exports.getContests = asyncHandler(async (req, res, next) => {
   const contestList = [];
   try {
-    const contests = await Contest.find({});
-    contests.map(async (contest) => {
-      const user = await User.findOne({ _id: contest.userId });
+    const contests = await Contest.find({}).populate('userId');
+    contests.forEach((contest) => {
       const contestData = {
         _id: contest._id,
-        ownerName: user.username,
-        profileImg: user.profilePicUrl,
+        ownerName: contest.userId.username,
+        profileImg: contest.userId.profilePicUrl,
         title: contest.title,
         description: contest.description,
         prizeAmount: contest.prizeAmount,
       };
       contestList.push(contestData);
-      if (contestList.length === contests.length) {
-        res.status(200).json({ contest: contestList });
-      }
     });
+    res.status(200).json({ contest: contestList });
   } catch (error) {
     res.status(500);
     throw new Error('failed to get contests');
