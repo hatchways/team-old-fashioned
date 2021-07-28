@@ -18,17 +18,13 @@ exports.setupUserForPayments = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.getPublicKey = (req, res) => {
-  res.json({ public_key: process.env.STRIPE_PUBLIC_KEY });
-};
-
 exports.getSecret = asyncHandler(async (req, res, next) => {
   const intent_id = await User.findById(req.user.id).then((user) => {
     return user.stripe_intent_id;
   });
   const intent = await stripe.setupIntents.retrieve(intent_id);
   if (intent) {
-    res.status(201).json({ client_secret: intent.client_secret });
+    res.status(200).json({ client_secret: intent.client_secret });
   } else {
     res.status(500);
     throw new Error('unable to retrieve secret');
@@ -44,7 +40,7 @@ exports.listPaymentMethods = asyncHandler(async (req, res, next) => {
     type: 'card',
   });
   if (paymentMethods) {
-    res.status(201).json(paymentMethods.data);
+    res.status(200).json(paymentMethods.data);
   } else {
     res.status(500);
     throw new Error('unable to retrieve list of payment methods');

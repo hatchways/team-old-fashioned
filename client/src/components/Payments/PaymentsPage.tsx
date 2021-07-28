@@ -4,15 +4,11 @@ import { Elements } from '@stripe/react-stripe-js';
 
 import CardForm from './CardForm';
 
+// const publicKey = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY as string);
+
 const PaymentsPage = (): JSX.Element => {
-  const makeStripePromise = async () => {
-    const response = await fetch('/payments/public-key');
-    const { public_key: publicKey } = await response.json();
-    return await loadStripe(publicKey.toString());
-  };
-
-  const stripePromise = makeStripePromise();
-
   return (
     <Elements stripe={stripePromise}>
       <CardForm />
