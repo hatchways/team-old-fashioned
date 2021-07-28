@@ -58,7 +58,7 @@ const PersonalInformationForm: FunctionComponent = (): JSX.Element => {
             Personal Information
           </Box>
           <Paper className={classes.paper} elevation={6} square>
-            <Grid container direction="row" justify="center" spacing={4}>
+            <Grid container direction="row" justifyContent="center" spacing={4}>
               <Grid item xs={11} md={9}>
                 <FormLabel htmlFor="headline">Headline</FormLabel>
                 <TextField
