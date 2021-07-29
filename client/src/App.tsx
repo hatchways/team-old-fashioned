@@ -46,6 +46,7 @@ function App(): JSX.Element {
                   <ProtectedRoute exact path="/profile" component={ProfileSetting} />
                   <ProtectedRoute exact path="/new-contest" component={NewContest} />
                   <ProtectedRoute exact path="/logout" component={Dashboard} />
+                  <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                   <Route path="*">
                     <Redirect to="/" />
                   </Route>

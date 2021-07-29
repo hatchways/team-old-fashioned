@@ -15,7 +15,7 @@ export default function Dashboard(): JSX.Element {
   const history = useHistory();
 
   useEffect(() => {
-    //initSocket();
+    initSocket();
   }, [initSocket]);
 
   if (loggedInUser === undefined) return <CircularProgress />;
@@ -30,6 +30,7 @@ export default function Dashboard(): JSX.Element {
       <AuthHeader linkTo="/fileUpload" asideText="testing upload file page" btnText="open uploadFile page" />
       {/* hard coding contest id, should fetch contest ID in Dashboard */}
       <Link to="/contest-details/60fa08e84f14460a342ad347">Contest Details</Link>
+      <Link to="/file-upload/610207d628b2652390d36132">File upload</Link>
     </div>
   );
 }
