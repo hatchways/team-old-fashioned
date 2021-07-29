@@ -151,7 +151,6 @@ const PaymentForm: FC = (): JSX.Element => {
                 variant="outlined"
                 fullWidth
                 margin="none"
-                //helperText={touched.state ? errors.state : ''}
                 error={touched.state && Boolean(errors.state)}
                 value={values.state}
                 onChange={handleChange}
