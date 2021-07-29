@@ -11,6 +11,7 @@ import {
   TextField,
   CircularProgress,
 } from '@material-ui/core';
+import { useSnackBar } from '../../context/useSnackbarContext';
 import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
@@ -39,25 +40,23 @@ const PaymentForm: FC = (): JSX.Element => {
   const classes = useStyles();
   const stripe = useStripe();
   const elements = useElements();
+  const { updateSnackBarMessage } = useSnackBar();
 
   const handleSubmit = async (
     { name, line1, city, state, postal_code }: IPayment,
     { setSubmitting }: FormikHelpers<IPayment>,
   ) => {
-    // disables submission while stripe / elements haven't been loaded
     if (!stripe || !elements) {
       return;
     }
     const cardNumberElement = elements.getElement(CardNumberElement);
-    const cardExpiryElement = elements.getElement(CardExpiryElement);
-    const cardCvcElement = elements.getElement(CardCvcElement);
-    if (!cardNumberElement || !cardExpiryElement || !cardCvcElement) {
+    if (!cardNumberElement) {
       return;
     }
 
     const response = await fetch('/payments/secret');
     const { client_secret: clientSecret } = await response.json();
-    const payload = await stripe.confirmCardSetup(clientSecret, {
+    const result = await stripe.confirmCardSetup(clientSecret, {
       payment_method: {
         card: cardNumberElement,
         billing_details: {
@@ -71,7 +70,13 @@ const PaymentForm: FC = (): JSX.Element => {
         },
       },
     });
-    console.log('[PaymentMethod]', payload);
+
+    if (result.error) {
+      updateSnackBarMessage(result.error.message as string);
+    }
+    if (result.setupIntent) {
+      updateSnackBarMessage('Payment method accepted');
+    }
     setSubmitting(false);
   };
 
@@ -149,7 +154,6 @@ const PaymentForm: FC = (): JSX.Element => {
                 variant="outlined"
                 fullWidth
                 margin="none"
-                //helperText={touched.state ? errors.state : ''}
                 error={touched.state && Boolean(errors.state)}
                 value={values.state}
                 onChange={handleChange}
