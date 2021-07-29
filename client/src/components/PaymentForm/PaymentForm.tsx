@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { CardNumberElement, CardCvcElement, CardExpiryElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import {
   Button,
@@ -10,9 +10,12 @@ import {
   Select,
   TextField,
   CircularProgress,
+  Typography,
 } from '@material-ui/core';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import { Formik, FormikHelpers } from 'formik';
+import setPaymentMethodConfirmed from '../../helpers/APICalls/setPaymentMethodConfirmed';
+import { AuthContext } from '../../context/useAuthContext';
 import * as Yup from 'yup';
 
 import useStyles from './useStyles';
@@ -41,6 +44,7 @@ const PaymentForm: FC = (): JSX.Element => {
   const stripe = useStripe();
   const elements = useElements();
   const { updateSnackBarMessage } = useSnackBar();
+  const { loggedInUser } = useContext(AuthContext);
 
   const handleSubmit = async (
     { name, line1, city, state, postal_code }: IPayment,
@@ -72,15 +76,19 @@ const PaymentForm: FC = (): JSX.Element => {
     });
 
     if (result.error) {
+      const confirmed = await setPaymentMethodConfirmed(false);
       updateSnackBarMessage(result.error.message as string);
     }
     if (result.setupIntent) {
+      const confirmed = await setPaymentMethodConfirmed(true);
       updateSnackBarMessage('Payment method accepted');
     }
     setSubmitting(false);
   };
 
-  return (
+  return loggedInUser && loggedInUser?.payment_method_confirmed ? (
+    <Typography>You have confirmed your payment information.</Typography>
+  ) : (
     <Formik
       initialValues={{
         name: '',

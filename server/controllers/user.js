@@ -43,6 +43,7 @@ exports.updatePersonalInformation = asyncHandler(async (req, res, next) => {
         bio: user.get('bio'),
         location: user.get('location'),
         profilePicUrl: user.get('profilePicUrl'),
+        payment_method_confirmed: user.get('payment_method_confirmed'),
       },
     });
   } catch (err) {
@@ -69,10 +70,39 @@ exports.updateProfilePicture = asyncHandler(async (req, res, next) => {
         bio: user.get('bio'),
         location: user.get('location'),
         profilePicUrl: user.get('profilePicUrl'),
+        payment_method_confirmed: user.get('payment_method_confirmed'),
       },
     });
   } catch (err) {
     res.status(500);
     throw new Error('Failed to update profile picture url');
+  }
+});
+
+exports.confirmPaymentMethod = asyncHandler(async (req, res, next) => {
+  const userId = req.user.id;
+  const confirmed = req.params.val === '1';
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: mongoose.Types.ObjectId(userId) },
+      { payment_method_confirmed: confirmed },
+      { new: true },
+    );
+    res.status(200).json({
+      message: 'Payment method confirmed',
+      user: {
+        email: user.get('email'),
+        username: user.get('username'),
+        headline: user.get('headline'),
+        bio: user.get('bio'),
+        location: user.get('location'),
+        profilePicUrl: user.get('profilePicUrl'),
+        payment_method_confirmed: user.get('payment_method_confirmed'),
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
   }
 });
