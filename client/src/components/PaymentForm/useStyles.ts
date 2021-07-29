@@ -20,9 +20,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.text.primary,
     padding: '18px 15px',
   },
-  bar: {
-    backgroundColor: 'blue',
-  },
   submit: {
     margin: theme.spacing(3, 2, 2),
     padding: 10,
@@ -33,6 +30,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: 16,
     backgroundColor: '#000',
     fontWeight: 'bold',
+  },
+  helperTextError: {
+    marginLeft: 14,
+    marginRight: 14,
+    color: '#f44336;',
   },
 }));
 
