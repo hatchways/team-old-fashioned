@@ -89,6 +89,7 @@ const PaymentForm: FC = (): JSX.Element => {
   return loggedInUser && loggedInUser?.payment_method_confirmed ? (
     <Typography>You have confirmed your payment information.</Typography>
   ) : (
+
     <Formik
       initialValues={{
         name: '',
