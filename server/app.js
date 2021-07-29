@@ -45,6 +45,7 @@ io.on('connection', (socket) => {
     socket.disconnect();
     console.log('invalid token - socket disconnected');
   }
+  socket.emit('loggedin');
   socketCreateNotification(socket);
 
   socket.on(NEW_MSG, (data) => {

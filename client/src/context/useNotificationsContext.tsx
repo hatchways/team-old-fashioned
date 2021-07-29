@@ -1,6 +1,7 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect } from 'react';
 import { Notification } from '../interface/Notifications';
 import { fetchNotifications } from '../helpers/APICalls/fetchNotifications';
+import { useSocket } from './useSocketContext';
 
 interface INotificationsContext {
   notifications: Notification[];
@@ -12,6 +13,7 @@ export const NotificationsContext = createContext<INotificationsContext>({
 
 export const NotificationsProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { socket } = useSocket();
 
   useEffect(() => {
     const getNotifications = async () => {
@@ -20,9 +22,15 @@ export const NotificationsProvider: FunctionComponent = ({ children }): JSX.Elem
         setNotifications(response);
       }
     };
-
-    getNotifications();
-  }, []);
+    if (socket) {
+      socket.on('notification created', () => {
+        getNotifications();
+      });
+      socket.on('loggedin', () => {
+        getNotifications();
+      });
+    }
+  }, [socket]);
 
   return <NotificationsContext.Provider value={{ notifications }}>{children}</NotificationsContext.Provider>;
 };
