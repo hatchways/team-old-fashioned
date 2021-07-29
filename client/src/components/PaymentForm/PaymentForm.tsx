@@ -40,7 +40,7 @@ const PaymentForm: FC = (): JSX.Element => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const handleSubmit = (
+  const handleSubmit = async (
     { name, line1, city, state, postal_code }: IPayment,
     { setSubmitting }: FormikHelpers<IPayment>,
   ) => {
@@ -55,25 +55,23 @@ const PaymentForm: FC = (): JSX.Element => {
       return;
     }
 
-    // need an async function to query Stripe
-    // leaving this snippet in hopefully as a hint
-    // const response = await fetch('/payments/secret');
-    // const { client_secret: clientSecret } = await response.json();
-    // const payload = await stripe.confirmCardSetup(clientSecret, {
-    //   payment_method: {
-    //     card: cardNumberElement,
-    //     billing_details: {
-    //       name: name,
-    //       address: {
-    //         line1,
-    //         city,
-    //         state,
-    //         postal_code,
-    //       },
-    //     },
-    //   },
-    // });
-    // console.log('[PaymentMethod]', payload);
+    const response = await fetch('/payments/secret');
+    const { client_secret: clientSecret } = await response.json();
+    const payload = await stripe.confirmCardSetup(clientSecret, {
+      payment_method: {
+        card: cardNumberElement,
+        billing_details: {
+          name: name,
+          address: {
+            line1,
+            city,
+            state,
+            postal_code,
+          },
+        },
+      },
+    });
+    console.log('[PaymentMethod]', payload);
     setSubmitting(false);
   };
 
