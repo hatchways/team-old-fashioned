@@ -10,8 +10,10 @@ import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
 import { ContestProvider } from './context/useContestContext';
+import { NotificationsProvider } from './context/useNotificationsContext';
 import ProtectedRoute from './components/ProtectedRoutes/ProtectedRoutes';
 import NavBar from './components/NavBar/NavBar';
+import NotificationsPage from './pages/Notifications/Notifications';
 
 import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
@@ -27,25 +29,27 @@ function App(): JSX.Element {
           <AuthProvider>
             <ContestProvider>
               <SocketProvider>
-                {/* Renders navbar for all pages */}
-                <Route path="/" component={NavBar} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/signup" component={Signup} />
-                <ProtectedRoute exact path="/file-upload/:id" component={DesignSubmit} />
-                <ProtectedRoute exact path="/setting" component={ProfileSetting} />
-                {/* Replace component with Discovery Page */}
-                <Route exact path="/discovery" component={Discovery} />
-                {/* Replace the components once created */}
-                <ProtectedRoute exact path="/messages" component={Message} />
-                <ProtectedRoute exact path="/notifications" component={Dashboard} />
-                {/* Update to "/contest/:id" once contest db has been set up*/}
-                <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />
-                <ProtectedRoute exact path="/profile" component={ProfileSetting} />
-                <ProtectedRoute exact path="/new-contest" component={NewContest} />
-                <ProtectedRoute exact path="/logout" component={Dashboard} />
-                <Route path="*">
-                  <Redirect to="/" />
-                </Route>
+                <NotificationsProvider>
+                  {/* Renders navbar for all pages */}
+                  <Route path="/" component={NavBar} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/signup" component={Signup} />
+                  <ProtectedRoute exact path="/file-upload/:id" component={DesignSubmit} />
+                  <ProtectedRoute exact path="/setting" component={ProfileSetting} />
+                  {/* Replace component with Discovery Page */}
+                  <Route exact path="/discovery" component={Discovery} />
+                  {/* Replace the components once created */}
+                  <ProtectedRoute exact path="/messages" component={Message} />
+                  <ProtectedRoute exact path="/notifications" component={NotificationsPage} />
+                  {/* Update to "/contest/:id" once contest db has been set up*/}
+                  <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />
+                  <ProtectedRoute exact path="/profile" component={ProfileSetting} />
+                  <ProtectedRoute exact path="/new-contest" component={NewContest} />
+                  <ProtectedRoute exact path="/logout" component={Dashboard} />
+                  <Route path="*">
+                    <Redirect to="/" />
+                  </Route>
+                </NotificationsProvider>
               </SocketProvider>
             </ContestProvider>
           </AuthProvider>
