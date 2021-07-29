@@ -44,6 +44,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
           username: user.username,
           email: user.email,
         },
+        token: token,
       },
     });
   } else {
@@ -80,6 +81,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
           location: user.location ? user.location : '',
           profilePicUrl: user.profilePicUrl ? user.profilePicUrl : '',
         },
+        token: token,
       },
     });
   } else {

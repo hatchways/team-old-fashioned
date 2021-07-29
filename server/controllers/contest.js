@@ -3,6 +3,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const mongoose = require('mongoose');
 const Contest = require('../models/Contest');
 const Submission = require('../models/Submission');
+const User = require('../models/User');
 
 // handler for creating a new contest object
 exports.createContest = asyncHandler(async (req, res, next) => {
@@ -61,9 +62,21 @@ exports.getContest = asyncHandler(async (req, res, next) => {
 
 // handler for getting all the contests
 exports.getContests = asyncHandler(async (req, res, next) => {
+  const contestList = [];
   try {
-    const contests = await Contest.find({});
-    res.status(200).json(contests);
+    const contests = await Contest.find({}).populate('userId');
+    contests.forEach((contest) => {
+      const contestData = {
+        _id: contest._id,
+        ownerName: contest.userId.username,
+        profileImg: contest.userId.profilePicUrl,
+        title: contest.title,
+        description: contest.description,
+        prizeAmount: contest.prizeAmount,
+      };
+      contestList.push(contestData);
+    });
+    res.status(200).json({ contest: contestList });
   } catch (error) {
     res.status(500);
     throw new Error('failed to get contests');

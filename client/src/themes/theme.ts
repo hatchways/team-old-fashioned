@@ -4,6 +4,8 @@ export const theme = createTheme({
   typography: {
     fontFamily: '"Poppins", "sans-serif", "Roboto"',
     fontSize: 12,
+    fontWeightBold: 600,
+    fontWeightRegular: 400,
     button: {
       textTransform: 'none',
       fontWeight: 600,
