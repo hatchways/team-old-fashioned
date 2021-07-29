@@ -5,23 +5,22 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import uploadImageAPI from '../../helpers/APICalls/uploadImages';
 import contestImgSubmitAPI from '../../helpers/APICalls/contest';
-import { Contest } from '../../interface/Contest';
 
 import useStyles from './useStyles';
+import { RouteComponentProps } from 'react-router-dom';
 
-interface Props {
-  contest: Contest;
-}
-
-const DesignSubmit = ({ contest }: Props): JSX.Element => {
+const DesignSubmit = ({ match }: RouteComponentProps): JSX.Element => {
   const classes = useStyles();
   const [uploadImages, setUploadImages] = useState<File>();
   const [uploadImagesList, setUploadImagesList] = useState<FileList>();
   const { updateSnackBarMessage } = useSnackBar();
   const [preview, setPreview] = useState<string>('');
   const [isLoading, setisLoading] = useState(false);
+  const [contestId, setContestId] = useState<string>('');
 
   useEffect(() => {
+    const params = match.params as { id: string };
+    setContestId(params.id);
     if (uploadImages) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -31,7 +30,7 @@ const DesignSubmit = ({ contest }: Props): JSX.Element => {
     } else {
       setPreview('');
     }
-  }, [uploadImages]);
+  }, [uploadImages, match]);
 
   const handleSelectedImage = (event: ChangeEvent<HTMLInputElement>): void => {
     const files = event.target.files;
@@ -66,9 +65,7 @@ const DesignSubmit = ({ contest }: Props): JSX.Element => {
       updateSnackBarMessage('Your design images have been uploaded successfully');
     }
     if (result.success) {
-      //for testing by adding contest id, will change back to parmas.id when contest details page done
-      const returnData = await contestImgSubmitAPI('60fa08e84f14460a342ad347', result.success.urlArray);
-      console.log(returnData);
+      const returnData = await contestImgSubmitAPI(contestId, result.success.urlArray);
     }
     setisLoading(false);
   };

@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  stripe_id: {
+    type: String,
+  },
+  stripe_intent_id: {
+    type: String,
+  },
   profilePicUrl: {
     type: String,
     required: false,

@@ -4,28 +4,36 @@ import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import useStyles from './useStyles';
+import { Submission } from '../../../interface/Submission';
 
-interface Props {
-  submissionList: Array<{ img: string; username: string }>;
+interface SubmissionListProps {
+  submissionList?: Submission[];
 }
-export function SubmissionsGrid({ submissionList }: Props): JSX.Element {
+
+export function SubmissionsGrid({ submissionList }: SubmissionListProps): JSX.Element {
   const classes = useStyles();
   return (
     <ImageList cols={4}>
-      {submissionList.map((submission: { img: string; username: string }) => (
-        <ImageListItem key={submission.img}>
-          <img
-            srcSet={`${submission.img}?w=248&fit=crop&auto=format 1x,
-                ${submission.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-            loading="lazy"
-          />
-          <ImageListItemBar title={'By @' + submission.username} className={classes.caption} />
-        </ImageListItem>
-      ))}
+      {submissionList?.map((submission: Submission) =>
+        submission.files.map((_file: string) => (
+          <ImageListItem key={_file}>
+            <img
+              srcSet={`${_file}?w=248&fit=crop&auto=format 1x,
+                ${_file}?w=248&fit=crop&auto=format&dpr=2 2x`}
+              loading="lazy"
+            />
+            <ImageListItemBar title={'By @' + submission.name} className={classes.caption} />
+          </ImageListItem>
+        )),
+      )}
     </ImageList>
   );
 }
 
-export function submissionCount({ submissionList }: Props): number {
-  return submissionList.length;
+export function submissionCount({ submissionList }: SubmissionListProps): number {
+  let length = 0;
+  submissionList?.forEach((submission: Submission) => {
+    length += submission.files.length;
+  });
+  return length;
 }

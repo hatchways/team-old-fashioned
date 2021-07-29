@@ -11,6 +11,8 @@ import useStyles from './useStyles';
 import AuthMenu from '../AuthMenu/AuthMenu';
 import { useAuth } from '../../context/useAuthContext';
 import CustomButton from './CustomButton';
+import NotifsMsgDropdown from '../NotifsMsgDropdown/NotifsMsgDropdown';
+import Typography from '@material-ui/core/Typography';
 
 const NavBar = (): JSX.Element => {
   const classes = useStyles();
@@ -30,19 +32,23 @@ const NavBar = (): JSX.Element => {
             {loggedInUser ? (
               <>
                 <Box p={0}>
-                  <Link component={RouterLink} variant="subtitle1" className={classes.link} to="/">
+                  <Link component={RouterLink} variant="subtitle1" className={classes.link} to="/discovery">
                     Discover
                   </Link>
                 </Box>
                 <Box p={0}>
-                  <Link component={RouterLink} variant="subtitle1" className={classes.link} to="/messages">
-                    Messages
-                  </Link>
+                  <NotifsMsgDropdown type="message">
+                    <Typography variant="subtitle1" className={classes.link}>
+                      Messages
+                    </Typography>
+                  </NotifsMsgDropdown>
                 </Box>
                 <Box p={0}>
-                  <Link component={RouterLink} variant="subtitle1" className={classes.link} to="/notifications">
-                    Notifications
-                  </Link>
+                  <NotifsMsgDropdown type="submission">
+                    <Typography variant="subtitle1" className={classes.link}>
+                      Notifications
+                    </Typography>
+                  </NotifsMsgDropdown>
                 </Box>
               </>
             ) : (

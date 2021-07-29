@@ -28,7 +28,8 @@ export default function Dashboard(): JSX.Element {
   return (
     <div>
       <AuthHeader linkTo="/fileUpload" asideText="testing upload file page" btnText="open uploadFile page" />
-      <Link to="/contest-details">Contest Details</Link>
+      {/* hard coding contest id, should fetch contest ID in Dashboard */}
+      <Link to="/contest-details/60fa08e84f14460a342ad347">Contest Details</Link>
     </div>
   );
 }
