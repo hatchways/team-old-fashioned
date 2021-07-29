@@ -26,10 +26,7 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
     <List component="nav" className={classes.root} aria-label="notifications">
       {notifications.map((notification: Notification) => (
         <>
-          <ListItem
-            button
-            key={(notification.type, notification.photo, notification.senderId.username, notification.type)}
-          >
+          <ListItem button key={notification._id}>
             <Grid container={true} alignItems="center" justify="center" spacing={2} wrap="nowrap">
               <Grid item xs={2} container direction="column" justify="flex-end" alignItems="flex-end">
                 <Avatar alt="Notification Thumbnail" src={notification.photo} />
@@ -53,7 +50,6 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
                       <>&nbsp; sent you a message.</>
                     </Typography>
                   )}
-                  {/* </Box> */}
                   <Typography variant="body2" className={classes.italicText}>
                     {timeSince(notification.createdAt)} ago
                   </Typography>
