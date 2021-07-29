@@ -64,3 +64,37 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
 
   res.status(200).json(notifications);
 });
+
+module.exports.socketCreateNotification = function (socket) {
+  socket.on('create notification', async function (data) {
+    const submissionData = data.returnData.submission;
+    const type = data.type;
+
+    const typeList = ['submission', 'message'];
+    if (!typeList.includes(type)) {
+      throw new Error('No such notification type.');
+    } else {
+      let params;
+      if (type === 'submission') {
+        const { files, _id: submissionId, contestId, userId: senderId } = submissionData;
+        // Use last file in submission array while submission featured photo is not yet set
+        const photo = files[files.length - 1];
+        const receiverId = await Contest.findById(contestId).then((contest) => {
+          return contest.userId;
+        });
+        params = { type, receiverId, senderId, contestId, submissionId, photo };
+      } else if (type === 'message') {
+        const { receiverId, userId: senderId } = submissionData;
+        params = { type, receiverId, senderId };
+      }
+
+      const notification = await Notification.create(params);
+
+      if (!notification) {
+        throw new Error('Invalid notification data');
+      }
+    }
+
+    socket.emit('notification created');
+  });
+};
