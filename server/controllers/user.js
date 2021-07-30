@@ -58,6 +58,18 @@ exports.updatePersonalInformation = asyncHandler(async (req, res, next) => {
   }
 });
 
+exports.getUserInfo = asyncHandler(async (req, res, next) => {
+  const username = req.params.username;
+  try {
+    const user = await User.findOne({ username: username });
+    profile = getProfile(user).user;
+    res.status(200).json(profile);
+  } catch (err) {
+    res.status(400);
+    throw new Error('Failed to retrieve personal information');
+  }
+});
+
 exports.updateProfilePicture = asyncHandler(async (req, res, next) => {
   const { url } = req.body;
   const userId = req.user.id;
