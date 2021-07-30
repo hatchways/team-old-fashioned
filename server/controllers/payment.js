@@ -3,48 +3,44 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const Contest = require('../models/Contest');
 
-const stripeCustomerExists = async (userId) => {
+const stripeCustomerId = async (userId) => {
   return await User.findById(userId)
     .then((user) => {
       if (user.stripe_id) {
         return user.stripe_id;
       } else {
-        return false;
+        return null;
       }
     })
     // check validity of stripe_id from the model
     .then(async (stripe_id) => {
       try {
         const customer = await stripe.customers.retrieve(stripe_id);
-        return !customer.deleted;
+        return customer.deleted ? null : stripe_id;
       } catch (err) {
-        return false;
+        return null;
       }
-      // customer does not exist if customer is deleted or no such customer
-      return !(!customer || customer.deleted);
     });
 };
 
-exports.createCustomerForPayments = asyncHandler(async (req, res, next) => {
-  if (await stripeCustomerExists(req.user.id)) {
-    res.status(500);
-    throw new Error('stripe customer already exists');
+const createCustomerForPayments = async (userId) => {
+  const stripe_id = await stripeCustomerId(userId);
+  if (stripe_id) {
+    return stripe_id;
   } else {
     const customer = await stripe.customers.create();
     if (customer) {
-      const user = await User.findByIdAndUpdate(req.user.id, { stripe_id: customer.id }, { new: true });
-      res.status(201).json({ user });
+      const user = await User.findByIdAndUpdate(userId, { stripe_id: customer.id }, { new: true });
+      return user.stripe_id;
     } else {
-      res.status(500);
       throw new Error('unable to set up payment intent');
+      return null;
     }
   }
-});
+};
 
 exports.createSetupIntent = asyncHandler(async (req, res, next) => {
-  const customerId = await User.findById(req.user.id).then((res) => {
-    return res.stripe_id;
-  });
+  const customerId = await createCustomerForPayments(req.user.id);
   const intent = await stripe.setupIntents.create({
     customer: customerId,
     payment_method_types: ['card'],
