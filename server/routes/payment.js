@@ -3,7 +3,8 @@ const router = express.Router();
 const protect = require('../middleware/auth');
 const {
   getSecret,
-  setupUserForPayments,
+  createCustomerForPayments,
+  createSetupIntent,
   listPaymentMethods,
   getPaymentIntent,
   chargeCard,
@@ -11,7 +12,8 @@ const {
 
 router.route('/').get(protect, listPaymentMethods);
 router.route('/secret').get(protect, getSecret);
-router.route('/setup').post(protect, setupUserForPayments);
+router.route('/customer').post(protect, createCustomerForPayments);
+router.route('/setup-intent').post(protect, createSetupIntent);
 router.route('/pay').post(protect, chargeCard);
 
 module.exports = router;

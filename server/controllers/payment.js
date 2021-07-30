@@ -3,15 +3,33 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const Contest = require('../models/Contest');
 
-exports.setupUserForPayments = asyncHandler(async (req, res, next) => {
+exports.createCustomerForPayments = asyncHandler(async (req, res, next) => {
   const customer = await stripe.customers.create();
+  if (customer) {
+    const user = await User.findByIdAndUpdate(req.user.id, { stripe_id: customer.id }, { new: true });
+    res.status(201).json({ user });
+  } else {
+    res.status(500);
+    throw new Error('unable to set up payment intent');
+  }
+});
+
+exports.createSetupIntent = asyncHandler(async (req, res, next) => {
+  const customerId = await User.findById(req.user.id).then((res) => {
+    return res.stripe_id;
+  });
   const intent = await stripe.setupIntents.create({
-    customer: customer.id,
+    customer: customerId,
     payment_method_types: ['card'],
   });
   if (intent) {
-    const user = await User.findByIdAndUpdate(req.user.id, { stripe_id: customer.id, stripe_intent_id: intent.id });
-    res.status(201).json({ user });
+    const user = await User.findByIdAndUpdate(req.user.id, { stripe_intent_id: intent.id }, { new: true });
+    if (user) {
+      res.status(201).json({ user });
+    } else {
+      res.status(500);
+      throw new Error('unable to update payment intent');
+    }
   } else {
     res.status(500);
     throw new Error('unable to set up payment intent');
