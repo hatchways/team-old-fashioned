@@ -3,14 +3,41 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const Contest = require('../models/Contest');
 
+const stripeCustomerExists = async (userId) => {
+  return await User.findById(userId)
+    .then((user) => {
+      if (user.stripe_id) {
+        return user.stripe_id;
+      } else {
+        return false;
+      }
+    })
+    // check validity of stripe_id from the model
+    .then(async (stripe_id) => {
+      try {
+        const customer = await stripe.customers.retrieve(stripe_id);
+        return !customer.deleted;
+      } catch (err) {
+        return false;
+      }
+      // customer does not exist if customer is deleted or no such customer
+      return !(!customer || customer.deleted);
+    });
+};
+
 exports.createCustomerForPayments = asyncHandler(async (req, res, next) => {
-  const customer = await stripe.customers.create();
-  if (customer) {
-    const user = await User.findByIdAndUpdate(req.user.id, { stripe_id: customer.id }, { new: true });
-    res.status(201).json({ user });
-  } else {
+  if (await stripeCustomerExists(req.user.id)) {
     res.status(500);
-    throw new Error('unable to set up payment intent');
+    throw new Error('stripe customer already exists');
+  } else {
+    const customer = await stripe.customers.create();
+    if (customer) {
+      const user = await User.findByIdAndUpdate(req.user.id, { stripe_id: customer.id }, { new: true });
+      res.status(201).json({ user });
+    } else {
+      res.status(500);
+      throw new Error('unable to set up payment intent');
+    }
   }
 });
 
