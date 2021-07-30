@@ -2,6 +2,19 @@ const User = require('../models/User');
 const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
 
+const getProfile = (user) => {
+  return {
+    user: {
+      email: user.get('email'),
+      username: user.get('username'),
+      headline: user.get('headline'),
+      bio: user.get('bio'),
+      location: user.get('location'),
+      profilePicUrl: user.get('profilePicUrl'),
+    },
+  };
+};
+
 // @route POST /users
 // @desc Search for users
 // @access Private
@@ -34,16 +47,10 @@ exports.updatePersonalInformation = asyncHandler(async (req, res, next) => {
       { headline: headline, bio: bio, location: location },
       { new: true },
     );
+    profile = getProfile(user);
     res.status(202).json({
       success: true,
-      user: {
-        email: user.get('email'),
-        username: user.get('username'),
-        headline: user.get('headline'),
-        bio: user.get('bio'),
-        location: user.get('location'),
-        profilePicUrl: user.get('profilePicUrl'),
-      },
+      profile,
     });
   } catch (err) {
     res.status(400);
@@ -60,16 +67,12 @@ exports.updateProfilePicture = asyncHandler(async (req, res, next) => {
       { profilePicUrl: url },
       { new: true },
     );
+
+    profile = getProfile(user);
+
     res.status(200).json({
       message: 'profile picture updated',
-      user: {
-        email: user.get('email'),
-        username: user.get('username'),
-        headline: user.get('headline'),
-        bio: user.get('bio'),
-        location: user.get('location'),
-        profilePicUrl: user.get('profilePicUrl'),
-      },
+      profile,
     });
   } catch (err) {
     res.status(500);
