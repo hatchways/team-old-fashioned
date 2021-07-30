@@ -14,10 +14,21 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
       throw new Error('invalid recipient');
     }
 
-    const conversation = await Conversation.create({
-      fromUser: mongoose.Types.ObjectId(from),
-      toUser: mongoose.Types.ObjectId(to),
+    // check if conversation exists
+    let conversation = await Conversation.find({
+      $and: [
+        { $or: [{ toUser: mongoose.Types.ObjectId(to) }, { fromUser: mongoose.Types.ObjectId(to) }] },
+        { $or: [{ toUser: mongoose.Types.ObjectId(from) }, { fromUser: mongoose.Types.ObjectId(from) }] },
+      ],
     });
+
+    // create new conversation if one does not exist
+    if (conversation.length === 0) {
+      const conversation = await Conversation.create({
+        fromUser: mongoose.Types.ObjectId(from),
+        toUser: mongoose.Types.ObjectId(to),
+      });
+    }
 
     res.status(201).json({
       success: true,
@@ -33,16 +44,136 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
 exports.getUserConversations = asyncHandler(async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const conversations = await Conversation.find({
-      $or: [{ fromUser: mongoose.Types.ObjectId(userId) }, { toUser: mongoose.Types.ObjectId(userId) }],
-    })
-      .populate('fromUser', 'username')
-      .populate('toUser', 'username')
-      .sort({ updated: 'desc' });
+    // const conversations = await Conversation.find({
+    //   $or: [{ fromUser: mongoose.Types.ObjectId(userId) }, { toUser: mongoose.Types.ObjectId(userId) }],
+    // })
+    //   .populate('fromUser', 'username')
+    //   .populate('toUser', 'username')
+    //   .sort({ updated: 'desc' });
+    const conversations = await Conversation.aggregate([
+      {
+        $match: {
+          $or: [
+            {
+              fromUser: mongoose.Types.ObjectId(userId),
+            },
+            {
+              toUser: mongoose.Types.ObjectId(userId),
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: 'messages',
+          let: {
+            cId: '$_id',
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$conversation', '$$cId'],
+                },
+              },
+            },
+            {
+              $lookup: {
+                from: 'users',
+                let: { uId: '$sender' },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $eq: ['$_id', '$$uId'],
+                      },
+                    },
+                  },
+                  { $project: { _id: 1, username: 1 } },
+                ],
+                as: 'sender',
+              },
+            },
+            {
+              $sort: {
+                createdAt: -1,
+              },
+            },
+            {
+              $limit: 1,
+            },
+            { $project: { _id: 1, conversation: 1, sender: 1, message: 1, createdAt: 1 } },
+          ],
+          as: 'last_msg',
+        },
+      },
+      {
+        $unwind: {
+          path: '$last_msg',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          let: { uId: '$fromUser' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', '$$uId'],
+                },
+              },
+            },
+            { $project: { _id: 1, username: 1 } },
+          ],
+          as: 'from',
+        },
+      },
+      {
+        $unwind: {
+          path: '$from',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          let: { uId: '$toUser' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', '$$uId'],
+                },
+              },
+            },
+            { $project: { _id: 1, username: 1 } },
+          ],
+          as: 'to',
+        },
+      },
+      {
+        $unwind: {
+          path: '$to',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          from: 1,
+          to: 1,
+          last_msg: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        },
+      },
+    ]);
 
     res.status(201).json({
-      success: true,
-      conversations,
+      success: 'true',
+      data: conversations,
     });
   } catch (error) {
     res.status(500).json({
@@ -88,13 +219,53 @@ exports.getMessagesForConversation = asyncHandler(async (req, res, next) => {
       throw new Error('invalid conversation');
     }
 
-    const messages = await Message.find({ conversation: mongoose.Types.ObjectId(conversationId) })
-      .populate('sender', 'username')
-      .sort({ created: 'desc' });
+    // const messages = await Message.find({ conversation: mongoose.Types.ObjectId(conversationId) })
+    //   .populate('sender', 'username')
+    //   .sort({ created: 'desc' });
+    const messages = await Message.aggregate([
+      { $match: { conversation: mongoose.Types.ObjectId(conversationId) } },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          let: { uId: '$sender' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', '$$uId'],
+                },
+              },
+            },
+            { $project: { _id: 1, username: 1 } },
+          ],
+          as: 'sender',
+        },
+      },
+      {
+        $unwind: {
+          path: '$sender',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          conversation: 1,
+          sender: 1,
+          message: 1,
+          createdAt: 1,
+        },
+      },
+    ]);
 
     res.status(201).json({
-      success: true,
-      messages,
+      success: 'true',
+      data: messages,
     });
   } catch (error) {
     res.status(500).json({
