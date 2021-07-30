@@ -1,7 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: '100px 50px',
+    width: '100%',
+  },
+  formContainer: {
+    marginBottom: '100px',
+    backgroundColor: 'grey',
   },
   card: {
     WebkitBackfaceVisibility: 'hidden',

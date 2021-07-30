@@ -29,15 +29,16 @@ function App(): JSX.Element {
               <SocketProvider>
                 {/* Renders navbar for all pages */}
                 <Route path="/" component={NavBar} />
+                <Route exact path="/" component={Discovery} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
                 <ProtectedRoute exact path="/file-upload/:id" component={DesignSubmit} />
                 <ProtectedRoute exact path="/setting" component={ProfileSetting} />
                 {/* Replace component with Discovery Page */}
-                <Route exact path="/discovery" component={Discovery} />
+                <ProtectedRoute exact path="/discovery" component={Discovery} />
                 {/* Replace the components once created */}
                 <ProtectedRoute exact path="/messages" component={Message} />
-                <ProtectedRoute exact path="/notifications" component={Dashboard} />
+                <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                 {/* Update to "/contest/:id" once contest db has been set up*/}
                 <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />
                 <ProtectedRoute exact path="/profile" component={ProfileSetting} />

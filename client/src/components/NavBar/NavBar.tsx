@@ -61,12 +61,12 @@ const NavBar = (): JSX.Element => {
               <>
                 <Box p={1.5}>
                   {/* replace `demoProfilePhoto` with link to user photo */}
-                  <Avatar className={classes.profileImg} src={demoProfilePhoto} alt="Profile Photo" />
+                  <Avatar className={classes.profileImg} src={loggedInUser.profilePicUrl} alt="Profile Photo" />
                 </Box>
                 <Box p={0}>
                   {/* replace `Kenneth` with username */}
                   <Link component={RouterLink} variant="subtitle1" className={classes.username} to="/profile">
-                    Kenneth
+                    {loggedInUser.username}
                   </Link>
                 </Box>
                 <Box p={0}>

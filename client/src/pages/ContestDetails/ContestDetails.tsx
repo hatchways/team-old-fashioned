@@ -12,8 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FullWidthTabs from './ContestDetailTabs/ContestDetailTabs';
 import { useAuth } from '../../context/useAuthContext';
 import useStyles from './useStyles';
-import demoProfilePhoto from '../../Images/demo-profile-photo.png';
-import sampleContestData from './SampleContestData';
+
 import { getAllSubmissions } from '../../helpers/APICalls/submission';
 import { Submission } from '../../interface/Submission';
 
@@ -24,7 +23,6 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
   const { loggedInUser } = useAuth();
 
   const history = useHistory();
-  const { title, description, prizeAmount, user } = sampleContestData();
 
   useEffect(() => {
     const params = match.params as { id: string };
@@ -48,7 +46,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
           <CssBaseline />
           <Grid container alignItems="center" justify="center">
             <Grid item xs={12} sm={10} md={8}>
-              <Link to="/contest/all" className={classes.breadcrumb}>
+              <Link to="/dashboard" className={classes.breadcrumb}>
                 <ArrowBackIosIcon fontSize="inherit" /> Back to contests list
               </Link>
             </Grid>
@@ -56,12 +54,12 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
               <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
                 <Box>
                   <Typography className={classes.contestTitle} component="h1" variant="h5">
-                    {title}
+                    {submissionObj[0].title}
                   </Typography>
                 </Box>
                 <Box flexGrow={1}>
                   <Button variant="contained" color="primary" disableElevation className={classes.prize}>
-                    {prizeAmount}
+                    ${submissionObj[0].prizeAmount}
                   </Button>
                 </Box>
                 <div>
@@ -79,13 +77,13 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
               <Grid item xs={12} sm={10} md={8} className={classes.ownerColumn}>
                 <Box display="flex" alignItems="center">
                   <Box>
-                    <Avatar src={demoProfilePhoto} alt="Profile Photo" />
+                    <Avatar src={submissionObj[0].profilePicUrl} alt="Profile Photo" />
                   </Box>
-                  <Box className={classes.userText}>By {user}</Box>
+                  <Box className={classes.userText}>By {submissionObj[0].ownerName}</Box>
                 </Box>
               </Grid>
               <Grid className={classes.spacer}></Grid>
-              <FullWidthTabs submissionList={submissionObj} description={description} />
+              <FullWidthTabs submissionList={submissionObj} description={submissionObj[0].description} />
             </Grid>
           </Grid>
         </Grid>

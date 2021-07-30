@@ -63,3 +63,37 @@ export const getUserContests = async (): Promise<ContestAPIResponse> => {
       error: 'Unable to connect to server. Please try again',
     }));
 };
+
+export async function getAllContestsBySimpleSearch(search: string): Promise<any> {
+  const ContestfetchOptions: FetchOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({
+      search,
+    }),
+  };
+  return await fetch(`/contest/all/contests/simpleSearch`, ContestfetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: { message: 'Unable to connect to server. Please try again' },
+    }));
+}
+
+export async function getAllContestsByAdvanceSearch(title: string, startTime: Date, endTime: Date): Promise<any> {
+  const ContestfetchOptions: FetchOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({
+      title,
+      startTime,
+      endTime,
+    }),
+  };
+  return await fetch(`/contest/all/contests/advanceSearch`, ContestfetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: { message: 'Unable to connect to server. Please try again' },
+    }));
+}
