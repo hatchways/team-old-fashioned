@@ -11,6 +11,7 @@ const getProfile = (user) => {
       bio: user.get('bio'),
       location: user.get('location'),
       profilePicUrl: user.get('profilePicUrl'),
+      coverPhoto: user.get('coverPhoto'),
     },
   };
 };
@@ -70,24 +71,24 @@ exports.getUserInfo = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.updateProfilePicture = asyncHandler(async (req, res, next) => {
-  const { url } = req.body;
+exports.updateProfilePhoto = asyncHandler(async (req, res, next) => {
+  const { url, imageType } = req.body;
   const userId = req.user.id;
   try {
     const user = await User.findOneAndUpdate(
       { _id: mongoose.Types.ObjectId(userId) },
-      { profilePicUrl: url },
+      imageType === 'Profile picture' ? { profilePicUrl: url } : imageType === 'Cover photo' ? { coverPhoto: url } : '',
       { new: true },
     );
 
     profile = getProfile(user);
 
     res.status(200).json({
-      message: 'profile picture updated',
+      message: `${imageType} updated`,
       profile,
     });
   } catch (err) {
     res.status(500);
-    throw new Error('Failed to update profile picture url');
+    throw new Error(`Failed to update ${imageType} url`);
   }
 });
