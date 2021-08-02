@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Contest = require('../models/Contest');
 const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
 
@@ -68,6 +69,17 @@ exports.getUserInfo = asyncHandler(async (req, res, next) => {
   } catch (err) {
     res.status(400);
     throw new Error('Failed to retrieve personal information');
+  }
+});
+exports.getContestsByUsername = asyncHandler(async (req, res, next) => {
+  const username = req.params.username;
+  try {
+    const user = await User.findOne({ username: username });
+    const contestList = await Contest.find({ userId: user.id, deadline: { $gte: new Date() } });
+    res.status(200).json(contestList);
+  } catch (err) {
+    res.status(400);
+    throw new Error('Failed to retrieve list of active contests');
   }
 });
 
