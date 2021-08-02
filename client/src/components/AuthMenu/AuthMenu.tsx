@@ -50,7 +50,7 @@ const AuthMenu = (): JSX.Element => {
         getContentAnchorEl={null}
       >
         <MenuItem component={Link} to={'/profile'}>
-          Profile
+          Settings
         </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
