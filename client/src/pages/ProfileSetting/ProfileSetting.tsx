@@ -5,6 +5,7 @@ import PersonalInformationForm from './PersonalInformationForm/PersonalInformati
 import PaymentsPage from '../../components/Payments/PaymentsPage';
 import Profile from './Profile/Profile';
 import PaymentDetails from './PaymentDetails/PaymentDetails';
+import { Link } from 'react-router-dom';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -71,7 +72,8 @@ const ProfileSetting: FC = (): JSX.Element => {
         {value === 2 && <PaymentDetails />}
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Notifications
+        <Link to={'/users/lucas'}> Lucas </Link>
+        <Link to={'/users/kennethstewart'}> Kenneth </Link>
       </TabPanel>
       <TabPanel value={value} index={4}>
         Password Change
