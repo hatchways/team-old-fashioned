@@ -27,11 +27,7 @@ const Profile = ({ match }: RouteComponentProps): JSX.Element => {
 
   return (
     <Card className={classes.profileContainer}>
-      <CardMedia
-        className={classes.coverPhoto}
-        image="https://images.unsplash.com/photo-1482375702222-03a768d5ea3c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=634&q=80"
-        title="Cover Photo"
-      />
+      <CardMedia className={classes.coverPhoto} image={profile?.coverPhoto} title="Cover Photo" />
       <Box textAlign="center" marginBottom={'1em'} justifyContent="center">
         <Avatar className={classes.profileImg} src={profile?.profilePicUrl} variant="circle" />
         <Typography component="h1" variant="h5" className={classes.name}>
