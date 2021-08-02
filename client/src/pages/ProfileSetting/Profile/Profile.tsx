@@ -58,6 +58,7 @@ const Profile: FC = (): JSX.Element => {
     if (new Date(contest.deadline) > new Date()) {
       openContests.push(
         <ContestItem
+          id={contest._id}
           key={`activeContest-${contest._id}`}
           imgSrc={firstImgSrc || demoProfilePhoto}
           imgCount={imageCnt}
@@ -70,6 +71,7 @@ const Profile: FC = (): JSX.Element => {
     } else {
       closedContests.push(
         <ContestItem
+          id={contest._id}
           key={`inactiveContest-${contest._id}`}
           imgSrc={firstImgSrc || demoProfilePhoto}
           imgCount={imageCnt}
