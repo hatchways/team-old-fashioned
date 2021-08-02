@@ -1,11 +1,17 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { relative } from 'path';
 
 const useStyles = makeStyles((theme) => ({
   profileContainer: {
     maxWidth: 960,
-    margin: 'auto',
+    marginInline: 'auto',
     marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+  },
+  coverPhoto: {
+    // position: 'relative',
+    minHeight: 100,
+    height: 160,
   },
   avatarContainer: {
     marginTop: '15px',
@@ -27,22 +33,31 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 12,
   },
   headline: {
+    marginTop: '0.5em',
     fontWeight: theme.typography.fontWeightBold,
     fontSize: 14,
   },
   bio: {
     fontSize: 12,
+    // marginInline: 256,
+  },
+  bioGrid: {
+    // margin: 'auto',
+    display: 'grid',
+    gridAutoColumns: '72%',
   },
   profileImg: {
-    width: theme.spacing(12),
-    height: theme.spacing(12),
-    display: 'block',
-    margin: 'auto',
+    width: theme.spacing(14),
+    height: theme.spacing(14),
+    border: '4px solid #ffffff',
+    position: 'static',
+    display: 'inline-flex',
+    marginTop: '-64px',
     '& .MuiAvatar-fallback': {
       color: theme.palette.secondary,
     },
   },
-  winnerButton: {
+  messageButton: {
     borderRadius: 0,
     textTransform: 'uppercase',
   },

@@ -6,6 +6,7 @@ const useStyles = makeStyles(() => ({
   },
   panel: {
     backgroundColor: '#ffffff',
+    minHeight: '25vh',
   },
   caption: {
     fontWeight: 600,
