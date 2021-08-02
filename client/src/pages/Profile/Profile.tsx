@@ -7,10 +7,12 @@ import { User } from '../../interface/User';
 import { AuthContext } from '../../context/useAuthContext';
 import useStyles from './useStyles';
 import ProfileTabs from './Profile Tabs/ProfileTabs';
-
+import { ContestAPIData } from '../../interface/Contest';
+import { getContestsByUsername } from '../../helpers/APICalls/contest';
 const Profile = ({ match }: RouteComponentProps): JSX.Element => {
   const classes = useStyles();
   const [profile, setProfile] = useState<User>();
+  const [contests, setContests] = useState<ContestAPIData[]>([]);
   const { loggedInUser } = useContext(AuthContext);
 
   useEffect(() => {
@@ -21,8 +23,15 @@ const Profile = ({ match }: RouteComponentProps): JSX.Element => {
         setProfile(response);
       }
     };
+    const getContestList = async (username: string) => {
+      const response = await getContestsByUsername(username);
+      if (response) {
+        setContests(response);
+      }
+    };
 
     getProfile(username);
+    getContestList(username);
   }, [match]);
 
   return (
@@ -65,7 +74,7 @@ const Profile = ({ match }: RouteComponentProps): JSX.Element => {
         )}
       </Box>
       <Box textAlign="center">
-        <ProfileTabs />
+        <ProfileTabs contests={contests} />
       </Box>{' '}
     </Card>
   );

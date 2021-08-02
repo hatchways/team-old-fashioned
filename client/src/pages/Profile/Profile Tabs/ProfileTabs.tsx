@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { useTheme } from '@material-ui/core/styles';
 import useStyles from './useStyles';
+import { ContestAPIData } from '../../../interface/Contest';
+import { ContestList } from '../../../components/ContestListByUsername/ContestList';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -44,7 +46,10 @@ function a11yProps(index: number) {
   };
 }
 
-export default function ProfileTabs(): JSX.Element {
+interface Props {
+  contests: ContestAPIData[];
+}
+export default function ProfileTabs({ contests }: Props): JSX.Element {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -82,7 +87,7 @@ export default function ProfileTabs(): JSX.Element {
           Show portfolio here (image + caption). Image clickable to zoom.
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Show active owned contests here. Title + Prize. Links to contest page.
+          <ContestList contests={contests} />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
           Show ratings as artist and contest owner here.{' '}
