@@ -1,17 +1,12 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: 'transparent',
   },
   panel: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.palette.secondary.main,
     minHeight: '25vh',
-  },
-  caption: {
-    fontWeight: 600,
-    backgroundColor: 'transparent',
-    textAlign: 'center',
   },
 }));
 

@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { relative } from 'path';
 
 const useStyles = makeStyles((theme) => ({
   profileContainer: {
@@ -9,18 +8,18 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   coverPhoto: {
-    // position: 'relative',
-    minHeight: 100,
     height: 160,
   },
-  avatarContainer: {
-    marginTop: '15px',
-    width: '100%',
-    margin: 'auto',
-  },
-  tabsContainer: {
-    width: '100%',
-    margin: 'auto',
+  profileImg: {
+    width: theme.spacing(14),
+    height: theme.spacing(14),
+    border: '4px solid #ffffff',
+    position: 'static',
+    display: 'inline-flex',
+    marginTop: '-64px',
+    '& .MuiAvatar-fallback': {
+      color: theme.palette.secondary,
+    },
   },
   name: {
     color: theme.palette.primary.main,
@@ -39,24 +38,12 @@ const useStyles = makeStyles((theme) => ({
   },
   bio: {
     fontSize: 12,
-    // marginInline: 256,
   },
   bioGrid: {
-    // margin: 'auto',
     display: 'grid',
     gridAutoColumns: '72%',
   },
-  profileImg: {
-    width: theme.spacing(14),
-    height: theme.spacing(14),
-    border: '4px solid #ffffff',
-    position: 'static',
-    display: 'inline-flex',
-    marginTop: '-64px',
-    '& .MuiAvatar-fallback': {
-      color: theme.palette.secondary,
-    },
-  },
+
   messageButton: {
     borderRadius: 0,
     textTransform: 'uppercase',
