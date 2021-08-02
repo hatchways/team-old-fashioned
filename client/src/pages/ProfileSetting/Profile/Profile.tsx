@@ -85,7 +85,7 @@ const Profile: FC = (): JSX.Element => {
     }
   }
 
-  const profilePicUploadHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const UploadHandler = async (event: React.ChangeEvent<HTMLInputElement>, imageType: string) => {
     const fileList = event.target.files;
     if (fileList) {
       setisLoading(true);
@@ -96,7 +96,7 @@ const Profile: FC = (): JSX.Element => {
         updateSnackBarMessage(result.error.message);
       }
       if (result.success) {
-        updateSnackBarMessage('Profile picture uploaded');
+        updateSnackBarMessage(`${imageType} uploaded`);
         const response = await updateProfilePicture(result.success.urlArray[0]);
         if (response.user) {
           updateLoginContext(response);
@@ -113,7 +113,7 @@ const Profile: FC = (): JSX.Element => {
           <Avatar className={classes.profileImg} src={loggedInUser?.profilePicUrl} />
           <Typography className={classes.name}>{loggedInUser?.username}</Typography>
           <Button size="small" variant="contained" component="label" color="primary" className={classes.btn}>
-            <input type="file" accept="image/*" hidden onChange={profilePicUploadHandler} />
+            <input type="file" accept="image/*" hidden onChange={(e) => UploadHandler(e, 'Profile picture')} />
             {isLoading ? <CircularProgress color="secondary" size={20} /> : 'upload picture'}
           </Button>
         </Box>
