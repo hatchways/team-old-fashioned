@@ -1,10 +1,15 @@
 // Adapted froom https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
 
-const timeSince = (baseDate: Date): string => {
+const relativeTime = (baseDate: Date, type: string): string => {
   const date = new Date(baseDate);
-  const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+
+  const multiplier = (): number => {
+    return type === 'since' ? 1 : -1;
+  };
+  const seconds = Math.floor((multiplier() * (new Date().getTime() - date.getTime())) / 1000);
 
   let interval = seconds / 31536000;
+  console.log(interval);
 
   if (interval > 1) {
     return Math.floor(interval) + ' years';
@@ -28,4 +33,4 @@ const timeSince = (baseDate: Date): string => {
   return Math.floor(seconds) + ' seconds';
 };
 
-export default timeSince;
+export default relativeTime;
