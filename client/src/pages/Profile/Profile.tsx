@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { Card, CardMedia, Box, Avatar, Typography, Button } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { fetchProfile } from '../../helpers/APICalls/fetchProfile';
 import { User } from '../../interface/User';
+import { AuthContext } from '../../context/useAuthContext';
 import useStyles from './useStyles';
 import ProfileTabs from './Profile Tabs/ProfileTabs';
 
 const Profile = ({ match }: RouteComponentProps): JSX.Element => {
   const classes = useStyles();
   const [profile, setProfile] = useState<User>();
+  const { loggedInUser } = useContext(AuthContext);
 
   useEffect(() => {
     const { username } = match.params as { username: string };
@@ -50,9 +52,21 @@ const Profile = ({ match }: RouteComponentProps): JSX.Element => {
         </Box>
       </Box>
       <Box textAlign="center" marginBottom={'1em'}>
-        <Button component={Link} to={`/messages`} variant="outlined" color="primary" className={classes.messageButton}>
-          Message
-        </Button>
+        {profile?.username !== loggedInUser?.username ? (
+          <Button
+            component={Link}
+            to={`/messages`}
+            variant="outlined"
+            color="primary"
+            className={classes.messageButton}
+          >
+            Message
+          </Button>
+        ) : (
+          <Button component={Link} to={`/profile`} variant="outlined" color="primary" className={classes.messageButton}>
+            Edit Profile
+          </Button>
+        )}
       </Box>
       <Box textAlign="center">
         <ProfileTabs />
