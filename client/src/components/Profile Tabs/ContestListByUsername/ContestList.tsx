@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { ContestAPIData } from '../../../interface/Contest';
-import useStyles from './useStyles';
+import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import { ContestAPIData } from '../../../interface/Contest';
+import useStyles from './useStyles';
 import relativeTime from '../../../pages/Notifications/RelativeTime';
 
 interface Props {
@@ -17,7 +17,7 @@ export function ContestList({ contests }: Props): JSX.Element {
   const classes = useStyles();
 
   return (
-    <List component="nav" className={classes.root} aria-label="notifications">
+    <List component="nav" className={classes.root} aria-label="contests">
       {contests.map((contest: ContestAPIData) => (
         <>
           <ListItem button key={contest._id}>

@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     gridAutoColumns: '72%',
   },
 
-  messageButton: {
+  button: {
     borderRadius: 0,
     textTransform: 'uppercase',
   },

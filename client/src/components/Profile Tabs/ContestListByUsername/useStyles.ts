@@ -5,10 +5,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     minWidth: 400,
   },
-
-  readIndicator: {
-    color: '#00ff00',
-  },
   link: {
     color: theme.palette.text.primary,
     cursor: 'pointer',
@@ -31,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   prize: {
     color: theme.palette.secondary.main,
-    fontWeight: 600,
+    fontWeight: theme.typography.fontWeightBold,
     textAlign: 'left',
     backgroundColor: theme.palette.primary.main,
     pointerEvents: 'none',

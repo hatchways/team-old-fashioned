@@ -9,7 +9,6 @@ const relativeTime = (baseDate: Date, type: string): string => {
   const seconds = Math.floor((multiplier() * (new Date().getTime() - date.getTime())) / 1000);
 
   let interval = seconds / 31536000;
-  console.log(interval);
 
   if (interval > 1) {
     return Math.floor(interval) + ' years';

@@ -4,15 +4,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     background: theme.palette.primary.main,
   },
-  title: {
-    marginRight: theme.spacing(2),
-    marginLeft: theme.spacing(4),
-  },
-  navItems: {
-    marginLeft: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-  },
   link: {
     color: theme.palette.text.secondary,
     cursor: 'pointer',

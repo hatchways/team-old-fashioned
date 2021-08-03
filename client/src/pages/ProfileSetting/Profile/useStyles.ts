@@ -14,14 +14,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#000',
     fontWeight: 'bold',
   },
-  avatarContainer: {
-    width: '100%',
-    margin: 'auto',
-  },
   coverPhoto: {
     height: 160,
     position: 'relative',
-    // zIndex: 0,
   },
   coverPhotoButton: {
     padding: 10,
@@ -33,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-
   tabsContainer: {
     width: '100%',
     margin: '55px auto',

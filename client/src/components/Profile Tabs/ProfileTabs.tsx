@@ -90,7 +90,7 @@ export default function ProfileTabs({ contests }: Props): JSX.Element {
           <ContestList contests={contests} />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Show ratings as artist and contest owner here.{' '}
+          Show ratings as artist and contest owner here.
         </TabPanel>
       </SwipeableViews>
     </div>
