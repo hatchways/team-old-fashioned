@@ -29,6 +29,17 @@ const contestSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+
+  winningSubmission: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'submission',
+  },
+
+  // Identifies whether contest owner was already notified that the deadline has passed
+  notified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Contest = mongoose.model('Contest', contestSchema);
