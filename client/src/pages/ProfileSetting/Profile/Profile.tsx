@@ -124,7 +124,7 @@ const Profile: FC = (): JSX.Element => {
           </Box>
         </CardMedia>
         <Box textAlign="center" marginBottom={'1em'} justifyContent="center">
-          <Avatar className={classes.profileImg} src={loggedInUser?.profilePicUrl} variant="circle" />
+          <Avatar className={classes.profileImg} src={loggedInUser?.profilePicUrl} variant="circular" />
           <Typography className={classes.name}>{loggedInUser?.username}</Typography>
           <Button size="small" variant="contained" component="label" color="primary" className={classes.btn}>
             <input type="file" accept="image/*" hidden onChange={(e) => UploadHandler(e, 'Profile picture')} />

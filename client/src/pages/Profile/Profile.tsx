@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import { Card, CardMedia, Box, Avatar, Typography, Button } from '@material-ui/core';
+import { Card, CardMedia, Box, Avatar, Typography, Button, CircularProgress } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { fetchProfile } from '../../helpers/APICalls/fetchProfile';
 import { getContestsByUsername } from '../../helpers/APICalls/contest';
@@ -37,9 +37,13 @@ const Profile = ({ match }: RouteComponentProps): JSX.Element => {
 
   return (
     <Card className={classes.profileContainer}>
-      <CardMedia className={classes.coverPhoto} image={profile?.coverPhoto} title="Cover Photo" />
+      {profile?.coverPhoto ? (
+        <CardMedia className={classes.coverPhoto} image={profile?.coverPhoto} title="Cover Photo" />
+      ) : (
+        <CircularProgress color="secondary" size={20} />
+      )}
       <Box textAlign="center" marginBottom={'1em'} justifyContent="center">
-        <Avatar className={classes.profileImg} src={profile?.profilePicUrl} variant="circle" />
+        <Avatar className={classes.profileImg} src={profile?.profilePicUrl} variant="circular" />
         <Typography component="h1" variant="h5" className={classes.name}>
           @{profile?.username}
         </Typography>
