@@ -1,6 +1,8 @@
 interface userObj {
   _id: string;
+  email: string;
   username: string;
+  profilePicUrl?: string;
 }
 
 export interface Conversation {
@@ -10,6 +12,7 @@ export interface Conversation {
   last_msg: Message;
   from: userObj;
   to: userObj;
+  messages: Message[];
 }
 
 export interface Message {
@@ -23,5 +26,5 @@ export interface Message {
 export interface MessagingAPIResponse {
   success?: string;
   error?: string;
-  data?: Conversation[] | Message[];
+  data?: Conversation[];
 }

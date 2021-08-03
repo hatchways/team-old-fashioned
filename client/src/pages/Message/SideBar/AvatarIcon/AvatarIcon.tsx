@@ -65,11 +65,7 @@ export default function ConversationItem({ conversationItem }: ConversationListP
           }}
           variant="dot"
         >
-          <Avatar
-            className={classes.avatar}
-            alt={conversationItem?.fullName}
-            src={conversationItem?.imageURL.default}
-          />
+          <Avatar className={classes.avatar} alt={conversationItem?.fullName} src={conversationItem?.imageURL} />
         </StyledBadge>
       ) : (
         <Badge
@@ -79,11 +75,7 @@ export default function ConversationItem({ conversationItem }: ConversationListP
             horizontal: 'right',
           }}
         >
-          <Avatar
-            className={classes.avatar}
-            alt={conversationItem?.fullName}
-            src={conversationItem?.imageURL.default}
-          />
+          <Avatar className={classes.avatar} alt={conversationItem?.fullName} src={conversationItem?.imageURL} />
         </Badge>
       )}
     </Box>

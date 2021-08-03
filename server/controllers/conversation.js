@@ -44,12 +44,6 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
 exports.getUserConversations = asyncHandler(async (req, res, next) => {
   try {
     const userId = req.user.id;
-    // const conversations = await Conversation.find({
-    //   $or: [{ fromUser: mongoose.Types.ObjectId(userId) }, { toUser: mongoose.Types.ObjectId(userId) }],
-    // })
-    //   .populate('fromUser', 'username')
-    //   .populate('toUser', 'username')
-    //   .sort({ updated: 'desc' });
     const conversations = await Conversation.aggregate([
       {
         $match: {
@@ -89,7 +83,7 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
                       },
                     },
                   },
-                  { $project: { _id: 1, username: 1 } },
+                  { $project: { email: 1, username: 1, profilePicUrl: 1 } },
                 ],
                 as: 'sender',
               },
@@ -102,6 +96,7 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
             {
               $limit: 1,
             },
+            { $unwind: '$sender' },
             { $project: { _id: 1, conversation: 1, sender: 1, message: 1, createdAt: 1 } },
           ],
           as: 'last_msg',
@@ -125,7 +120,7 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
                 },
               },
             },
-            { $project: { _id: 1, username: 1 } },
+            { $project: { email: 1, username: 1, profilePicUrl: 1 } },
           ],
           as: 'from',
         },
@@ -148,7 +143,7 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
                 },
               },
             },
-            { $project: { _id: 1, username: 1 } },
+            { $project: { email: 1, username: 1, profilePicUrl: 1 } },
           ],
           as: 'to',
         },
@@ -160,6 +155,48 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
         },
       },
       {
+        $lookup: {
+          from: 'messages',
+          let: {
+            cId: '$_id',
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$conversation', '$$cId'],
+                },
+              },
+            },
+            {
+              $lookup: {
+                from: 'users',
+                let: { uId: '$sender' },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $eq: ['$_id', '$$uId'],
+                      },
+                    },
+                  },
+                  { $project: { email: 1, username: 1, profilePicUrl: 1 } },
+                ],
+                as: 'sender',
+              },
+            },
+            {
+              $sort: {
+                createdAt: 1,
+              },
+            },
+            { $unwind: '$sender' },
+            { $project: { _id: 1, conversation: 1, sender: 1, message: 1, createdAt: 1 } },
+          ],
+          as: 'messages',
+        },
+      },
+      {
         $project: {
           _id: 1,
           from: 1,
@@ -167,6 +204,7 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
           last_msg: 1,
           createdAt: 1,
           updatedAt: 1,
+          messages: 1,
         },
       },
     ]);
@@ -219,9 +257,6 @@ exports.getMessagesForConversation = asyncHandler(async (req, res, next) => {
       throw new Error('invalid conversation');
     }
 
-    // const messages = await Message.find({ conversation: mongoose.Types.ObjectId(conversationId) })
-    //   .populate('sender', 'username')
-    //   .sort({ created: 'desc' });
     const messages = await Message.aggregate([
       { $match: { conversation: mongoose.Types.ObjectId(conversationId) } },
       {

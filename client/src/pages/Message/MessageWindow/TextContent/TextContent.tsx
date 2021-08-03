@@ -19,7 +19,7 @@ export default function TextContent({ text }: MessageProps): JSX.Element {
           <UserBubble
             userName={text.fullName}
             text={message.messageText}
-            imageUrl={text.imageURL.default}
+            imageUrl={text.imageURL}
             key={message.messageId}
           />
         );
