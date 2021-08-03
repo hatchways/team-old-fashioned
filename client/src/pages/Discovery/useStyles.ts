@@ -1,7 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   root: {
+    width: 'auto',
+  },
+  cardContainer: {
     width: '100%',
+    margin: 'unset',
   },
   formContainer: {
     marginBottom: '100px',

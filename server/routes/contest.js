@@ -18,7 +18,6 @@ router.post('/:id', protect, updateContest);
 router.get('/:id', protect, getContest);
 router.get('/all/contests', getContests);
 router.post('/:id/submission', protect, createSubmissionByContestId);
-router.post('/all/contests/simpleSearch', getContestsBySimpleSearch);
 router.post('/all/contests/advanceSearch', getContestsByAdvanceSearch);
 
 module.exports = router;

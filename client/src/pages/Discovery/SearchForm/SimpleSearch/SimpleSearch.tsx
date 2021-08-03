@@ -29,11 +29,11 @@ export default function SimpleSearch({ handleSimpleSubmit }: Props): JSX.Element
     >
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} noValidate>
-          <div className={classes.root}>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
+          <Box display="flex" flexGrow={1}>
+            <Box position="relative" display="flex" alignItems="center">
+              <Box position="absolute" justifyContent="center">
                 <SearchIcon />
-              </div>
+              </Box>
               <InputBase
                 id="search"
                 fullWidth
@@ -49,13 +49,13 @@ export default function SimpleSearch({ handleSimpleSubmit }: Props): JSX.Element
                   input: classes.inputInput,
                 }}
               />
-            </div>
+            </Box>
             <Box textAlign="center">
               <Button type="submit" variant="outlined">
                 {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Search'}
               </Button>
             </Box>
-          </div>
+          </Box>
         </form>
       )}
     </Formik>

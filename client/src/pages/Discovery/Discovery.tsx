@@ -14,11 +14,7 @@ import {
 } from '@material-ui/core';
 import useStyles from './useStyles';
 import { Contest } from '../../interface/Contest';
-import {
-  getAllContests,
-  getAllContestsByAdvanceSearch,
-  getAllContestsBySimpleSearch,
-} from '../../helpers/APICalls/contest';
+import { getAllContests, getAllContestsByAdvanceSearch } from '../../helpers/APICalls/contest';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../context/useAuthContext';
@@ -55,11 +51,11 @@ export default function Discovery(): JSX.Element {
       search: string;
     }>,
   ) => {
-    getAllContestsBySimpleSearch(search).then((data) => {
-      if (data.contest.length) {
-        setContestObj(data.contest);
+    getAllContestsByAdvanceSearch(search, null, null, null).then((data) => {
+      if (data.success) {
+        setContestObj(data.success.contest);
       } else {
-        updateSnackBarMessage('Could not find any match title.');
+        updateSnackBarMessage(data.error);
       }
     });
     setSubmitting(false);
@@ -83,11 +79,11 @@ export default function Discovery(): JSX.Element {
       endTime: Date;
     }>,
   ) => {
-    getAllContestsByAdvanceSearch(title, startTime, endTime).then((data) => {
-      if (data.contest.length) {
-        setContestObj(data.contest);
+    getAllContestsByAdvanceSearch(null, title, startTime, endTime).then((data) => {
+      if (data.success) {
+        setContestObj(data.success.contest);
       } else {
-        updateSnackBarMessage('Could not find any match contests.');
+        updateSnackBarMessage(data.error);
       }
     });
     setSubmitting(false);
@@ -109,9 +105,9 @@ export default function Discovery(): JSX.Element {
         <SimpleSearch handleSimpleSubmit={handleSimpleSubmit} />
         <AdvanceSearch handleSubmit={handleSubmit} />
       </Box>
-      <Grid container alignItems="center" alignContent="space-around" spacing={6}>
+      <Grid container alignItems="center" alignContent="space-around" spacing={6} className={classes.cardContainer}>
         {contestObj?.map((contest, index) => (
-          <Grid item xl={3} md={4} xs={12} spacing={6} key={contest._id}>
+          <Grid item xl={3} md={4} xs={12} key={contest._id}>
             <Grow in={true} style={{ transformOrigin: '0 0 0' }} {...{ timeout: 1000 * index }}>
               <Card className={classes.card}>
                 <CardActionArea>
