@@ -9,8 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { useTheme } from '@material-ui/core/styles';
 import useStyles from './useStyles';
-import { ContestAPIData } from '../../../interface/Contest';
-import { ContestList } from '../../../components/ContestListByUsername/ContestList';
+import { ContestAPIData } from '../../interface/Contest';
+import { ContestList } from './ContestListByUsername/ContestList';
 
 interface TabPanelProps {
   children?: React.ReactNode;

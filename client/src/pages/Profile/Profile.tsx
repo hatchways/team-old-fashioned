@@ -6,7 +6,7 @@ import { fetchProfile } from '../../helpers/APICalls/fetchProfile';
 import { User } from '../../interface/User';
 import { AuthContext } from '../../context/useAuthContext';
 import useStyles from './useStyles';
-import ProfileTabs from './Profile Tabs/ProfileTabs';
+import ProfileTabs from '../../components/Profile Tabs/ProfileTabs';
 import { ContestAPIData } from '../../interface/Contest';
 import { getContestsByUsername } from '../../helpers/APICalls/contest';
 const Profile = ({ match }: RouteComponentProps): JSX.Element => {

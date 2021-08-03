@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ContestAPIData } from '../../interface/Contest';
+import { ContestAPIData } from '../../../interface/Contest';
 import useStyles from './useStyles';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-import relativeTime from '../../pages/Notifications/RelativeTime';
+import relativeTime from '../../../pages/Notifications/RelativeTime';
 
 interface Props {
   contests: ContestAPIData[];
