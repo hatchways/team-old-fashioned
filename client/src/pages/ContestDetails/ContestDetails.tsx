@@ -63,15 +63,21 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                   </Button>
                 </Box>
                 <div>
-                  <Button
-                    component={Link}
-                    to={`/file-upload/${contestId}`}
-                    variant="outlined"
-                    color="primary"
-                    className={classes.winnerButton}
-                  >
-                    submit design
-                  </Button>
+                  {loggedInUser.username === submissionObj[0].ownerName ? (
+                    <Button variant="outlined" color="primary" className={classes.winnerButton}>
+                      select winner
+                    </Button>
+                  ) : (
+                    <Button
+                      component={Link}
+                      to={`/file-upload/${contestId}`}
+                      variant="outlined"
+                      color="primary"
+                      className={classes.winnerButton}
+                    >
+                      submit design
+                    </Button>
+                  )}
                 </div>
               </Box>
               <Grid item xs={12} sm={10} md={8} className={classes.ownerColumn}>
