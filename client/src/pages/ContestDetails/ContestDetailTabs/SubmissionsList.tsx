@@ -6,6 +6,7 @@ import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import useStyles from './useStyles';
 import { Submission } from '../../../interface/Submission';
 import { Link } from 'react-router-dom';
+import Radio from '@material-ui/core/Radio';
 
 interface SubmissionListProps {
   submissionList?: Submission[];
@@ -13,6 +14,12 @@ interface SubmissionListProps {
 
 export function SubmissionsGrid({ submissionList }: SubmissionListProps): JSX.Element {
   const classes = useStyles();
+  const [selectedValue, setSelectedValue] = React.useState('');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedValue(event.target.value);
+  };
+
   return (
     <ImageList cols={4}>
       {submissionList?.map((submission: Submission) =>
@@ -22,7 +29,15 @@ export function SubmissionsGrid({ submissionList }: SubmissionListProps): JSX.El
               srcSet={`${_file}?w=248&fit=crop&auto=format 1x,
                 ${_file}?w=248&fit=crop&auto=format&dpr=2 2x`}
               loading="lazy"
+              className={classes.image}
             />
+            <Radio
+              checked={selectedValue === submission._id}
+              onChange={handleChange}
+              value={submission._id}
+              className={classes.radio}
+            />
+
             <Link to={`/users/${submission.name}`} className={classes.caption}>
               <ImageListItemBar title={'By @' + submission.name} />
             </Link>
