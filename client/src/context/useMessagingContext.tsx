@@ -39,7 +39,7 @@ export const MessagingProvider: FC = ({ children }): JSX.Element => {
               fullName: con.to.username,
               title: '',
               createdAt: con.createdAt,
-              lastMessageText: con.last_msg.message,
+              lastMessageText: con.last_msg ? con.last_msg.message : '',
               messages: messages,
               isOnline: true,
             };

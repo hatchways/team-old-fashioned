@@ -16,12 +16,12 @@ export default function ConversationList({
   loadedConversation,
 }: ConversationProps): JSX.Element {
   const classes = useStyles();
-  const conversationClasses = [classes.sideBarValue];
   return (
     <Paper elevation={3} className={classes.root}>
       <Box className={classes.sideBarContainer}>
         <Typography className={classes.sideBarTitle}>Inbox Messages</Typography>
         {conversationList?.map((conversation) => {
+          const conversationClasses = [classes.sideBarValue];
           if (loadedConversation === conversation.conversationId) {
             conversationClasses.push(classes.selectedConversation);
           }

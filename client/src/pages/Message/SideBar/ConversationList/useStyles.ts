@@ -3,11 +3,15 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '90vh',
+    borderRadius: 0,
   },
   sideBarContainer: {
     zIndex: 10,
+    borderRadius: 0,
+    width: 250,
   },
   sideBarTitle: {
+    borderRadius: 0,
     fontSize: 20,
     letterSpacing: -0.29,
     fontWeight: 600,
