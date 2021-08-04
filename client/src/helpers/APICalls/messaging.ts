@@ -24,3 +24,16 @@ export const fetchMessages = async (conversationId: string): Promise<MessagingAP
       error: { message: 'Unable to connect to server. Please try again' },
     }));
 };
+
+export const createConversation = async (to: string): Promise<MessagingAPIResponse> => {
+  const fetchOptions: FetchOptions = {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify({ to }),
+  };
+  return await fetch(`/conversation/new-conversation`, fetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: { message: 'Unable to connect to server. Please try again' },
+    }));
+};

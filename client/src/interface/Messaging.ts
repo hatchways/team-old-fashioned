@@ -26,5 +26,5 @@ export interface Message {
 export interface MessagingAPIResponse {
   success?: string;
   error?: string;
-  data?: Conversation[];
+  data?: Conversation[] | Conversation;
 }

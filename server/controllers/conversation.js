@@ -196,6 +196,7 @@ exports.getUserConversations = asyncHandler(async (req, res, next) => {
           as: 'messages',
         },
       },
+      { $sort: { createdAt: -1 } },
       {
         $project: {
           _id: 1,

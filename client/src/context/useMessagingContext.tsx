@@ -1,18 +1,42 @@
 import { useState, useContext, createContext, FC, useEffect } from 'react';
 import { Conversation, Message } from '../interface/Message';
 import { Conversation as APIConversation } from '../interface/Messaging';
-import { fetchConversations } from '../helpers/APICalls/messaging';
+import { fetchConversations, createConversation } from '../helpers/APICalls/messaging';
 import { AuthContext } from '../context/useAuthContext';
 
 interface IMessagingContext {
   conversations: Conversation[];
   addMessage: (conversationId: string, message: string) => void;
+  newConversation: (to: string) => void;
 }
 
 export const MessagingContext = createContext<IMessagingContext>({
   conversations: [],
   addMessage: () => null,
+  newConversation: () => null,
 });
+
+// const newConversation = (conversations: APIConversation[], loggedInUserEmail: string): Conversation[] =>
+//   conversations.map<Conversation>((con) => {
+//     const messages = con.messages.map<Message>((msg) => {
+//       return {
+//         messageId: msg._id,
+//         messageText: msg.message,
+//         createdAt: msg.createdAt,
+//         isMyMessage: msg.sender.email === loggedInUserEmail,
+//       };
+//     });
+//     return {
+//       conversationId: con._id,
+//       imageURL: con.to.profilePicUrl,
+//       fullName: con.to.username,
+//       title: '',
+//       createdAt: con.createdAt,
+//       lastMessageText: con.last_msg ? con.last_msg.message : '',
+//       messages: messages,
+//       isOnline: true,
+//     };
+//   });
 
 export const MessagingProvider: FC = ({ children }): JSX.Element => {
   const { loggedInUser } = useContext(AuthContext);
@@ -66,7 +90,35 @@ export const MessagingProvider: FC = ({ children }): JSX.Element => {
     }
   };
 
-  return <MessagingContext.Provider value={{ conversations, addMessage }}>{children}</MessagingContext.Provider>;
+  const newConversation = async (to: string) => {
+    // if conversation exists return
+    const conIndex = conversations.findIndex((con) => con.fullName === to);
+    if (conIndex != -1) {
+      return;
+    }
+    const response = await createConversation(to);
+    if (response.success && response.data) {
+      const rawConversation = response.data as APIConversation;
+      const updatedConversations = conversations.slice();
+      updatedConversations.push({
+        conversationId: rawConversation._id,
+        imageURL: rawConversation.to.profilePicUrl,
+        fullName: rawConversation.to.username,
+        title: '',
+        createdAt: rawConversation.createdAt,
+        lastMessageText: '',
+        messages: [],
+        isOnline: true,
+      });
+      setConversations(updatedConversations);
+    }
+  };
+
+  return (
+    <MessagingContext.Provider value={{ conversations, addMessage, newConversation }}>
+      {children}
+    </MessagingContext.Provider>
+  );
 };
 
 export function useMessaging(): IMessagingContext {
