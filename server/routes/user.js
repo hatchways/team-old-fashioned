@@ -4,13 +4,17 @@ const protect = require('../middleware/auth');
 const {
   searchUsers,
   updatePersonalInformation,
-  updateProfilePicture,
   confirmPaymentMethod,
+  updateProfilePhoto,
+  getUserInfo,
+  getContestsByUsername,
 } = require('../controllers/user');
 
 router.route('/').get(protect, searchUsers);
 router.route('/info').post(protect, updatePersonalInformation);
-router.route('/profile-pic').post(protect, updateProfilePicture);
 router.route('/confirm-payment-method/:val').post(protect, confirmPaymentMethod);
+router.route('/profile-photo').post(protect, updateProfilePhoto);
+router.route('/:username').get(protect, getUserInfo);
+router.route('/:username/contests').get(protect, getContestsByUsername);
 
 module.exports = router;

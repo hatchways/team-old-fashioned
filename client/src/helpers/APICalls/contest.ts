@@ -1,6 +1,6 @@
 import { AuthApiData } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
-import { ContestAPIResponse } from '../../interface/Contest';
+import { ContestAPIData, ContestAPIResponse } from '../../interface/Contest';
 
 export async function createContestAPI(
   title: string,
@@ -58,6 +58,18 @@ export const getUserContests = async (): Promise<ContestAPIResponse> => {
     credentials: 'include',
   };
   return await fetch(`/contest/user-contests`, fetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: 'Unable to connect to server. Please try again',
+    }));
+};
+
+export const getContestsByUsername = async (username: string): Promise<ContestAPIData[]> => {
+  const fetchOptions: FetchOptions = {
+    method: 'GET',
+    credentials: 'include',
+  };
+  return await fetch(`/users/${username}/contests`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: 'Unable to connect to server. Please try again',

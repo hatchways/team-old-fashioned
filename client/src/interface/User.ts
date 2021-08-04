@@ -6,6 +6,7 @@ export interface User {
   location: string;
   profilePicUrl: string;
   payment_method_confirmed: boolean;
+  coverPhoto: string;
 }
 
 export interface SearchUsersApiData {

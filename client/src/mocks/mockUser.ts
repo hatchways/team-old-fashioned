@@ -8,6 +8,7 @@ const mockLoggedInUser: User = {
   location: 'location',
   profilePicUrl: 'foo',
   payment_method_confirmed: false,
+  coverPhoto: 'foo',
 };
 
 const mockOtherUser1: User = {
@@ -18,6 +19,7 @@ const mockOtherUser1: User = {
   location: 'location 1',
   profilePicUrl: 'foo',
   payment_method_confirmed: false,
+  coverPhoto: 'foo',
 };
 const mockOtherUser2: User = {
   username: 'Mock test user 2',
@@ -27,6 +29,7 @@ const mockOtherUser2: User = {
   location: 'location 2',
   profilePicUrl: 'foo',
   payment_method_confirmed: true,
+  coverPhoto: 'foo',
 };
 const mockOtherUser3: User = {
   username: 'Mock test user 3',
@@ -36,6 +39,7 @@ const mockOtherUser3: User = {
   location: 'location 3',
   profilePicUrl: 'foo',
   payment_method_confirmed: true,
+  coverPhoto: 'foo',
 };
 
 const mockOtherUsers: User[] = [mockOtherUser1, mockOtherUser2, mockOtherUser3];
