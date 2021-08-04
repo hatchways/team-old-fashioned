@@ -20,12 +20,12 @@ import { useSnackBar } from '../../context/useSnackbarContext';
 export default function ContestDetails({ match }: RouteComponentProps): JSX.Element {
   const classes = useStyles();
   const [submissionObj, setSubmissionObj] = useState<Submission[]>(Object);
+  const [winner, setWinner] = useState<string>('');
   const [contestId, setContestId] = useState<string>('');
   const { loggedInUser } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
 
   const history = useHistory();
-  const submissionId = '610922824b49c54cc46a32ba';
 
   useEffect(() => {
     const params = match.params as { id: string };
@@ -43,14 +43,20 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
   }
 
   const handleWinner = async (submissionId: string) => {
-    const winner = await selectWinner(contestId, submissionId).then((response) => {
+    await selectWinner(contestId, submissionId).then((response) => {
       if (response.error) {
+        console.log(response);
         updateSnackBarMessage(response.error);
       } else {
         updateSnackBarMessage('Winner selected!');
         console.log(response);
       }
     });
+  };
+
+  const handleSelection = async (submissionId: string) => {
+    setWinner(submissionId);
+    console.log(`winner: ${winner}`);
   };
 
   return (
@@ -82,7 +88,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                       variant="outlined"
                       color="primary"
                       onClick={(e) => {
-                        handleWinner(submissionId);
+                        handleWinner(winner);
                       }}
                       className={classes.winnerButton}
                     >
@@ -110,7 +116,11 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                 </Box>
               </Grid>
               <Grid className={classes.spacer}></Grid>
-              <FullWidthTabs submissionList={submissionObj} description={submissionObj[0].description} />
+              <FullWidthTabs
+                submissionList={submissionObj}
+                onSelectWinner={handleSelection}
+                description={submissionObj[0].description}
+              />
             </Grid>
           </Grid>
         </Grid>

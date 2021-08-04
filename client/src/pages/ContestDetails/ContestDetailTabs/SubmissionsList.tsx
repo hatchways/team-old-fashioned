@@ -1,5 +1,6 @@
 // Adapted from https://next.material-ui.com/components/image-list/
 import * as React from 'react';
+import { useState } from 'react';
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
@@ -10,14 +11,16 @@ import Radio from '@material-ui/core/Radio';
 
 interface SubmissionListProps {
   submissionList?: Submission[];
+  onPassWinner: (submissionId: string) => void;
 }
 
-export function SubmissionsGrid({ submissionList }: SubmissionListProps): JSX.Element {
+export function SubmissionsGrid({ submissionList, onPassWinner }: SubmissionListProps): JSX.Element {
   const classes = useStyles();
-  const [selectedValue, setSelectedValue] = React.useState('');
+  const [selectedSubmission, setSelectedSubmission] = React.useState('');
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSelectedSubmission(event.target.value);
+    onPassWinner(selectedSubmission);
   };
 
   return (
@@ -32,7 +35,7 @@ export function SubmissionsGrid({ submissionList }: SubmissionListProps): JSX.El
               className={classes.image}
             />
             <Radio
-              checked={selectedValue === submission._id}
+              checked={selectedSubmission === submission._id}
               onChange={handleChange}
               value={submission._id}
               className={classes.radio}
@@ -48,7 +51,10 @@ export function SubmissionsGrid({ submissionList }: SubmissionListProps): JSX.El
   );
 }
 
-export function submissionCount({ submissionList }: SubmissionListProps): number {
+interface SubmissionCountProps {
+  submissionList?: Submission[];
+}
+export function submissionCount({ submissionList }: SubmissionCountProps): number {
   let length = 0;
   submissionList?.forEach((submission: Submission) => {
     if (submission.files) {
