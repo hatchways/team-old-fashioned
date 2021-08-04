@@ -1,4 +1,5 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
+import { useParams } from 'react-router';
 import { MessagingContext } from '../../context/useMessagingContext';
 import { Grid } from '@material-ui/core';
 import ConversationList from './SideBar/ConversationList/ConversationList';
@@ -6,8 +7,9 @@ import MessageWindow from './MessageWindow/MessageWindow';
 import useStyles from './useStyles';
 
 export default function Message(): JSX.Element {
+  const { id: conversationParamId } = useParams<{ id: string }>();
   const { conversations, addMessage } = useContext(MessagingContext);
-  const [loadedConversation, setLoadedConversation] = useState('');
+  const [loadedConversation, setLoadedConversation] = useState(conversationParamId);
   const classes = useStyles();
 
   const conversationClickHandler = (conId: string) => {

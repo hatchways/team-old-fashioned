@@ -38,6 +38,7 @@ function App(): JSX.Element {
                     <ProtectedRoute exact path="/file-upload/:id" component={DesignSubmit} />
                     <ProtectedRoute exact path="/setting" component={ProfileSetting} />
                     <Route exact path="/discovery" component={Discovery} />
+                    <ProtectedRoute exact path="/messages/:id" component={Message} />
                     <ProtectedRoute exact path="/messages" component={Message} />
                     <ProtectedRoute exact path="/notifications" component={NotificationsPage} />
                     <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />

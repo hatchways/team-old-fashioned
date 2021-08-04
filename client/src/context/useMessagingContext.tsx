@@ -90,11 +90,11 @@ export const MessagingProvider: FC = ({ children }): JSX.Element => {
     }
   };
 
-  const newConversation = async (to: string) => {
+  const newConversation = async (to: string): Promise<string | undefined> => {
     // if conversation exists return
-    const conIndex = conversations.findIndex((con) => con.fullName === to);
-    if (conIndex != -1) {
-      return;
+    const conversation = conversations.find((con) => con.fullName === to);
+    if (conversation) {
+      return conversation.conversationId;
     }
     const response = await createConversation(to);
     if (response.success && response.data) {
@@ -111,7 +111,9 @@ export const MessagingProvider: FC = ({ children }): JSX.Element => {
         isOnline: true,
       });
       setConversations(updatedConversations);
+      return rawConversation._id;
     }
+    return undefined;
   };
 
   return (
