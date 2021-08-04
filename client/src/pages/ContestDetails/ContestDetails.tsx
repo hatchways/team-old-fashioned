@@ -19,6 +19,7 @@ import { Submission } from '../../interface/Submission';
 export default function ContestDetails({ match }: RouteComponentProps): JSX.Element {
   const classes = useStyles();
   const [submissionObj, setSubmissionObj] = useState<Submission[]>(Object);
+  const [isOwner, setIsOwner] = useState<boolean>(false);
   const [contestId, setContestId] = useState<string>('');
   const { loggedInUser } = useAuth();
 
@@ -29,6 +30,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
     setContestId(params.id);
     getAllSubmissions(params.id).then((data) => {
       setSubmissionObj(data.submission);
+      setIsOwner(data.isOwner);
     });
   }, [match]);
 
@@ -62,6 +64,19 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                     ${submissionObj[0].prizeAmount}
                   </Button>
                 </Box>
+                {!isOwner ? (
+                  <Box>
+                    <Button
+                      component={Link}
+                      to={`/file-upload/${contestId}`}
+                      variant="outlined"
+                      color="primary"
+                      className={classes.winnerButton}
+                    >
+                      submit design
+                    </Button>
+                  </Box>
+                ) : null}
               </Box>
               <Grid item xs={12} sm={10} md={8} className={classes.ownerColumn}>
                 <Box display="flex" alignItems="center">

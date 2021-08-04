@@ -22,7 +22,7 @@ exports.getAllSubmissions = asyncHandler(async (req, res, next) => {
     const contestData = await Contest.findById(contestId).populate('userId');
 
     if (isOwner) {
-      if (contestData.userId._id === userId) {
+      if (contestData.userId._id == userId) {
         const submissions = await Submission.find({ contestId: contestId }).populate('userId');
 
         if (submissions.length !== 0) {
@@ -99,7 +99,6 @@ exports.getAllSubmissions = asyncHandler(async (req, res, next) => {
           };
           submissionList.push(submissionData);
         }
-
         res.status(200).json({ submission: submissionList, isOwner: false });
       }
     } else {

@@ -14,13 +14,13 @@ import {
 } from '@material-ui/core';
 import useStyles from './useStyles';
 import { Contest } from '../../interface/Contest';
-import { getAllContests, getAllContestsByAdvanceSearch } from '../../helpers/APICalls/contest';
+import { getAllContests } from '../../helpers/APICalls/contest';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../context/useAuthContext';
 import { FormikHelpers } from 'formik';
-import SimpleSearch from './SearchForm/SimpleSearch/SimpleSearch';
 import AdvanceSearch from './SearchForm/AdvanceSearch/AdvanceSearch';
+import SimpleSearch from './SearchForm/SimpleSearch/SimpleSearch';
 
 export default function Discovery(): JSX.Element {
   const classes = useStyles();
@@ -30,14 +30,18 @@ export default function Discovery(): JSX.Element {
   const history = useHistory();
 
   useEffect(() => {
-    getAllContests().then((data) => {
-      if (data.error) {
-        updateSnackBarMessage(data.error.message);
-      } else {
-        setContestObj(data.contest);
-      }
-    });
-  }, [updateSnackBarMessage]);
+    const fetchAllcontests = () => {
+      history.push(`/discovery`);
+      getAllContests(null, null, null, null).then((data) => {
+        if (data.error) {
+          updateSnackBarMessage(data.error.message);
+        } else {
+          setContestObj(data.contest);
+        }
+      });
+    };
+    fetchAllcontests();
+  }, [updateSnackBarMessage, history]);
 
   const handleSimpleSubmit = (
     {
@@ -51,7 +55,8 @@ export default function Discovery(): JSX.Element {
       search: string;
     }>,
   ) => {
-    getAllContestsByAdvanceSearch(search, null, null, null).then((data) => {
+    history.push(`/discovery?search=${search}`);
+    getAllContests(search, null, null, null).then((data) => {
       if (data.success) {
         setContestObj(data.success.contest);
       } else {
@@ -79,7 +84,8 @@ export default function Discovery(): JSX.Element {
       endTime: Date;
     }>,
   ) => {
-    getAllContestsByAdvanceSearch(null, title, startTime, endTime).then((data) => {
+    history.push(`/discovery?title=${title}&startTime=${startTime}&endTime=${endTime}`);
+    getAllContests(null, title, startTime, endTime).then((data) => {
       if (data.success) {
         setContestObj(data.success.contest);
       } else {
