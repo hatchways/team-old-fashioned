@@ -21,7 +21,11 @@ export default function Message(): JSX.Element {
   return (
     <Grid container className={classes.root}>
       <Grid>
-        <ConversationList conversationList={conversations} conversationClick={conversationClickHandler} />
+        <ConversationList
+          conversationList={conversations}
+          loadedConversation={loadedConversation}
+          conversationClick={conversationClickHandler}
+        />
       </Grid>
       <Grid className={classes.messageContainer}>
         <MessageWindow

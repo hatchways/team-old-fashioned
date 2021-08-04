@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '23px',
   },
   sideBarValue: {
-    borderRadius: 8,
+    borderRadius: 0,
     height: 80,
     boxShadow: '0 2px 10px 0 rgba(88,133,196,0.1)',
     display: 'flex',
@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       cursor: 'grab',
     },
+  },
+  selectedConversation: {
+    border: '1px solid #000',
+    borderWidth: '0 5px 0 0',
   },
 }));
 
