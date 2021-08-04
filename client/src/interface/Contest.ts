@@ -32,6 +32,7 @@ export interface ContestAPIData {
   user: User;
   created: Date | string;
   subs: SubmissionAPIData[];
+  winningSubmission?: string;
 }
 
 export interface ContestAPIResponse {
