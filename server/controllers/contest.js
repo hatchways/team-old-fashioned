@@ -47,6 +47,43 @@ exports.updateContest = asyncHandler(async (req, res, next) => {
   next();
 });
 
+// handler for selecting a contest winner
+exports.selectWinner = asyncHandler(async (req, res, next) => {
+  const id = req.params.id;
+  const { submissionId } = req.body;
+
+  let contest = await Contest.findById(id);
+  if (contest.userId != req.user.id) {
+    return res.status(400);
+    throw new Error('This contest belongs to another user.');
+  }
+
+  if (contest.deadline > new Date()) {
+    return res.status(400);
+    throw new Error('You can select a winner after the deadline.');
+  }
+  if (contest.winningSubmission) {
+    return res.status(400);
+    throw new Error('A winner for the contest has already been selected.');
+  }
+
+  const submission = await Submission.findById(submissionId);
+  if (!submission) {
+    return res.status(400);
+    throw new Error('No such submission found.');
+  }
+
+  const userHasPaymentMethod = await User.findById(contest.userId).then((user) => {
+    return user.payment_method_confirmed;
+  });
+  if (!userHasPaymentMethod) {
+    return res.status(400);
+    throw new Error('Please add a payment method on your Settings Page.');
+  }
+  contest = await Contest.findByIdAndUpdate(id, { winningSubmission: submissionId }, { new: true });
+  res.status(200).json(contest);
+});
+
 // handler for getting a contest by providing the contest id
 exports.getContest = asyncHandler(async (req, res, next) => {
   try {
