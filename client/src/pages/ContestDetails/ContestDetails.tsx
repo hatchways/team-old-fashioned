@@ -12,17 +12,20 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FullWidthTabs from './ContestDetailTabs/ContestDetailTabs';
 import { useAuth } from '../../context/useAuthContext';
 import useStyles from './useStyles';
-
+import { selectWinner } from '../../helpers/APICalls/contest';
 import { getAllSubmissions } from '../../helpers/APICalls/submission';
 import { Submission } from '../../interface/Submission';
+import { useSnackBar } from '../../context/useSnackbarContext';
 
 export default function ContestDetails({ match }: RouteComponentProps): JSX.Element {
   const classes = useStyles();
   const [submissionObj, setSubmissionObj] = useState<Submission[]>(Object);
   const [contestId, setContestId] = useState<string>('');
   const { loggedInUser } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
 
   const history = useHistory();
+  const submissionId = '610922824b49c54cc46a32ba';
 
   useEffect(() => {
     const params = match.params as { id: string };
@@ -38,6 +41,17 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
     // loading for a split seconds until history.push works
     return <CircularProgress />;
   }
+
+  const handleWinner = async (submissionId: string) => {
+    const winner = await selectWinner(contestId, submissionId).then((response) => {
+      if (response.error) {
+        updateSnackBarMessage(response.error);
+      } else {
+        updateSnackBarMessage('Winner selected!');
+        console.log(response);
+      }
+    });
+  };
 
   return (
     <>
@@ -64,7 +78,14 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                 </Box>
                 <div>
                   {loggedInUser.username === submissionObj[0].ownerName ? (
-                    <Button variant="outlined" color="primary" className={classes.winnerButton}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={(e) => {
+                        handleWinner(submissionId);
+                      }}
+                      className={classes.winnerButton}
+                    >
                       select winner
                     </Button>
                   ) : (

@@ -1,6 +1,6 @@
 import { AuthApiData } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
-import { ContestAPIResponse, ContestAPIData } from '../../interface/Contest';
+import { ContestAPIResponse, ContestAPIData, WinnerAPIResponse } from '../../interface/Contest';
 
 export async function createContestAPI(
   title: string,
@@ -88,7 +88,7 @@ export async function getAllContestsByAdvanceSearch(
     }));
 }
 
-export async function selectWinner(contestId: string, submissionId: string): Promise<ContestAPIData> {
+export async function selectWinner(contestId: string, submissionId: string): Promise<WinnerAPIResponse> {
   const fetchOptions: FetchOptions = {
     method: 'POST',
     credentials: 'include',
