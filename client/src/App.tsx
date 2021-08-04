@@ -32,18 +32,14 @@ function App(): JSX.Element {
               <SocketProvider>
                 <NotificationsProvider>
                   <MessagingProvider>
-                    {/* Renders navbar for all pages */}
                     <Route path="/" component={NavBar} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                     <ProtectedRoute exact path="/file-upload/:id" component={DesignSubmit} />
                     <ProtectedRoute exact path="/setting" component={ProfileSetting} />
-                    {/* Replace component with Discovery Page */}
                     <Route exact path="/discovery" component={Discovery} />
-                    {/* Replace the components once created */}
                     <ProtectedRoute exact path="/messages" component={Message} />
                     <ProtectedRoute exact path="/notifications" component={NotificationsPage} />
-                    {/* Update to "/contest/:id" once contest db has been set up*/}
                     <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />
                     <ProtectedRoute exact path="/profile" component={ProfileSetting} />
                     <ProtectedRoute exact path="/new-contest" component={NewContest} />

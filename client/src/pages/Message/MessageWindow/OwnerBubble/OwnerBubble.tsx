@@ -3,10 +3,9 @@ import useStyles from './useStyles';
 
 export interface OwnerTextProps {
   text: string;
-  key: string;
 }
 
-export default function OwnerBubble({ text, key }: OwnerTextProps): JSX.Element {
+export default function OwnerBubble({ text }: OwnerTextProps): JSX.Element {
   const classes = useStyles();
   return (
     <Box display="flex" flexDirection="column" alignItems="flex-end" className={classes.root}>

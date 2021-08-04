@@ -6,10 +6,12 @@ import { AuthContext } from '../context/useAuthContext';
 
 interface IMessagingContext {
   conversations: Conversation[];
+  addMessage: (conversationId: string, message: string) => void;
 }
 
 export const MessagingContext = createContext<IMessagingContext>({
   conversations: [],
+  addMessage: () => null,
 });
 
 export const MessagingProvider: FC = ({ children }): JSX.Element => {
@@ -49,7 +51,22 @@ export const MessagingProvider: FC = ({ children }): JSX.Element => {
     getConversations();
   }, [loggedInUser]);
 
-  return <MessagingContext.Provider value={{ conversations }}>{children}</MessagingContext.Provider>;
+  const addMessage = (conversationId: string, message: string) => {
+    const conIndex = conversations.findIndex((c) => c.conversationId === conversationId);
+    if (conIndex >= 0) {
+      const newMessage = {
+        messageId: Date.now().toString(),
+        messageText: message,
+        createdAt: new Date().toString(),
+        isMyMessage: true,
+      };
+      const updatedConversations = conversations.slice();
+      updatedConversations[conIndex].messages.push(newMessage);
+      setConversations(updatedConversations);
+    }
+  };
+
+  return <MessagingContext.Provider value={{ conversations, addMessage }}>{children}</MessagingContext.Provider>;
 };
 
 export function useMessaging(): IMessagingContext {

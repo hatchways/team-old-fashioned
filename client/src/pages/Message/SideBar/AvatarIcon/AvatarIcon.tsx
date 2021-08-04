@@ -58,7 +58,7 @@ export default function ConversationItem({ conversationItem }: ConversationListP
     <Box className={classes.root}>
       {conversationItem?.isOnline ? (
         <StyledBadge
-          overlap="circle"
+          overlap="circular"
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
@@ -69,7 +69,7 @@ export default function ConversationItem({ conversationItem }: ConversationListP
         </StyledBadge>
       ) : (
         <Badge
-          overlap="circle"
+          overlap="circular"
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',

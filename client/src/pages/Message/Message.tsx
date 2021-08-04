@@ -6,12 +6,16 @@ import MessageWindow from './MessageWindow/MessageWindow';
 import useStyles from './useStyles';
 
 export default function Message(): JSX.Element {
-  const { conversations } = useContext(MessagingContext);
+  const { conversations, addMessage } = useContext(MessagingContext);
   const [loadedConversation, setLoadedConversation] = useState('');
   const classes = useStyles();
 
   const conversationClickHandler = (conId: string) => {
     setLoadedConversation(conId);
+  };
+
+  const messageSubmitHandler = (message: string) => {
+    addMessage(loadedConversation, message);
   };
 
   return (
@@ -20,7 +24,10 @@ export default function Message(): JSX.Element {
         <ConversationList conversationList={conversations} conversationClick={conversationClickHandler} />
       </Grid>
       <Grid className={classes.messageContainer}>
-        <MessageWindow message={conversations.find((con) => con.conversationId === loadedConversation)} />
+        <MessageWindow
+          message={conversations.find((con) => con.conversationId === loadedConversation)}
+          newMessageHandler={messageSubmitHandler}
+        />
       </Grid>
     </Grid>
   );
