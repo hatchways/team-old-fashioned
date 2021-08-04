@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Notification } from '../../../interface/Notifications';
-import timeSince from '../RelativeTimes';
+import relativeTime from '../RelativeTime';
 import useStyles from './useStyles';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -51,7 +51,7 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
                     </Typography>
                   )}
                   <Typography variant="body2" className={classes.italicText}>
-                    {timeSince(notification.createdAt)} ago
+                    {relativeTime(notification.createdAt, 'since')} ago
                   </Typography>
                 </Typography>
               </Grid>

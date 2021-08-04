@@ -5,6 +5,7 @@ import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import useStyles from './useStyles';
 import { Submission } from '../../../interface/Submission';
+import { Link } from 'react-router-dom';
 
 interface SubmissionListProps {
   submissionList?: Submission[];
@@ -22,7 +23,9 @@ export function SubmissionsGrid({ submissionList }: SubmissionListProps): JSX.El
                 ${_file}?w=248&fit=crop&auto=format&dpr=2 2x`}
               loading="lazy"
             />
-            <ImageListItemBar title={'By @' + submission.name} className={classes.caption} />
+            <Link to={`/users/${submission.name}`} className={classes.caption}>
+              <ImageListItemBar title={'By @' + submission.name} />
+            </Link>
           </ImageListItem>
         )),
       )}

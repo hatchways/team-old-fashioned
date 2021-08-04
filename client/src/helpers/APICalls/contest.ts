@@ -99,3 +99,15 @@ export async function selectWinner(contestId: string, submissionId: string): Pro
     .then((res) => res.json())
     .catch((error) => ({ error }));
 }
+
+export const getContestsByUsername = async (username: string): Promise<ContestAPIData[]> => {
+  const fetchOptions: FetchOptions = {
+    method: 'GET',
+    credentials: 'include',
+  };
+  return await fetch(`/users/${username}/contests`, fetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: 'Unable to connect to server. Please try again',
+    }));
+};
