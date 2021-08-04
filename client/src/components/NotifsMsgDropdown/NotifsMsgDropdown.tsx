@@ -6,9 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
-import { Notification } from '../../interface/Notifications';
 import { NotificationsContext } from '../../context/useNotificationsContext';
-import { FetchOptions } from '../../interface/FetchOptions';
 import { NotificationsList } from '../../pages/Notifications/NotificationsList/NotificationsList';
 
 interface Props {

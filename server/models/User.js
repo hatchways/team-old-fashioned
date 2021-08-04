@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  coverPhoto: {
+    type: String,
+    required: false,
+  },
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {

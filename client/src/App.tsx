@@ -6,6 +6,7 @@ import Signup from './pages/SignUp/SignUp';
 import Dashboard from './pages/Dashboard/Dashboard';
 import NewContest from './pages/Contest/NewContest';
 import ContestDetails from './pages/ContestDetails/ContestDetails';
+import Profile from './pages/Profile/Profile';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';

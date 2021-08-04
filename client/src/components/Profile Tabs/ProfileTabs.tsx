@@ -5,23 +5,17 @@ import SwipeableViews from 'react-swipeable-views';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { useTheme } from '@material-ui/core/styles';
 import useStyles from './useStyles';
-import { SubmissionsGrid, submissionCount } from './SubmissionsList';
-import { Submission } from '../../../interface/Submission';
+import { ContestAPIData } from '../../interface/Contest';
+import { ContestList } from './ContestListByUsername/ContestList';
 
 interface TabPanelProps {
   children?: React.ReactNode;
   dir?: string;
   index: number;
   value: number;
-}
-
-interface SubmissionListProps {
-  submissionList: Submission[];
-  description: string;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -47,11 +41,13 @@ function a11yProps(index: number) {
   };
 }
 
-export default function FullWidthTabs({ submissionList, description }: SubmissionListProps): JSX.Element {
+interface Props {
+  contests: ContestAPIData[];
+}
+export default function ProfileTabs({ contests }: Props): JSX.Element {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const count = submissionCount({ submissionList });
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
   };
@@ -69,10 +65,11 @@ export default function FullWidthTabs({ submissionList, description }: Submissio
           indicatorColor="primary"
           textColor="primary"
           variant="fullWidth"
-          aria-label="full width tabs example"
+          aria-label="user information"
         >
-          <Tab label={`Designs (${count})`} {...a11yProps(0)} />
-          <Tab label="Brief" {...a11yProps(1)} />
+          <Tab label="Portfolio" {...a11yProps(0)} />
+          <Tab label="Active Contests" {...a11yProps(1)} />
+          <Tab label="Ratings" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -82,12 +79,13 @@ export default function FullWidthTabs({ submissionList, description }: Submissio
         className={classes.panel}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <SubmissionsGrid submissionList={submissionList} />
+          Show portfolio here (image + caption). Image clickable to zoom.
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <Typography variant="body1" className={classes.description}>
-            {description}
-          </Typography>
+          <ContestList contests={contests} />
+        </TabPanel>
+        <TabPanel value={value} index={2} dir={theme.direction}>
+          Show ratings as artist and contest owner here.
         </TabPanel>
       </SwipeableViews>
     </div>

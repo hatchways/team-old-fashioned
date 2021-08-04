@@ -1,8 +1,10 @@
 import { FC } from 'react';
 import { Button, Grid, Box, ImageList, ImageListItem, ImageListItemBar, Typography } from '@material-ui/core';
 import useStyles from './useStyles';
+import { Link } from 'react-router-dom';
 
 interface Props {
+  id: string;
   imgSrc: string;
   imgCount: number;
   headline: string;
@@ -13,6 +15,7 @@ interface Props {
 }
 
 const ContestItem: FC<Props> = ({
+  id,
   imgSrc,
   imgCount,
   headline,
@@ -29,7 +32,7 @@ const ContestItem: FC<Props> = ({
     new Date(deadline).toLocaleTimeString();
   return (
     <Grid container className={classes.contestItemContainer}>
-      <Grid item>
+      <Grid item component={Link} to={`/contest-details/${id}`}>
         <ImageList cols={1}>
           <ImageListItem key={1} classes={{ item: classes.item }}>
             <img src={imgSrc} alt={headline} className={classes.contestImg} />
