@@ -6,6 +6,7 @@ import Signup from './pages/SignUp/SignUp';
 import Dashboard from './pages/Dashboard/Dashboard';
 import NewContest from './pages/Contest/NewContest';
 import ContestDetails from './pages/ContestDetails/ContestDetails';
+import Profile from './pages/Profile/Profile';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
@@ -36,6 +37,7 @@ function App(): JSX.Element {
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
                   <ProtectedRoute exact path="/file-upload/:id" component={DesignSubmit} />
+                  <ProtectedRoute exact path="/users/:username" component={Profile} />
                   <ProtectedRoute exact path="/setting" component={ProfileSetting} />
                   {/* Replace component with Discovery Page */}
                   <Route exact path="/discovery" component={Discovery} />
