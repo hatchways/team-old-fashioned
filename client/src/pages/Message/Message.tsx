@@ -1,5 +1,5 @@
-import { useContext, useState, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useContext, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { MessagingContext } from '../../context/useMessagingContext';
 import { Grid } from '@material-ui/core';
 import ConversationList from './SideBar/ConversationList/ConversationList';
