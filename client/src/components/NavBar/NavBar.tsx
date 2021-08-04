@@ -6,7 +6,6 @@ import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Logo from '../../Images/logo.png';
-import demoProfilePhoto from '../../Images/demo-profile-photo.png';
 import useStyles from './useStyles';
 import AuthMenu from '../AuthMenu/AuthMenu';
 import { useAuth } from '../../context/useAuthContext';
@@ -65,16 +64,19 @@ const NavBar = (): JSX.Element => {
             </Box>
             {loggedInUser ? (
               <>
-                <Box p={1.5}>
-                  {/* replace `demoProfilePhoto` with link to user photo */}
-                  <Avatar className={classes.profileImg} src={demoProfilePhoto} alt="Profile Photo" />
-                </Box>
-                <Box p={0}>
-                  {/* replace `Kenneth` with username */}
-                  <Link component={RouterLink} variant="subtitle1" className={classes.username} to="/profile">
-                    Kenneth
-                  </Link>
-                </Box>
+                <Link
+                  component={RouterLink}
+                  variant="subtitle1"
+                  className={classes.profileLink}
+                  to={`/users/${loggedInUser.username}`}
+                >
+                  <Box alignItems="center" display="flex">
+                    <Avatar className={classes.profileImg} src={loggedInUser?.profilePicUrl} alt="Profile Photo" />
+                    <Typography variant="subtitle1" className={classes.username}>
+                      {loggedInUser.username}
+                    </Typography>
+                  </Box>
+                </Link>
                 <Box p={0}>
                   <AuthMenu />
                 </Box>

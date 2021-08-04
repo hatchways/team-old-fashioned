@@ -43,53 +43,51 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
 
   return (
     <>
-      {submissionObj.length ? (
-        <Grid container component="main" className={classes.root} direction="column">
-          <CssBaseline />
-          <Grid container alignItems="center" justify="center">
-            <Grid item xs={12} sm={10} md={8}>
-              <Link to="/contest/all" className={classes.breadcrumb}>
-                <ArrowBackIosIcon fontSize="inherit" /> Back to contests list
-              </Link>
-            </Grid>
-            <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
-              <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
-                <Box>
-                  <Typography className={classes.contestTitle} component="h1" variant="h5">
-                    {title}
-                  </Typography>
-                </Box>
-                <Box flexGrow={1}>
-                  <Button variant="contained" color="primary" disableElevation className={classes.prize}>
-                    {prizeAmount}
-                  </Button>
-                </Box>
-                <div>
-                  <Button
-                    component={Link}
-                    to={`/file-upload/${contestId}`}
-                    variant="outlined"
-                    color="primary"
-                    className={classes.winnerButton}
-                  >
-                    submit design
-                  </Button>
-                </div>
+      <Grid container component="main" className={classes.root} direction="column">
+        <CssBaseline />
+        <Grid container alignItems="center" justify="center">
+          <Grid item xs={12} sm={10} md={8}>
+            <Link to="/contest/all" className={classes.breadcrumb}>
+              <ArrowBackIosIcon fontSize="inherit" /> Back to contests list
+            </Link>
+          </Grid>
+          <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
+            <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
+              <Box>
+                <Typography className={classes.contestTitle} component="h1" variant="h5">
+                  {title}
+                </Typography>
               </Box>
-              <Grid item xs={12} sm={10} md={8} className={classes.ownerColumn}>
-                <Box display="flex" alignItems="center">
-                  <Box>
-                    <Avatar src={demoProfilePhoto} alt="Profile Photo" />
-                  </Box>
-                  <Box className={classes.userText}>By {user}</Box>
+              <Box flexGrow={1}>
+                <Button variant="contained" color="primary" disableElevation className={classes.prize}>
+                  {prizeAmount}
+                </Button>
+              </Box>
+              <div>
+                <Button
+                  component={Link}
+                  to={`/file-upload/${contestId}`}
+                  variant="outlined"
+                  color="primary"
+                  className={classes.winnerButton}
+                >
+                  submit design
+                </Button>
+              </div>
+            </Box>
+            <Grid item xs={12} sm={10} md={8} className={classes.ownerColumn}>
+              <Box display="flex" alignItems="center">
+                <Box>
+                  <Avatar src={demoProfilePhoto} alt="Profile Photo" />
                 </Box>
-              </Grid>
-              <Grid className={classes.spacer}></Grid>
-              <FullWidthTabs submissionList={submissionObj} description={description} />
+                <Box className={classes.userText}>By {user}</Box>
+              </Box>
             </Grid>
+            <Grid className={classes.spacer}></Grid>
+            <FullWidthTabs submissionList={submissionObj.length ? submissionObj : []} description={description} />
           </Grid>
         </Grid>
-      ) : null}
+      </Grid>
     </>
   );
 }

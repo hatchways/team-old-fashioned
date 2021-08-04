@@ -4,15 +4,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     background: theme.palette.primary.main,
   },
-  title: {
-    marginRight: theme.spacing(2),
-    marginLeft: theme.spacing(4),
-  },
-  navItems: {
-    marginLeft: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-  },
   link: {
     color: theme.palette.text.secondary,
     cursor: 'pointer',
@@ -24,16 +15,24 @@ const useStyles = makeStyles((theme) => ({
   },
   customButton: {
     borderRadius: 0,
+    textAlign: 'center',
   },
-  profileImg: {},
-  username: {
-    color: '#FFFFFF',
+  profileImg: {
+    display: 'inline-block',
+  },
+  profileLink: {
     cursor: 'pointer',
     textDecoration: 'none',
-    display: 'inline-block',
     '&:hover': {
       textDecoration: 'none',
     },
+    paddingLeft: 15,
+    paddingRight: 0,
+  },
+  username: {
+    color: theme.palette.text.secondary,
+    display: 'inline-block',
+    marginLeft: theme.spacing(1),
   },
 }));
 
