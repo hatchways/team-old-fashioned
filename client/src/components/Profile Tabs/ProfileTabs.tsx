@@ -69,7 +69,7 @@ export default function ProfileTabs({ contests }: Props): JSX.Element {
         >
           <Tab label="Portfolio" {...a11yProps(0)} />
           <Tab label="Active Contests" {...a11yProps(1)} />
-          <Tab label="Ratings" {...a11yProps(1)} />
+          <Tab label="Ratings" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
