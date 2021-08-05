@@ -13,21 +13,22 @@ interface Props {
 }
 export default function PaymentMethodSelection({ paymentMethods }: Props): JSX.Element {
   const classes = useStyles();
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>(paymentMethods[0]?.id);
 
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue((event.target as HTMLInputElement).value);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
+  console.log(value);
 
   return (
     <form onSubmit={handleSubmit}>
       <FormControl component="fieldset" className={classes.formControl}>
         <FormLabel component="legend">Select card for payment</FormLabel>
-        <RadioGroup aria-label="quiz" name="quiz" value={value} onChange={handleRadioChange}>
+        <RadioGroup aria-label="payment method selection" name="payment methods" value={value} onChange={handleChange}>
           {paymentMethods.map((pm: IPaymentMethod) => (
             <>
               <FormControlLabel

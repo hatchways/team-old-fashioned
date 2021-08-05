@@ -16,16 +16,11 @@ interface SubmissionListProps {
 export function SubmissionsGrid({ submissionList, setWinner }: SubmissionListProps): JSX.Element {
   const classes = useStyles();
   const [selectedSubmission, setSelectedSubmission] = React.useState(submissionList[0]?._id);
-  setWinner(selectedSubmission);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSelectedSubmission(event.target.value);
-    // While this seems illogical, this fixes the issue where the selected value does not match the radio selection
-    if (!event.target.checked) {
-      console.log(selectedSubmission);
-      setWinner(selectedSubmission);
-    }
   };
+  setWinner(selectedSubmission);
 
   return (
     <ImageList cols={4}>
