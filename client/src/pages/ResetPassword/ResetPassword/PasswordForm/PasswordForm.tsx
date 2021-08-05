@@ -1,4 +1,4 @@
-import { Typography, TextField, Box, Grid, Button, CircularProgress } from '@material-ui/core';
+import { Typography, TextField, Box, Grid, Button, CircularProgress, FormLabel } from '@material-ui/core';
 import { FormikHelpers, Formik } from 'formik';
 import useStyles from './useStyles';
 import * as Yup from 'yup';
@@ -35,7 +35,7 @@ export default function EmailForm({ handleSubmit }: Props): JSX.Element {
     >
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
-          <label htmlFor="password">{<Typography className={classes.label}>Password</Typography>}</label>
+          <FormLabel>Password</FormLabel>
           <TextField
             id="password"
             fullWidth

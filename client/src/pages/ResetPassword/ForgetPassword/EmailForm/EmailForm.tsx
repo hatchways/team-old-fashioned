@@ -1,4 +1,4 @@
-import { Typography, TextField, Box, Grid, Button, CircularProgress } from '@material-ui/core';
+import { Typography, TextField, Box, Grid, Button, CircularProgress, FormLabel } from '@material-ui/core';
 import { FormikHelpers, Formik } from 'formik';
 import useStyles from './useStyles';
 import * as Yup from 'yup';
@@ -32,7 +32,7 @@ export default function EmailForm({ handleSubmit }: Props): JSX.Element {
     >
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
-          <label htmlFor="email">{<Typography className={classes.label}>E-mail</Typography>}</label>
+          <FormLabel>Email</FormLabel>
           <TextField
             id="email"
             fullWidth
@@ -46,7 +46,7 @@ export default function EmailForm({ handleSubmit }: Props): JSX.Element {
             }}
             name="email"
             autoComplete="email"
-            placeholder="Enter e-mail address"
+            placeholder="Enter email address"
             autoFocus
             helperText={touched.email ? errors.email : ''}
             error={touched.email && Boolean(errors.email)}
