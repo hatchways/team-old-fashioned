@@ -16,6 +16,7 @@ import { PaymentMethodsProvider } from './context/usePaymentsContext';
 import ProtectedRoute from './components/ProtectedRoutes/ProtectedRoutes';
 import NavBar from './components/NavBar/NavBar';
 import NotificationsPage from './pages/Notifications/Notifications';
+import { MessagingProvider } from './context/useMessagingContext';
 
 import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
@@ -48,6 +49,7 @@ function App(): JSX.Element {
                     {/* Replace component with Discovery Page */}
                     <Route exact path="/discovery" component={Discovery} />
                     {/* Replace the components once created */}
+                    <ProtectedRoute exact path="/messages/:id" component={Message} />
                     <ProtectedRoute exact path="/messages" component={Message} />
                     <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                     <ProtectedRoute exact path="/notifications" component={NotificationsPage} />

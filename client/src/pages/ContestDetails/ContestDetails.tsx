@@ -21,6 +21,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
   const classes = useStyles();
   const [submissionObj, setSubmissionObj] = useState<Submission[]>(Object);
   const [winner, setWinner] = useState<string>('');
+  const [isOwner, setIsOwner] = useState<boolean>(false);
   const [contestId, setContestId] = useState<string>('');
   const { loggedInUser } = useAuth();
   const { updateSnackBarMessage } = useSnackBar();
@@ -32,6 +33,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
     setContestId(params.id);
     getAllSubmissions(params.id).then((data) => {
       setSubmissionObj(data.submission);
+      setIsOwner(data.isOwner);
     });
   }, [match]);
 

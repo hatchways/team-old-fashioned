@@ -99,7 +99,6 @@ exports.getAllSubmissions = asyncHandler(async (req, res, next) => {
           };
           submissionList.push(submissionData);
         }
-
         res.status(200).json({ submission: submissionList, isOwner: false });
       }
     } else {
