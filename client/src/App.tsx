@@ -17,7 +17,7 @@ import ProtectedRoute from './components/ProtectedRoutes/ProtectedRoutes';
 import NavBar from './components/NavBar/NavBar';
 import NotificationsPage from './pages/Notifications/Notifications';
 import { MessagingProvider } from './context/useMessagingContext';
-
+import ContestPayment from './pages/ContestPayment/ContestPayment';
 import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
 import ProfileSetting from './pages/ProfileSetting/ProfileSetting';
@@ -46,16 +46,13 @@ function App(): JSX.Element {
                     <ProtectedRoute exact path="/file-upload/:id" component={DesignSubmit} />
                     <ProtectedRoute exact path="/users/:username" component={Profile} />
                     <ProtectedRoute exact path="/setting" component={ProfileSetting} />
-                    {/* Replace component with Discovery Page */}
                     <Route exact path="/discovery" component={Discovery} />
-                    {/* Replace the components once created */}
                     <ProtectedRoute exact path="/messages/:id" component={Message} />
                     <ProtectedRoute exact path="/messages" component={Message} />
                     <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                     <ProtectedRoute exact path="/notifications" component={NotificationsPage} />
-                    {/* Update to "/contest/:id" once contest db has been set up*/}
                     <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />
-                    <ProtectedRoute exact path="/contest-details/:id/payment" component={Message} />
+                    <ProtectedRoute exact path="/contest-details/:id/payment" component={ContestPayment} />
                     <ProtectedRoute exact path="/profile" component={ProfileSetting} />
                     <ProtectedRoute exact path="/new-contest" component={NewContest} />
                     <ProtectedRoute exact path="/logout" component={Dashboard} />

@@ -6,10 +6,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 40,
     paddingBottom: 20,
   },
-  breadcrumb: {
-    color: theme.palette.text.secondary,
-    fontWeight: 600,
-  },
   contestTitle: {
     color: '#000000',
     fontWeight: 600,
@@ -27,17 +23,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     pointerEvents: 'none',
     borderRadius: 0,
-  },
-  winnerButton: {
-    borderRadius: 0,
-    textTransform: 'uppercase',
-  },
-  ownerColumn: {
-    paddingTop: 8,
-  },
-  userText: {
-    paddingLeft: 8,
-    fontWeight: 600,
   },
   spacer: {
     paddingTop: 32,

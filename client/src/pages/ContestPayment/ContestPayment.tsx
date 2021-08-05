@@ -16,7 +16,6 @@ export default function ContestPayment({ match }: RouteComponentProps): JSX.Elem
   const { inactiveContests } = useContext(ContestContext);
   const { paymentMethods } = useContext(PaymentMethodContext);
 
-  // const history = useHistory();
   useEffect(() => {
     const params = match.params as { id: string };
     setContestId(params.id);
