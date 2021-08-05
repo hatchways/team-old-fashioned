@@ -18,7 +18,6 @@ export default function Message(): JSX.Element {
   useEffect(() => {
     if (socket) {
       socket.on('GET_MESSAGE', ({ conversationId, message }) => {
-        console.log('GET_MESSAGE', conversationId, message);
         addMessage(conversationId, message, false);
       });
       return () => {
