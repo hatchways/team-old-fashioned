@@ -31,7 +31,6 @@ export default function Discovery(): JSX.Element {
 
   useEffect(() => {
     const fetchAllcontests = () => {
-      history.push(`/discovery`);
       getAllContests(null, null, null, null).then((data) => {
         if (data.error) {
           updateSnackBarMessage(data.error.message);
@@ -55,7 +54,7 @@ export default function Discovery(): JSX.Element {
       search: string;
     }>,
   ) => {
-    history.push(`/discovery?search=${search}`);
+    history.push(`?search=${search}`);
     getAllContests(search, null, null, null).then((data) => {
       if (data.success) {
         setContestObj(data.success.contest);
@@ -84,7 +83,7 @@ export default function Discovery(): JSX.Element {
       endTime: Date;
     }>,
   ) => {
-    history.push(`/discovery?title=${title}&startTime=${startTime}&endTime=${endTime}`);
+    history.push(`?title=${title}&startTime=${startTime}&endTime=${endTime}`);
     getAllContests(null, title, startTime, endTime).then((data) => {
       if (data.success) {
         setContestObj(data.success.contest);
