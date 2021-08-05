@@ -5,6 +5,7 @@ export interface User {
   bio: string;
   location: string;
   profilePicUrl: string;
+  payment_method_confirmed: boolean;
   coverPhoto: string;
 }
 
