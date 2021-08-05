@@ -81,6 +81,12 @@ exports.selectWinner = asyncHandler(async (req, res, next) => {
     throw new Error('No such submission found.');
   }
 
+  // Not getting implemented despite equality
+  if (submission.userId === contest.userId) {
+    res.status(400);
+    throw new Error('Submissions to own contest is forbidden.');
+  }
+
   const userHasPaymentMethod = await User.findById(contest.userId).then((user) => {
     return user.payment_method_confirmed;
   });
