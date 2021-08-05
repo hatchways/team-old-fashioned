@@ -51,6 +51,7 @@ function App(): JSX.Element {
                   <ProtectedRoute exact path="/notifications" component={NotificationsPage} />
                   {/* Update to "/contest/:id" once contest db has been set up*/}
                   <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />
+                  <ProtectedRoute exact path="/contest-details/:id/payment" component={Message} />
                   <ProtectedRoute exact path="/profile" component={ProfileSetting} />
                   <ProtectedRoute exact path="/new-contest" component={NewContest} />
                   <ProtectedRoute exact path="/logout" component={Dashboard} />
