@@ -26,9 +26,7 @@ export default function PaymentMethodSelection({ paymentMethods, contestId }: Pr
   };
 
   const handleSubmit = async () => {
-    console.log(contestId, value);
     const paymentIntentStatus = await chargeCard(contestId, value);
-    console.log(paymentIntentStatus);
     if (paymentIntentStatus) {
       paymentIntentStatus.status === 'succeeded'
         ? updateSnackBarMessage(
@@ -39,7 +37,6 @@ export default function PaymentMethodSelection({ paymentMethods, contestId }: Pr
       updateSnackBarMessage(`Unable to charge`);
     }
   };
-  console.log(value);
 
   return (
     <FormControl component="fieldset" className={classes.formControl}>
