@@ -35,6 +35,7 @@ function App(): JSX.Element {
                 <NotificationsProvider>
                   {/* Renders navbar for all pages */}
                   <Route path="/" component={NavBar} />
+                  <Route exact path="/" component={Discovery} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
                   <Route path="/email/reset-password/:token" component={ResetPassword} />
@@ -46,6 +47,7 @@ function App(): JSX.Element {
                   <Route exact path="/discovery" component={Discovery} />
                   {/* Replace the components once created */}
                   <ProtectedRoute exact path="/messages" component={Message} />
+                  <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                   <ProtectedRoute exact path="/notifications" component={NotificationsPage} />
                   {/* Update to "/contest/:id" once contest db has been set up*/}
                   <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />
