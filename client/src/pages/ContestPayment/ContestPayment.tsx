@@ -43,7 +43,7 @@ export default function ContestPayment({ match }: RouteComponentProps): JSX.Elem
             </Box>
           </Box>
           <Grid className={classes.spacer}>
-            <PaymentMethodSelection paymentMethods={paymentMethods} />
+            <PaymentMethodSelection contestId={contestId} paymentMethods={paymentMethods} />
           </Grid>
         </Grid>
       </Grid>
