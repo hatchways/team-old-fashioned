@@ -78,6 +78,7 @@ export const MessagingProvider: FC = ({ children }): JSX.Element => {
           isMyMessage: myMessage,
         };
         const updatedConversations = conversations.slice();
+        //TODO: Update top level message
         updatedConversations[conIndex].messages.push(newMessage);
         setConversations(updatedConversations);
       }
