@@ -11,16 +11,16 @@ import Radio from '@material-ui/core/Radio';
 
 interface SubmissionListProps {
   submissionList?: Submission[];
-  onPassWinner: (submissionId: string) => void;
+  setWinner: (submissionId: string) => void;
 }
 
-export function SubmissionsGrid({ submissionList, onPassWinner }: SubmissionListProps): JSX.Element {
+export function SubmissionsGrid({ submissionList, setWinner }: SubmissionListProps): JSX.Element {
   const classes = useStyles();
   const [selectedSubmission, setSelectedSubmission] = React.useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSelectedSubmission(event.target.value);
-    onPassWinner(selectedSubmission);
+    setWinner(selectedSubmission);
   };
 
   return (

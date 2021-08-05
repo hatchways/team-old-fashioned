@@ -54,10 +54,10 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
     });
   };
 
-  const handleSelection = async (submissionId: string) => {
-    setWinner(submissionId);
-    console.log(`winner: ${winner}`);
-  };
+  // const handleSelection = async (submissionId: string) => {
+  //   setWinner(submissionId);
+  //   console.log(`winner: ${winner}`);
+  // };
 
   return (
     <>
@@ -118,7 +118,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
               <Grid className={classes.spacer}></Grid>
               <FullWidthTabs
                 submissionList={submissionObj}
-                onSelectWinner={handleSelection}
+                setWinner={setWinner}
                 description={submissionObj[0].description}
               />
             </Grid>
