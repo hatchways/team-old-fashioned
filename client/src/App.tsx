@@ -21,6 +21,8 @@ import DesignSubmit from './components/DesignSubmit/DesignSubmit';
 import ProfileSetting from './pages/ProfileSetting/ProfileSetting';
 import Message from './pages/Message/Message';
 import Discovery from './pages/Discovery/Discovery';
+import ForgetPassword from './pages/ResetPassword/ForgetPassword/ForgetPassword';
+import ResetPassword from './pages/ResetPassword/ResetPassword/ResetPassword';
 
 function App(): JSX.Element {
   return (
@@ -36,6 +38,8 @@ function App(): JSX.Element {
                   <Route exact path="/" component={Discovery} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/signup" component={Signup} />
+                  <Route path="/email/reset-password/:token" component={ResetPassword} />
+                  <Route exact path="/forget-password" component={ForgetPassword} />
                   <ProtectedRoute exact path="/file-upload/:id" component={DesignSubmit} />
                   <ProtectedRoute exact path="/users/:username" component={Profile} />
                   <ProtectedRoute exact path="/setting" component={ProfileSetting} />
