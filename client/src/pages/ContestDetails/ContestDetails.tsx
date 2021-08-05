@@ -45,11 +45,9 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
   const handleWinner = async (submissionId: string) => {
     await selectWinner(contestId, submissionId).then((response) => {
       if (response.error) {
-        console.log(response);
         updateSnackBarMessage(response.error);
       } else {
         updateSnackBarMessage('Winner selected!');
-        console.log(response);
         setTimeout(function () {
           history.push(`/contest-details/${contestId}/payment`);
           return <CircularProgress />;
@@ -57,11 +55,6 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
       }
     });
   };
-
-  // const handleSelection = async (submissionId: string) => {
-  //   setWinner(submissionId);
-  //   console.log(`winner: ${winner}`);
-  // };
 
   return (
     <>
@@ -91,7 +84,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                     <Button
                       variant="outlined"
                       color="primary"
-                      onClick={(e) => {
+                      onClick={() => {
                         handleWinner(winner);
                       }}
                       className={classes.winnerButton}

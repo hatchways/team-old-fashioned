@@ -53,7 +53,6 @@ export default function FullWidthTabs({ submissionList, description, setWinner }
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const count = submissionCount({ submissionList });
-  // const [winner, setWinner] = React.useState<string>('');
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
   };
@@ -61,10 +60,6 @@ export default function FullWidthTabs({ submissionList, description, setWinner }
   const handleChangeIndex = (index: number) => {
     setValue(index);
   };
-  // const handleSelection = async (submissionId: string) => {
-  //   setWinner(submissionId);
-  //   set(winner);
-  // };
 
   return (
     <div className={classes.root}>
