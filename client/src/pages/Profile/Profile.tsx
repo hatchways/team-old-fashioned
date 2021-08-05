@@ -7,14 +7,18 @@ import { getContestsByUsername } from '../../helpers/APICalls/contest';
 import { User } from '../../interface/User';
 import { ContestAPIData } from '../../interface/Contest';
 import { AuthContext } from '../../context/useAuthContext';
+import { MessagingContext } from '../../context/useMessagingContext';
 import useStyles from './useStyles';
 import ProfileTabs from '../../components/Profile Tabs/ProfileTabs';
+import { useHistory } from 'react-router-dom';
 
 const Profile = ({ match }: RouteComponentProps): JSX.Element => {
   const classes = useStyles();
   const [profile, setProfile] = useState<User>();
   const [contests, setContests] = useState<ContestAPIData[]>([]);
   const { loggedInUser } = useContext(AuthContext);
+  const { newConversation } = useContext(MessagingContext);
+  const history = useHistory();
 
   useEffect(() => {
     const { username } = match.params as { username: string };
@@ -34,6 +38,15 @@ const Profile = ({ match }: RouteComponentProps): JSX.Element => {
     getProfile(username);
     getContestList(username);
   }, [match]);
+
+  const messageClickHandler = async () => {
+    if (profile) {
+      const conId = await newConversation(profile?.email);
+      if (conId !== undefined) {
+        history.push(`/messages/${conId}`);
+      }
+    }
+  };
 
   return (
     <Card className={classes.profileContainer}>
@@ -63,7 +76,7 @@ const Profile = ({ match }: RouteComponentProps): JSX.Element => {
       </Box>
       <Box textAlign="center" marginBottom={'1em'}>
         {profile?.username !== loggedInUser?.username ? (
-          <Button component={Link} to={`/messages`} variant="outlined" color="primary" className={classes.button}>
+          <Button onClick={messageClickHandler} variant="outlined" color="primary" className={classes.button}>
             Message
           </Button>
         ) : (

@@ -68,7 +68,6 @@ export const MessagingProvider: FC = ({ children }): JSX.Element => {
 
   const addMessage = useCallback(
     (conversationId: string, message: string, myMessage: boolean) => {
-      console.log('ADD MESSAGE');
       const conIndex = conversations.findIndex((c) => c.conversationId === conversationId);
       if (conIndex >= 0) {
         const newMessage = {
@@ -88,7 +87,7 @@ export const MessagingProvider: FC = ({ children }): JSX.Element => {
 
   const newConversation = async (to: string): Promise<string | undefined> => {
     // if conversation exists return
-    const conversation = conversations.find((con) => con.fullName === to);
+    const conversation = conversations.find((con) => con.toUserEmail === to);
     if (conversation) {
       return conversation.conversationId;
     }
