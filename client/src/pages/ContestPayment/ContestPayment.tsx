@@ -1,9 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { PaymentMethodContext } from '../../context/usePaymentsContext';
@@ -26,25 +23,16 @@ export default function ContestPayment({ match }: RouteComponentProps): JSX.Elem
 
   return (
     <Grid container component="main" className={classes.root} direction="column">
-      <CssBaseline />
-      <Grid container alignItems="center" justify="center">
-        <Grid item xs={12} sm={10} md={8} className={classes.titleColumn}>
-          <Box display="flex" flexWrap="nowrap" alignItems="center" bgcolor="transparent">
-            <Box>
-              <Typography className={classes.contestTitle} component="h1" variant="h5">
-                {contest?.title}
-              </Typography>
-            </Box>
-            <Box flexGrow={1}>
-              <Button variant="contained" color="primary" disableElevation className={classes.prize}>
-                ${contest?.prizeAmount}
-              </Button>
-            </Box>
-          </Box>
-          <Grid className={classes.spacer}>
-            <PaymentMethodSelection contestId={contestId} paymentMethods={paymentMethods} />
-          </Grid>
-        </Grid>
+      <Grid item xs={12} sm={10} md={8} className={classes.contestInfo}>
+        <Typography component="h1" variant="h5" align="center">
+          Payment for {contest?.title} Contest
+        </Typography>
+        <Typography component="h2" variant="h6" align="center" className={classes.prize}>
+          Prize: ${contest?.prizeAmount}
+        </Typography>
+      </Grid>
+      <Grid item xs={12} sm={10} md={8} className={classes.selection}>
+        <PaymentMethodSelection contestId={contestId} paymentMethods={paymentMethods} />
       </Grid>
     </Grid>
   );

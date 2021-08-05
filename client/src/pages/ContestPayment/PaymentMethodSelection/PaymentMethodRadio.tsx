@@ -43,8 +43,16 @@ export default function PaymentMethodSelection({ paymentMethods, contestId }: Pr
 
   return (
     <FormControl component="fieldset" className={classes.formControl}>
-      <FormLabel component="legend">Select card for payment</FormLabel>
-      <RadioGroup aria-label="payment method selection" name="payment methods" value={value} onChange={handleChange}>
+      <FormLabel component="legend" className={classes.label}>
+        Select card for payment
+      </FormLabel>
+      <RadioGroup
+        aria-label="payment method selection"
+        name="payment methods"
+        value={value}
+        onChange={handleChange}
+        className={classes.selection}
+      >
         {paymentMethods.map((pm: IPaymentMethod) => (
           <>
             <FormControlLabel
