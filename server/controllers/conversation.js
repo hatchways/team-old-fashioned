@@ -177,41 +177,6 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
       success: true,
       data: conversations[0],
     });
-
-    // console.log('toUser', toUser);
-    // if (!toUser) {
-    //   throw new Error('invalid recipient');
-    // }
-
-    // // check if conversation exists
-    // let conversation = await Conversation.find({
-    //   $and: [
-    //     {
-    //       $or: [
-    //         { toUser: mongoose.Types.ObjectId(toUser.get('_id')) },
-    //         { fromUser: mongoose.Types.ObjectId(toUser.get('_id')) },
-    //       ],
-    //     },
-    //     { $or: [{ toUser: mongoose.Types.ObjectId(from) }, { fromUser: mongoose.Types.ObjectId(from) }] },
-    //   ],
-    // });
-
-    // // create new conversation if one does not exist
-    // if (conversation.length === 0) {
-    //   conversation = await Conversation.create({
-    //     fromUser: mongoose.Types.ObjectId(from),
-    //     toUser: toUser.get('_id'),
-    //   });
-    //   res.status(201).json({
-    //     success: true,
-    //     data: conversation,
-    //   });
-    // } else {
-    //   res.status(201).json({
-    //     success: true,
-    //     data: conversation[0],
-    //   });
-    // }
   } catch (error) {
     res.status(500).json({
       error: error.message,

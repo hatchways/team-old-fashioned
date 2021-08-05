@@ -78,6 +78,8 @@ export const MessagingProvider: FC = ({ children }): JSX.Element => {
         };
         const updatedConversations = conversations.slice();
         //TODO: Update top level message
+        updatedConversations[conIndex].lastMessageText = newMessage.messageText;
+        updatedConversations[conIndex].createdAt = newMessage.createdAt;
         updatedConversations[conIndex].messages.push(newMessage);
         setConversations(updatedConversations);
       }
