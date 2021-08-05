@@ -1,6 +1,5 @@
 // Adapted from https://next.material-ui.com/components/image-list/
 import * as React from 'react';
-import { useState } from 'react';
 import ImageList from '@material-ui/core/ImageList';
 import ImageListItem from '@material-ui/core/ImageListItem';
 import ImageListItemBar from '@material-ui/core/ImageListItemBar';
@@ -10,17 +9,22 @@ import { Link } from 'react-router-dom';
 import Radio from '@material-ui/core/Radio';
 
 interface SubmissionListProps {
-  submissionList?: Submission[];
+  submissionList: Submission[];
   setWinner: (submissionId: string) => void;
 }
 
 export function SubmissionsGrid({ submissionList, setWinner }: SubmissionListProps): JSX.Element {
   const classes = useStyles();
-  const [selectedSubmission, setSelectedSubmission] = React.useState('');
+  const [selectedSubmission, setSelectedSubmission] = React.useState(submissionList[0]?._id);
+  setWinner(selectedSubmission);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSelectedSubmission(event.target.value);
-    setWinner(selectedSubmission);
+    // While this seems illogical, this fixes the issue where the selected value does not match the radio selection
+    if (!event.target.checked) {
+      console.log(selectedSubmission);
+      setWinner(selectedSubmission);
+    }
   };
 
   return (
