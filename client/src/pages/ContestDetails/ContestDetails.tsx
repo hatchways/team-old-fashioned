@@ -51,8 +51,9 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
         updateSnackBarMessage('Winner selected!');
         console.log(response);
         setTimeout(function () {
-          history.push('/contest-details/:id/payment');
-        }, 2000);
+          history.push(`/contest-details/${contestId}/payment`);
+          return <CircularProgress />;
+        }, 1000);
       }
     });
   };
