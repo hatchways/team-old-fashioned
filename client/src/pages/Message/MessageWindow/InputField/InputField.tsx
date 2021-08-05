@@ -4,15 +4,20 @@ import { Conversation } from '../../../../interface/Message';
 import useStyles from './useStyles';
 
 export interface InputFieldPorps {
-  text?: Conversation;
+  message?: Conversation;
+  newMessageHandler: (message: string) => void;
 }
 
-export default function InputField({ text }: InputFieldPorps): JSX.Element {
+export default function InputField({ message, newMessageHandler }: InputFieldPorps): JSX.Element {
   const classes = useStyles();
   const [messageText, setMessageText] = useState<string>('');
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    newMessageHandler(messageText);
+    setMessageText('');
   };
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMessageText(event.target.value);
   };
@@ -22,12 +27,19 @@ export default function InputField({ text }: InputFieldPorps): JSX.Element {
         <FilledInput
           classes={{ root: classes.input }}
           disableUnderline
-          placeholder={`Reply to ${text?.fullName}`}
+          placeholder={`Reply to ${message?.fullName}`}
           value={messageText}
           onChange={handleChange}
           className={classes.filledInput}
         />
-        <Button type="submit" size="large" variant="contained" color="primary" className={classes.btn}>
+        <Button
+          type="submit"
+          disabled={!message || messageText.trim().length === 0 ? true : false}
+          size="large"
+          variant="contained"
+          color="primary"
+          className={classes.btn}
+        >
           Send
         </Button>
       </FormControl>

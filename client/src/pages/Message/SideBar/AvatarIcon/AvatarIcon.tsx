@@ -58,32 +58,24 @@ export default function ConversationItem({ conversationItem }: ConversationListP
     <Box className={classes.root}>
       {conversationItem?.isOnline ? (
         <StyledBadge
-          overlap="circle"
+          overlap="circular"
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
           }}
           variant="dot"
         >
-          <Avatar
-            className={classes.avatar}
-            alt={conversationItem?.fullName}
-            src={conversationItem?.imageURL.default}
-          />
+          <Avatar className={classes.avatar} alt={conversationItem?.fullName} src={conversationItem?.imageURL} />
         </StyledBadge>
       ) : (
         <Badge
-          overlap="circle"
+          overlap="circular"
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
           }}
         >
-          <Avatar
-            className={classes.avatar}
-            alt={conversationItem?.fullName}
-            src={conversationItem?.imageURL.default}
-          />
+          <Avatar className={classes.avatar} alt={conversationItem?.fullName} src={conversationItem?.imageURL} />
         </Badge>
       )}
     </Box>
