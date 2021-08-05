@@ -16,6 +16,15 @@ const useStyles = makeStyles(() => ({
     margin: 'auto',
     maxWidth: 720,
   },
+  radio: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    position: 'relative',
+    zIndex: 1300,
+  },
+  image: {
+    position: 'absolute',
+  },
 }));
 
 export default useStyles;

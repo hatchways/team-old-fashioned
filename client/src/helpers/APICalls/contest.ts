@@ -1,6 +1,6 @@
 import { AuthApiData } from '../../interface/AuthApiData';
 import { FetchOptions } from '../../interface/FetchOptions';
-import { ContestAPIData, ContestAPIResponse } from '../../interface/Contest';
+import { ContestAPIResponse, ContestAPIData, WinnerAPIResponse } from '../../interface/Contest';
 
 export async function createContestAPI(
   title: string,
@@ -71,6 +71,18 @@ export const getUserContests = async (): Promise<ContestAPIResponse> => {
       error: 'Unable to connect to server. Please try again',
     }));
 };
+
+export async function selectWinner(contestId: string, submissionId: string): Promise<WinnerAPIResponse> {
+  const fetchOptions: FetchOptions = {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ submissionId }),
+  };
+  return await fetch(`/contest/${contestId}/winner`, fetchOptions)
+    .then((res) => res.json())
+    .catch((error) => ({ error }));
+}
 
 export const getContestsByUsername = async (username: string): Promise<ContestAPIData[]> => {
   const fetchOptions: FetchOptions = {

@@ -12,11 +12,12 @@ import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
 import { ContestProvider } from './context/useContestContext';
 import { NotificationsProvider } from './context/useNotificationsContext';
+import { PaymentMethodsProvider } from './context/usePaymentsContext';
 import ProtectedRoute from './components/ProtectedRoutes/ProtectedRoutes';
 import NavBar from './components/NavBar/NavBar';
 import NotificationsPage from './pages/Notifications/Notifications';
 import { MessagingProvider } from './context/useMessagingContext';
-
+import ContestPayment from './pages/ContestPayment/ContestPayment';
 import './App.css';
 import DesignSubmit from './components/DesignSubmit/DesignSubmit';
 import ProfileSetting from './pages/ProfileSetting/ProfileSetting';
@@ -31,6 +32,7 @@ function App(): JSX.Element {
       <BrowserRouter>
         <SnackBarProvider>
           <AuthProvider>
+           <PaymentMethodsProvider>
             <ContestProvider>
               <SocketProvider>
                 <MessagingProvider>
@@ -50,6 +52,7 @@ function App(): JSX.Element {
                     <ProtectedRoute exact path="/dashboard" component={Dashboard} />
                     <ProtectedRoute exact path="/notifications" component={NotificationsPage} />
                     <ProtectedRoute exact path="/contest-details/:id" component={ContestDetails} />
+                    <ProtectedRoute exact path="/contest-details/:id/payment" component={ContestPayment} />
                     <ProtectedRoute exact path="/profile" component={ProfileSetting} />
                     <ProtectedRoute exact path="/new-contest" component={NewContest} />
                     <ProtectedRoute exact path="/logout" component={Dashboard} />
@@ -59,7 +62,8 @@ function App(): JSX.Element {
                   </NotificationsProvider>
                 </MessagingProvider>
               </SocketProvider>
-            </ContestProvider>
+             </ContestProvider>
+            </PaymentMethodsProvider>
           </AuthProvider>
         </SnackBarProvider>
       </BrowserRouter>
