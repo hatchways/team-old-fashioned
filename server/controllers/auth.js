@@ -82,6 +82,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
           bio: user.bio ? user.bio : '',
           location: user.location ? user.location : '',
           profilePicUrl: user.profilePicUrl ? user.profilePicUrl : '',
+          payment_method_confirmed: user.payment_method_confirmed,
           coverPhoto: user.coverPhoto ? user.coverPhoto : '',
         },
         token: token,
@@ -114,6 +115,7 @@ exports.loadUser = asyncHandler(async (req, res, next) => {
         bio: user.bio,
         location: user.location,
         profilePicUrl: user.profilePicUrl,
+        payment_method_confirmed: user.payment_method_confirmed,
       },
     },
   });

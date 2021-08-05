@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { CardNumberElement, CardCvcElement, CardExpiryElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import {
   Button,
@@ -10,8 +10,12 @@ import {
   Select,
   TextField,
   CircularProgress,
+  Typography,
 } from '@material-ui/core';
+import { useSnackBar } from '../../context/useSnackbarContext';
 import { Formik, FormikHelpers } from 'formik';
+import setPaymentMethodConfirmed from '../../helpers/APICalls/setPaymentMethodConfirmed';
+import { AuthContext } from '../../context/useAuthContext';
 import * as Yup from 'yup';
 
 import useStyles from './useStyles';
@@ -39,45 +43,52 @@ const PaymentForm: FC = (): JSX.Element => {
   const classes = useStyles();
   const stripe = useStripe();
   const elements = useElements();
+  const { updateSnackBarMessage } = useSnackBar();
+  const { loggedInUser } = useContext(AuthContext);
 
-  const handleSubmit = (
+  const handleSubmit = async (
     { name, line1, city, state, postal_code }: IPayment,
     { setSubmitting }: FormikHelpers<IPayment>,
   ) => {
-    // disables submission while stripe / elements haven't been loaded
     if (!stripe || !elements) {
       return;
     }
     const cardNumberElement = elements.getElement(CardNumberElement);
-    const cardExpiryElement = elements.getElement(CardExpiryElement);
-    const cardCvcElement = elements.getElement(CardCvcElement);
-    if (!cardNumberElement || !cardExpiryElement || !cardCvcElement) {
+    if (!cardNumberElement) {
       return;
     }
 
-    // need an async function to query Stripe
-    // leaving this snippet in hopefully as a hint
-    // const response = await fetch('/payments/secret');
-    // const { client_secret: clientSecret } = await response.json();
-    // const payload = await stripe.confirmCardSetup(clientSecret, {
-    //   payment_method: {
-    //     card: cardNumberElement,
-    //     billing_details: {
-    //       name: name,
-    //       address: {
-    //         line1,
-    //         city,
-    //         state,
-    //         postal_code,
-    //       },
-    //     },
-    //   },
-    // });
-    // console.log('[PaymentMethod]', payload);
+    const response = await fetch('/payments/secret');
+    const { client_secret: clientSecret } = await response.json();
+    const result = await stripe.confirmCardSetup(clientSecret, {
+      payment_method: {
+        card: cardNumberElement,
+        billing_details: {
+          name: name,
+          address: {
+            line1,
+            city,
+            state,
+            postal_code,
+          },
+        },
+      },
+    });
+
+    if (result.error) {
+      const confirmed = await setPaymentMethodConfirmed(false);
+      updateSnackBarMessage(result.error.message as string);
+    }
+    if (result.setupIntent) {
+      const confirmed = await setPaymentMethodConfirmed(true);
+      updateSnackBarMessage('Payment method accepted');
+    }
     setSubmitting(false);
   };
 
-  return (
+  return loggedInUser && loggedInUser?.payment_method_confirmed ? (
+    <Typography>You have confirmed your payment information.</Typography>
+  ) : (
     <Formik
       initialValues={{
         name: '',
