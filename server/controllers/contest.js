@@ -63,20 +63,67 @@ exports.getContest = asyncHandler(async (req, res, next) => {
 // handler for getting all the contests
 exports.getContests = asyncHandler(async (req, res, next) => {
   const contestList = [];
+  const { search, title, startTime, endTime } = req.query;
   try {
-    const contests = await Contest.find({}).populate('userId');
-    contests.forEach((contest) => {
-      const contestData = {
-        _id: contest._id,
-        ownerName: contest.userId.username,
-        profileImg: contest.userId.profilePicUrl,
-        title: contest.title,
-        description: contest.description,
-        prizeAmount: contest.prizeAmount,
-      };
-      contestList.push(contestData);
-    });
-    res.status(200).json({ contest: contestList });
+    if (search === 'null' && title === 'null' && startTime === 'null' && endTime === 'null') {
+      const contests = await Contest.find({}).populate('userId');
+      contests.forEach((contest) => {
+        const contestData = {
+          _id: contest._id,
+          ownerName: contest.userId.username,
+          profileImg: contest.userId.profilePicUrl,
+          title: contest.title,
+          description: contest.description,
+          prizeAmount: contest.prizeAmount,
+        };
+        contestList.push(contestData);
+      });
+      res.status(200).json({ contest: contestList });
+    } else if (search !== 'null') {
+      const contests = await Contest.find({ title: { $regex: new RegExp(search, 'i') } }).populate('userId');
+
+      contests.forEach((contest) => {
+        const contestData = {
+          _id: contest._id,
+          ownerName: contest.userId.username,
+          profileImg: contest.userId.profilePicUrl,
+          title: contest.title,
+          description: contest.description,
+          prizeAmount: contest.prizeAmount,
+        };
+        contestList.push(contestData);
+      });
+      if (contestList.length) {
+        res.status(200).json({ success: { contest: contestList } });
+      } else {
+        res.status(200).json({ error: 'Could not find any match' });
+      }
+    } else {
+      const contests = await Contest.find({
+        $and: [
+          { title: { $regex: new RegExp(title, 'i') } },
+          { created: { $gt: startTime } },
+          { deadline: { $lt: endTime } },
+        ],
+      }).populate('userId');
+
+      contests.forEach((contest) => {
+        const contestData = {
+          _id: contest._id,
+          ownerName: contest.userId.username,
+          profileImg: contest.userId.profilePicUrl,
+          title: contest.title,
+          description: contest.description,
+          prizeAmount: contest.prizeAmount,
+        };
+        contestList.push(contestData);
+      });
+      if (contestList.length) {
+        res.status(200).json({ success: { contest: contestList } });
+      } else {
+        res.status(200).json({ error: 'Could not find any match' });
+      }
+    }
   } catch (error) {
     res.status(500);
     throw new Error('failed to get contests');
@@ -88,6 +135,7 @@ exports.createSubmissionByContestId = asyncHandler(async (req, res, next) => {
   const contestId = req.params.id;
   const s3UrlArray = req.body.data;
   const userId = req.user.id;
+
   if (!ObjectId.isValid(contestId)) {
     return res.status(400).json({
       error: 'Contest ID is invalid.',

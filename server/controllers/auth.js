@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const asyncHandler = require('express-async-handler');
 const generateToken = require('../utils/generateToken');
+const verifyToken = require('../utils/verifyToken');
+const bcrypt = require('bcryptjs');
 
 // @route POST /auth/register
 // @desc Register user
@@ -80,6 +82,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
           bio: user.bio ? user.bio : '',
           location: user.location ? user.location : '',
           profilePicUrl: user.profilePicUrl ? user.profilePicUrl : '',
+          payment_method_confirmed: user.payment_method_confirmed,
           coverPhoto: user.coverPhoto ? user.coverPhoto : '',
         },
         token: token,
@@ -112,6 +115,7 @@ exports.loadUser = asyncHandler(async (req, res, next) => {
         bio: user.bio,
         location: user.location,
         profilePicUrl: user.profilePicUrl,
+        payment_method_confirmed: user.payment_method_confirmed,
       },
     },
   });
@@ -124,4 +128,23 @@ exports.logoutUser = asyncHandler(async (req, res, next) => {
   res.clearCookie('token');
 
   res.send('You have successfully logged out');
+});
+
+//@route POST /auth/reset-password
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  const { password, token } = req.body;
+  try {
+    const decoded = verifyToken(token);
+    const salt = await bcrypt.genSalt(20);
+    const newPassword = await bcrypt.hash(password, salt);
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: decoded.id },
+      {
+        password: newPassword,
+      },
+    );
+    return res.status(200).json({ success: { message: 'Your password has been updated.' } });
+  } catch (e) {
+    res.status(500).json(error);
+  }
 });

@@ -49,11 +49,6 @@ interface Props {
 
 const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.Element => {
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-  };
 
   const times = [
     '12:00 am',
@@ -100,7 +95,7 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
       })}
       onSubmit={handleSubmit}
     >
-      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
+      {({ handleSubmit, handleChange, values, touched, errors, isSubmitting, setFieldValue }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <Grid container direction="row" justify="center" spacing={4}>
             <Grid item xs={11} md={9}>
@@ -171,11 +166,11 @@ const NewContestForm: FunctionComponent<Props> = ({ handleSubmit }: Props): JSX.
                           name="date"
                           fullWidth
                           inputVariant="outlined"
-                          value={selectedDate}
+                          value={values.deadline}
                           KeyboardButtonProps={{
                             'aria-label': 'change date',
                           }}
-                          onChange={handleDateChange}
+                          onChange={(date) => setFieldValue('deadline', date)}
                         />
                       </MuiPickersUtilsProvider>
                     </Grid>
