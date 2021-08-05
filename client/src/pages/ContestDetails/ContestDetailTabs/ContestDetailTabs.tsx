@@ -22,6 +22,7 @@ interface TabPanelProps {
 interface SubmissionListProps {
   submissionList: Submission[];
   description: string;
+  setWinner: (submissionId: string) => void;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -47,7 +48,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function FullWidthTabs({ submissionList, description }: SubmissionListProps): JSX.Element {
+export default function FullWidthTabs({ submissionList, description, setWinner }: SubmissionListProps): JSX.Element {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -82,7 +83,7 @@ export default function FullWidthTabs({ submissionList, description }: Submissio
         className={classes.panel}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <SubmissionsGrid submissionList={submissionList} />
+          <SubmissionsGrid submissionList={submissionList} setWinner={setWinner} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <Typography variant="body1" className={classes.description}>

@@ -64,7 +64,12 @@ const NavBar = (): JSX.Element => {
             </Box>
             {loggedInUser ? (
               <>
-                <Link component={RouterLink} variant="subtitle1" to={`/users/${loggedInUser.username}`}>
+                <Link
+                  component={RouterLink}
+                  variant="subtitle1"
+                  className={classes.profileLink}
+                  to={`/users/${loggedInUser.username}`}
+                >
                   <Box alignItems="center" display="flex">
                     <Avatar className={classes.profileImg} src={loggedInUser?.profilePicUrl} alt="Profile Photo" />
                     <Typography variant="subtitle1" className={classes.username}>

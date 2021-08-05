@@ -12,16 +12,19 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FullWidthTabs from './ContestDetailTabs/ContestDetailTabs';
 import { useAuth } from '../../context/useAuthContext';
 import useStyles from './useStyles';
-
+import { selectWinner } from '../../helpers/APICalls/contest';
 import { getAllSubmissions } from '../../helpers/APICalls/submission';
 import { Submission } from '../../interface/Submission';
+import { useSnackBar } from '../../context/useSnackbarContext';
 
 export default function ContestDetails({ match }: RouteComponentProps): JSX.Element {
   const classes = useStyles();
   const [submissionObj, setSubmissionObj] = useState<Submission[]>(Object);
+  const [winner, setWinner] = useState<string>('');
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [contestId, setContestId] = useState<string>('');
   const { loggedInUser } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
 
   const history = useHistory();
 
@@ -40,6 +43,20 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
     // loading for a split seconds until history.push works
     return <CircularProgress />;
   }
+
+  const handleWinner = async (submissionId: string) => {
+    await selectWinner(contestId, submissionId).then((response) => {
+      if (response.error) {
+        updateSnackBarMessage(response.error);
+      } else {
+        updateSnackBarMessage('Winner selected!');
+        setTimeout(function () {
+          history.push(`/contest-details/${contestId}/payment`);
+          return <CircularProgress />;
+        }, 1000);
+      }
+    });
+  };
 
   return (
     <>
@@ -64,8 +81,19 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                     ${submissionObj[0].prizeAmount}
                   </Button>
                 </Box>
-                {!isOwner ? (
-                  <Box>
+                <div>
+                  {loggedInUser.username === submissionObj[0].ownerName ? (
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => {
+                        handleWinner(winner);
+                      }}
+                      className={classes.winnerButton}
+                    >
+                      select winner
+                    </Button>
+                  ) : (
                     <Button
                       component={Link}
                       to={`/file-upload/${contestId}`}
@@ -75,8 +103,8 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                     >
                       submit design
                     </Button>
-                  </Box>
-                ) : null}
+                  )}
+                </div>
               </Box>
               <Grid item xs={12} sm={10} md={8} className={classes.ownerColumn}>
                 <Box display="flex" alignItems="center">
@@ -87,7 +115,11 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                 </Box>
               </Grid>
               <Grid className={classes.spacer}></Grid>
-              <FullWidthTabs submissionList={submissionObj} description={submissionObj[0].description} />
+              <FullWidthTabs
+                submissionList={submissionObj}
+                setWinner={setWinner}
+                description={submissionObj[0].description}
+              />
             </Grid>
           </Grid>
         </Grid>

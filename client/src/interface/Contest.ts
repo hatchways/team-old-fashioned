@@ -33,7 +33,17 @@ export interface ContestAPIData {
   created: Date | string;
   subs: SubmissionAPIData[];
 }
-
+export interface WinnerAPIData {
+  contestId: string;
+  submissionId: string;
+}
+export interface WinnerAPIResponse {
+  error?: string;
+  contest_id: string;
+  owner: string;
+  winningSubmission: string;
+  prizeAmount: number;
+}
 export interface ContestAPIResponse {
   success?: boolean;
   error?: boolean;
