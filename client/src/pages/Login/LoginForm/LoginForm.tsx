@@ -5,8 +5,9 @@ import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Grid, Link } from '@material-ui/core';
 import { demoValues } from '../../../helpers/demovalues';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface Props {
   handleSubmit: (
@@ -90,6 +91,11 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
             onChange={handleChange}
           />
           <Box textAlign="center">
+            <Grid item xs>
+              <Link component={RouterLink} to="/forget-password" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
             <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
               {!demo && isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'SIGN IN'}
             </Button>
