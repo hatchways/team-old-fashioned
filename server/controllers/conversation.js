@@ -225,7 +225,6 @@ exports.addMessage = asyncHandler(async (req, res, next) => {
   const { conversationId, message } = req.body;
   try {
     const userId = req.user.id;
-
     if (!conversationId || !mongoose.isValidObjectId(conversationId)) {
       throw new Error('invalid conversation');
     }
