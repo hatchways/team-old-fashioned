@@ -48,6 +48,12 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
     await selectWinner(contestId, submissionId).then((response) => {
       if (response.error) {
         updateSnackBarMessage(response.error);
+        if (response.error === 'A winner for the contest has already been selected.') {
+          setTimeout(function () {
+            history.push(`/contest-details/${contestId}/payment`);
+            return <CircularProgress />;
+          }, 1000);
+        }
       } else {
         updateSnackBarMessage('Winner selected!');
         setTimeout(function () {
