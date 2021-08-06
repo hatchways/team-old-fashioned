@@ -28,13 +28,28 @@ connectDB();
 const app = express();
 const server = http.createServer(app);
 
-const NEW_MSG = 'new_msg';
 const io = socketio(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: '*',
     credentials: true,
   },
 });
+
+let connectedUsers = [];
+const addUser = (email, socketId) => {
+  const user = connectedUsers.find((u) => u.email === email);
+  if (!user) {
+    connectedUsers.push({ email, socketId });
+  }
+};
+
+const removeUser = (socketId) => {
+  connectedUsers = connectedUsers.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (email) => {
+  return connectedUsers.find((user) => user.email === email);
+};
 
 io.on('connection', (socket) => {
   let cookies = socketCookieParser(socket.handshake.headers.cookie);
@@ -48,12 +63,23 @@ io.on('connection', (socket) => {
   socket.emit('loggedin');
   socketCreateNotification(socket);
 
-  socket.on(NEW_MSG, (data) => {
-    console.log('data', data);
+  // add user to logged in
+  socket.on('USER_LOGIN', (data) => {
+    addUser(data, socket.id);
+    io.emit('GET_USERS', connectedUsers);
+  });
+
+  socket.on('SEND_MESSAGE', ({ receiver, conversationId, message }) => {
+    const receiverId = getUser(receiver);
+    if (receiverId) {
+      io.to(receiverId.socketId).emit('GET_MESSAGE', { conversationId, message });
+    }
   });
 
   socket.on('disconnect', () => {
-    //socket.leave(room);
+    // remove user from logged in
+    removeUser(socket.id);
+    io.emit('GET_USERS', connectedUsers);
   });
 });
 

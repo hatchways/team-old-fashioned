@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { useSocket } from '../../../../context/useSocketContext';
 import { Avatar, Badge, Box, createStyles, makeStyles, Theme, withStyles } from '@material-ui/core';
 import { Conversation } from '../../../../interface/Message';
 
@@ -53,37 +55,37 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function ConversationItem({ conversationItem }: ConversationListProps): JSX.Element {
+  const { loggedInUsers } = useSocket();
   const classes = useStyles();
+  const [isOnline, setIsOnline] = useState(false);
+
+  useEffect(() => {
+    const loggedIn = loggedInUsers ? loggedInUsers.some((user) => user.email === conversationItem?.toUserEmail) : false;
+    setIsOnline(loggedIn);
+  }, [loggedInUsers, conversationItem]);
+
   return (
     <Box className={classes.root}>
-      {conversationItem?.isOnline ? (
+      {isOnline ? (
         <StyledBadge
-          overlap="circle"
+          overlap="circular"
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
           }}
           variant="dot"
         >
-          <Avatar
-            className={classes.avatar}
-            alt={conversationItem?.fullName}
-            src={conversationItem?.imageURL.default}
-          />
+          <Avatar className={classes.avatar} alt={conversationItem?.fullName} src={conversationItem?.imageURL} />
         </StyledBadge>
       ) : (
         <Badge
-          overlap="circle"
+          overlap="circular"
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
           }}
         >
-          <Avatar
-            className={classes.avatar}
-            alt={conversationItem?.fullName}
-            src={conversationItem?.imageURL.default}
-          />
+          <Avatar className={classes.avatar} alt={conversationItem?.fullName} src={conversationItem?.imageURL} />
         </Badge>
       )}
     </Box>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Box from '@material-ui/core/Box';
@@ -6,18 +6,31 @@ import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Logo from '../../Images/logo.png';
-import demoProfilePhoto from '../../Images/demo-profile-photo.png';
 import useStyles from './useStyles';
 import AuthMenu from '../AuthMenu/AuthMenu';
 import { useAuth } from '../../context/useAuthContext';
+import { useSocket } from '../../context/useSocketContext';
 import CustomButton from './CustomButton';
 import NotifsMsgDropdown from '../NotifsMsgDropdown/NotifsMsgDropdown';
 import Typography from '@material-ui/core/Typography';
 
 const NavBar = (): JSX.Element => {
+  const { initSocket, socket } = useSocket();
   const classes = useStyles();
   const { loggedInUser } = useAuth();
   const path = window.location.pathname;
+
+  useEffect(() => {
+    if (loggedInUser) {
+      initSocket();
+    }
+  }, [initSocket, loggedInUser]);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      socket?.emit('USER_LOGIN', loggedInUser?.email);
+    }
+  }, [socket, loggedInUser]);
 
   return (
     <AppBar className={classes.root} position="static">
@@ -65,16 +78,19 @@ const NavBar = (): JSX.Element => {
             </Box>
             {loggedInUser ? (
               <>
-                <Box p={1.5}>
-                  {/* replace `demoProfilePhoto` with link to user photo */}
-                  <Avatar className={classes.profileImg} src={demoProfilePhoto} alt="Profile Photo" />
-                </Box>
-                <Box p={0}>
-                  {/* replace `Kenneth` with username */}
-                  <Link component={RouterLink} variant="subtitle1" className={classes.username} to="/profile">
-                    Kenneth
-                  </Link>
-                </Box>
+                <Link
+                  component={RouterLink}
+                  variant="subtitle1"
+                  className={classes.profileLink}
+                  to={`/users/${loggedInUser.username}`}
+                >
+                  <Box alignItems="center" display="flex">
+                    <Avatar className={classes.profileImg} src={loggedInUser?.profilePicUrl} alt="Profile Photo" />
+                    <Typography variant="subtitle1" className={classes.username}>
+                      {loggedInUser.username}
+                    </Typography>
+                  </Box>
+                </Link>
                 <Box p={0}>
                   <AuthMenu />
                 </Box>

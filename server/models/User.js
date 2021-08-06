@@ -38,7 +38,14 @@ const userSchema = new mongoose.Schema({
   stripe_intent_id: {
     type: String,
   },
+  payment_method_confirmed: {
+    type: Boolean,
+  },
   profilePicUrl: {
+    type: String,
+    required: false,
+  },
+  coverPhoto: {
     type: String,
     required: false,
   },

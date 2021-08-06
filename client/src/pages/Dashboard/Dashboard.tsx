@@ -5,8 +5,8 @@ import { useAuth } from '../../context/useAuthContext';
 import { useSocket } from '../../context/useSocketContext';
 import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
-import AuthHeader from '../../components/AuthHeader/AuthHeader';
-import { Link } from 'react-router-dom';
+
+import Discovery from '../Discovery/Discovery';
 
 export default function Dashboard(): JSX.Element {
   const { loggedInUser } = useAuth();
@@ -27,10 +27,7 @@ export default function Dashboard(): JSX.Element {
 
   return (
     <div>
-      <AuthHeader linkTo="/fileUpload" asideText="testing upload file page" btnText="open uploadFile page" />
-      {/* hard coding contest id, should fetch contest ID in Dashboard */}
-      <Link to="/contest-details/60fa08e84f14460a342ad347">Contest Details</Link>
-      <Link to="/file-upload/610207d628b2652390d36132">File upload</Link>
+      <Discovery />
     </div>
   );
 }

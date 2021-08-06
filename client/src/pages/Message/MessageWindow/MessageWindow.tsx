@@ -7,8 +7,9 @@ import useStyles from './useStyles';
 
 export interface MessageProps {
   message?: Conversation;
+  newMessageHandler: (message: string) => void;
 }
-export default function MessageWindow({ message }: MessageProps): JSX.Element {
+export default function MessageWindow({ message, newMessageHandler }: MessageProps): JSX.Element {
   const classes = useStyles();
   return (
     <Box>
@@ -16,7 +17,7 @@ export default function MessageWindow({ message }: MessageProps): JSX.Element {
       <Box className={classes.textContainer}>
         <TextContent text={message} />
       </Box>
-      <InputField text={message} />
+      <InputField message={message} newMessageHandler={newMessageHandler} />
     </Box>
   );
 }

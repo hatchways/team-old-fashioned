@@ -3,6 +3,7 @@ export interface Conversation {
   conversationId: string;
   imageURL: string | any;
   fullName: string;
+  toUserEmail: string;
   title: string;
   createdAt: string;
   messages: Message[];

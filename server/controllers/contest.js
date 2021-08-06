@@ -47,6 +47,57 @@ exports.updateContest = asyncHandler(async (req, res, next) => {
   next();
 });
 
+// handler for selecting a contest winner
+exports.selectWinner = asyncHandler(async (req, res, next) => {
+  const id = req.params.id;
+  const { submissionId } = req.body;
+
+  if (!ObjectId.isValid(id)) {
+    res.status(400);
+    throw new Error('Contest ID is invalid.');
+  }
+  if (!ObjectId.isValid(submissionId)) {
+    res.status(400);
+    throw new Error('Submission ID is invalid.');
+  }
+
+  let contest = await Contest.findById(id);
+  if (contest.userId != req.user.id) {
+    res.status(400);
+    throw new Error('This contest belongs to another user.');
+  }
+  if (contest.deadline > new Date()) {
+    res.status(400);
+    throw new Error('You can select a winner after the deadline.');
+  }
+  if (contest.winningSubmission) {
+    res.status(400);
+    throw new Error('A winner for the contest has already been selected.');
+  }
+
+  const submission = await Submission.findById(submissionId);
+  if (!submission) {
+    res.status(400);
+    throw new Error('No such submission found.');
+  }
+
+  if (submission.userId.toString() === contest.userId.toString()) {
+    res.status(400);
+    throw new Error('Submissions to own contest is forbidden.');
+  }
+
+  const userHasPaymentMethod = await User.findById(contest.userId).then((user) => {
+    return user.payment_method_confirmed;
+  });
+  if (!userHasPaymentMethod) {
+    res.status(400);
+    throw new Error('Please add a payment method on your Settings Page.');
+  }
+
+  contest = await Contest.findByIdAndUpdate(id, { winningSubmission: submissionId }, { new: true });
+  return res.status(200).json(contest);
+});
+
 // handler for getting a contest by providing the contest id
 exports.getContest = asyncHandler(async (req, res, next) => {
   try {
@@ -63,20 +114,67 @@ exports.getContest = asyncHandler(async (req, res, next) => {
 // handler for getting all the contests
 exports.getContests = asyncHandler(async (req, res, next) => {
   const contestList = [];
+  const { search, title, startTime, endTime } = req.query;
   try {
-    const contests = await Contest.find({}).populate('userId');
-    contests.forEach((contest) => {
-      const contestData = {
-        _id: contest._id,
-        ownerName: contest.userId.username,
-        profileImg: contest.userId.profilePicUrl,
-        title: contest.title,
-        description: contest.description,
-        prizeAmount: contest.prizeAmount,
-      };
-      contestList.push(contestData);
-    });
-    res.status(200).json({ contest: contestList });
+    if (search === 'null' && title === 'null' && startTime === 'null' && endTime === 'null') {
+      const contests = await Contest.find({}).populate('userId');
+      contests.forEach((contest) => {
+        const contestData = {
+          _id: contest._id,
+          ownerName: contest.userId.username,
+          profileImg: contest.userId.profilePicUrl,
+          title: contest.title,
+          description: contest.description,
+          prizeAmount: contest.prizeAmount,
+        };
+        contestList.push(contestData);
+      });
+      res.status(200).json({ contest: contestList });
+    } else if (search !== 'null') {
+      const contests = await Contest.find({ title: { $regex: new RegExp(search, 'i') } }).populate('userId');
+
+      contests.forEach((contest) => {
+        const contestData = {
+          _id: contest._id,
+          ownerName: contest.userId.username,
+          profileImg: contest.userId.profilePicUrl,
+          title: contest.title,
+          description: contest.description,
+          prizeAmount: contest.prizeAmount,
+        };
+        contestList.push(contestData);
+      });
+      if (contestList.length) {
+        res.status(200).json({ success: { contest: contestList } });
+      } else {
+        res.status(200).json({ error: 'Could not find any match' });
+      }
+    } else {
+      const contests = await Contest.find({
+        $and: [
+          { title: { $regex: new RegExp(title, 'i') } },
+          { created: { $gt: startTime } },
+          { deadline: { $lt: endTime } },
+        ],
+      }).populate('userId');
+
+      contests.forEach((contest) => {
+        const contestData = {
+          _id: contest._id,
+          ownerName: contest.userId.username,
+          profileImg: contest.userId.profilePicUrl,
+          title: contest.title,
+          description: contest.description,
+          prizeAmount: contest.prizeAmount,
+        };
+        contestList.push(contestData);
+      });
+      if (contestList.length) {
+        res.status(200).json({ success: { contest: contestList } });
+      } else {
+        res.status(200).json({ error: 'Could not find any match' });
+      }
+    }
   } catch (error) {
     res.status(500);
     throw new Error('failed to get contests');
@@ -88,10 +186,17 @@ exports.createSubmissionByContestId = asyncHandler(async (req, res, next) => {
   const contestId = req.params.id;
   const s3UrlArray = req.body.data;
   const userId = req.user.id;
+
   if (!ObjectId.isValid(contestId)) {
     return res.status(400).json({
       error: 'Contest ID is invalid.',
     });
+  }
+  const beforeDeadline = await Contest.findById(contestId).then((contest) => {
+    return contest.deadline > new Date();
+  });
+  if (!beforeDeadline) {
+    return res.status(400).json({ error: 'Submissions for this contest had been closed.' });
   }
   try {
     const userExist = await Submission.findOne({ userId: userId, contestId: contestId });

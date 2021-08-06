@@ -2,11 +2,11 @@ import { FC, useState, useContext } from 'react';
 import ContestItem from '../../../components/ContestItem/ContestItem';
 import { ContestContext } from '../../../context/useContestContext';
 import { AuthContext } from '../../../context/useAuthContext';
-import { Button, CircularProgress, Grid, Box, Tabs, Tab, Avatar, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Grid, Box, Tabs, Tab, Avatar, Typography, Card, CardMedia } from '@material-ui/core';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import demoProfilePhoto from '../../../Images/demo-profile-photo.png';
 import uploadImagesAPI from '../../../helpers/APICalls/uploadImages';
-import updateProfilePicture from '../../../helpers/APICalls/updateProfilePicture';
+import updateProfilePhoto from '../../../helpers/APICalls/updateProfilePhoto';
 import useStyles from './useStyles';
 
 interface TabPanelProps {
@@ -58,6 +58,7 @@ const Profile: FC = (): JSX.Element => {
     if (new Date(contest.deadline) > new Date()) {
       openContests.push(
         <ContestItem
+          id={contest._id}
           key={`activeContest-${contest._id}`}
           imgSrc={firstImgSrc || demoProfilePhoto}
           imgCount={imageCnt}
@@ -70,6 +71,7 @@ const Profile: FC = (): JSX.Element => {
     } else {
       closedContests.push(
         <ContestItem
+          id={contest._id}
           key={`inactiveContest-${contest._id}`}
           imgSrc={firstImgSrc || demoProfilePhoto}
           imgCount={imageCnt}
@@ -83,7 +85,7 @@ const Profile: FC = (): JSX.Element => {
     }
   }
 
-  const profilePicUploadHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const UploadHandler = async (event: React.ChangeEvent<HTMLInputElement>, imageType: string) => {
     const fileList = event.target.files;
     if (fileList) {
       setisLoading(true);
@@ -94,8 +96,8 @@ const Profile: FC = (): JSX.Element => {
         updateSnackBarMessage(result.error.message);
       }
       if (result.success) {
-        updateSnackBarMessage('Profile picture uploaded');
-        const response = await updateProfilePicture(result.success.urlArray[0]);
+        updateSnackBarMessage(`${imageType} uploaded`);
+        const response = await updateProfilePhoto(imageType, result.success.urlArray[0]);
         if (response.user) {
           updateLoginContext(response);
         }
@@ -106,16 +108,30 @@ const Profile: FC = (): JSX.Element => {
 
   return (
     <Grid container direction="column" className={classes.profileContainer}>
-      <Grid xs={12} md={10} item className={classes.avatarContainer}>
-        <Box textAlign="center">
-          <Avatar className={classes.profileImg} src={loggedInUser?.profilePicUrl} />
+      <Card className={classes.profileContainer}>
+        <CardMedia className={classes.coverPhoto} image={loggedInUser?.coverPhoto} title="Cover Photo">
+          <Box display="flex" justifyContent="flex-end">
+            <Button
+              size="small"
+              variant="contained"
+              component="label"
+              color="primary"
+              className={classes.coverPhotoButton}
+            >
+              <input type="file" accept="image/*" hidden onChange={(e) => UploadHandler(e, 'Cover photo')} />
+              {isLoading ? <CircularProgress color="secondary" size={20} /> : 'upload cover photo'}{' '}
+            </Button>
+          </Box>
+        </CardMedia>
+        <Box textAlign="center" marginBottom={'1em'} justifyContent="center">
+          <Avatar className={classes.profileImg} src={loggedInUser?.profilePicUrl} variant="circular" />
           <Typography className={classes.name}>{loggedInUser?.username}</Typography>
           <Button size="small" variant="contained" component="label" color="primary" className={classes.btn}>
-            <input type="file" accept="image/*" hidden onChange={profilePicUploadHandler} />
-            {isLoading ? <CircularProgress color="secondary" size={20} /> : 'upload picture'}
+            <input type="file" accept="image/*" hidden onChange={(e) => UploadHandler(e, 'Profile picture')} />
+            {isLoading ? <CircularProgress color="secondary" size={20} /> : 'upload picture'}{' '}
           </Button>
         </Box>
-      </Grid>
+      </Card>
       <Grid xs={12} md={10} item className={classes.tabsContainer}>
         <Box textAlign="center">
           <Tabs
