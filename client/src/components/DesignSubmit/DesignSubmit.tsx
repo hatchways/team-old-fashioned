@@ -5,6 +5,7 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import uploadImageAPI from '../../helpers/APICalls/uploadImages';
 import contestImgSubmitAPI from '../../helpers/APICalls/contest';
+import { useSocket } from '../../context/useSocketContext';
 
 import useStyles from './useStyles';
 import { RouteComponentProps } from 'react-router-dom';
@@ -17,6 +18,7 @@ const DesignSubmit = ({ match }: RouteComponentProps): JSX.Element => {
   const [preview, setPreview] = useState<string>('');
   const [isLoading, setisLoading] = useState(false);
   const [contestId, setContestId] = useState<string>('');
+  const { socket } = useSocket();
 
   useEffect(() => {
     const params = match.params as { id: string };
@@ -66,6 +68,9 @@ const DesignSubmit = ({ match }: RouteComponentProps): JSX.Element => {
     }
     if (result.success) {
       const returnData = await contestImgSubmitAPI(contestId, result.success.urlArray);
+      if (socket) {
+        socket.emit('create notification', { returnData, type: 'submission' });
+      }
     }
     setisLoading(false);
   };

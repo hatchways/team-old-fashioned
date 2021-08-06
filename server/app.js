@@ -20,6 +20,8 @@ const notificationRouter = require('./routes/notification');
 const paymentRouter = require('./routes/payment');
 const submissionRouter = require('./routes/submission');
 const emailRouter = require('./routes/email');
+const { socketCreateNotification } = require('./controllers/notification');
+
 const { json, urlencoded } = express;
 require('dotenv').config();
 connectDB();
@@ -61,9 +63,12 @@ io.on('connection', (socket) => {
     console.log('invalid token - socket disconnected');
   }
 
+  socketCreateNotification(socket, connectedUsers);
+
   // add user to logged in
   socket.on('USER_LOGIN', (data) => {
     addUser(data, socket.id);
+    io.to(socket.id).emit('loggedin');
     io.emit('GET_USERS', connectedUsers);
   });
 
