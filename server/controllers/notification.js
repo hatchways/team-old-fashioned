@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
 const Notification = require('../models/Notification');
 const Contest = require('../models/Contest');
+const User = require('../models/User');
 
 exports.createNotification = asyncHandler(async (req, res, next) => {
   const senderId = req.user.id;
@@ -65,7 +66,17 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
   res.status(200).json(notifications);
 });
 
-module.exports.socketCreateNotification = function (socket) {
+const getSocketReceiver = async (receiverId, connectedUsers) => {
+  return await User.findById(receiverId)
+    .then((user) => {
+      return user.email;
+    })
+    .then((email) => {
+      return connectedUsers.find((user) => user.email === email);
+    });
+};
+
+module.exports.socketCreateNotification = function (socket, connectedUsers) {
   socket.on('create notification', async function (data) {
     const submissionData = data.returnData.submission;
     const type = data.type;
@@ -92,9 +103,12 @@ module.exports.socketCreateNotification = function (socket) {
 
       if (!notification) {
         throw new Error('Invalid notification data');
+      } else {
+        const receiver = getSocketReceiver(params.receiverId, connectedUsers);
+        if (receiver) {
+          socket.to(receiver).emit('notification created');
+        }
       }
     }
-
-    socket.emit('notification created');
   });
 };
