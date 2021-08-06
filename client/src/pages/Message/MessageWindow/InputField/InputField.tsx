@@ -27,6 +27,7 @@ export default function InputField({ message, newMessageHandler }: InputFieldPor
         <FilledInput
           classes={{ root: classes.input }}
           disableUnderline
+          disabled={!message ? true : false}
           placeholder={`Reply to ${message?.fullName}`}
           value={messageText}
           onChange={handleChange}

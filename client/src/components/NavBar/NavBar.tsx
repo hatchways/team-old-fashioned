@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Box from '@material-ui/core/Box';
@@ -9,14 +9,28 @@ import Logo from '../../Images/logo.png';
 import useStyles from './useStyles';
 import AuthMenu from '../AuthMenu/AuthMenu';
 import { useAuth } from '../../context/useAuthContext';
+import { useSocket } from '../../context/useSocketContext';
 import CustomButton from './CustomButton';
 import NotifsMsgDropdown from '../NotifsMsgDropdown/NotifsMsgDropdown';
 import Typography from '@material-ui/core/Typography';
 
 const NavBar = (): JSX.Element => {
+  const { initSocket, socket } = useSocket();
   const classes = useStyles();
   const { loggedInUser } = useAuth();
   const path = window.location.pathname;
+
+  useEffect(() => {
+    if (loggedInUser) {
+      initSocket();
+    }
+  }, [initSocket, loggedInUser]);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      socket?.emit('USER_LOGIN', loggedInUser?.email);
+    }
+  }, [socket, loggedInUser]);
 
   return (
     <AppBar className={classes.root} position="static">

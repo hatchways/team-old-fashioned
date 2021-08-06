@@ -9,30 +9,173 @@ exports.createConversation = asyncHandler(async (req, res, next) => {
 
   try {
     const from = req.user.id;
-
-    if (!to || !mongoose.isValidObjectId(to)) {
-      throw new Error('invalid recipient');
-    }
-
-    // check if conversation exists
-    let conversation = await Conversation.find({
-      $and: [
-        { $or: [{ toUser: mongoose.Types.ObjectId(to) }, { fromUser: mongoose.Types.ObjectId(to) }] },
-        { $or: [{ toUser: mongoose.Types.ObjectId(from) }, { fromUser: mongoose.Types.ObjectId(from) }] },
-      ],
+    const toUser = await User.findOne({ email: to });
+    conversation = await Conversation.create({
+      fromUser: mongoose.Types.ObjectId(from),
+      toUser: toUser.get('_id'),
     });
 
-    // create new conversation if one does not exist
-    if (conversation.length === 0) {
-      const conversation = await Conversation.create({
-        fromUser: mongoose.Types.ObjectId(from),
-        toUser: mongoose.Types.ObjectId(to),
-      });
-    }
-
+    const conversations = await Conversation.aggregate([
+      {
+        $match: {
+          _id: conversation.get('_id'),
+        },
+      },
+      {
+        $lookup: {
+          from: 'messages',
+          let: {
+            cId: '$_id',
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$conversation', '$$cId'],
+                },
+              },
+            },
+            {
+              $lookup: {
+                from: 'users',
+                let: { uId: '$sender' },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $eq: ['$_id', '$$uId'],
+                      },
+                    },
+                  },
+                  { $project: { email: 1, username: 1, profilePicUrl: 1 } },
+                ],
+                as: 'sender',
+              },
+            },
+            {
+              $sort: {
+                createdAt: -1,
+              },
+            },
+            {
+              $limit: 1,
+            },
+            { $unwind: '$sender' },
+            { $project: { _id: 1, conversation: 1, sender: 1, message: 1, createdAt: 1 } },
+          ],
+          as: 'last_msg',
+        },
+      },
+      {
+        $unwind: {
+          path: '$last_msg',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          let: { uId: '$fromUser' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', '$$uId'],
+                },
+              },
+            },
+            { $project: { email: 1, username: 1, profilePicUrl: 1 } },
+          ],
+          as: 'from',
+        },
+      },
+      {
+        $unwind: {
+          path: '$from',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          let: { uId: '$toUser' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$_id', '$$uId'],
+                },
+              },
+            },
+            { $project: { email: 1, username: 1, profilePicUrl: 1 } },
+          ],
+          as: 'to',
+        },
+      },
+      {
+        $unwind: {
+          path: '$to',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: 'messages',
+          let: {
+            cId: '$_id',
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$conversation', '$$cId'],
+                },
+              },
+            },
+            {
+              $lookup: {
+                from: 'users',
+                let: { uId: '$sender' },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $eq: ['$_id', '$$uId'],
+                      },
+                    },
+                  },
+                  { $project: { email: 1, username: 1, profilePicUrl: 1 } },
+                ],
+                as: 'sender',
+              },
+            },
+            {
+              $sort: {
+                createdAt: 1,
+              },
+            },
+            { $unwind: '$sender' },
+            { $project: { _id: 1, conversation: 1, sender: 1, message: 1, createdAt: 1 } },
+          ],
+          as: 'messages',
+        },
+      },
+      { $sort: { createdAt: -1 } },
+      {
+        $project: {
+          _id: 1,
+          from: 1,
+          to: 1,
+          last_msg: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          messages: 1,
+        },
+      },
+    ]);
     res.status(201).json({
       success: true,
-      conversation,
+      data: conversations[0],
     });
   } catch (error) {
     res.status(500).json({
@@ -225,7 +368,6 @@ exports.addMessage = asyncHandler(async (req, res, next) => {
   const { conversationId, message } = req.body;
   try {
     const userId = req.user.id;
-
     if (!conversationId || !mongoose.isValidObjectId(conversationId)) {
       throw new Error('invalid conversation');
     }

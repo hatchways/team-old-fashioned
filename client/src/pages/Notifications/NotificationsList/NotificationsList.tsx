@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment } from 'react';
 import { Notification } from '../../../interface/Notifications';
 import relativeTime from '../RelativeTime';
 import useStyles from './useStyles';
@@ -25,10 +25,10 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
   return (
     <List component="nav" className={classes.root} aria-label="notifications">
       {notifications.map((notification: Notification) => (
-        <>
-          <ListItem button key={notification._id}>
-            <Grid container={true} alignItems="center" justify="center" spacing={2} wrap="nowrap">
-              <Grid item xs={2} container direction="column" justify="flex-end" alignItems="flex-end">
+        <Fragment key={notification._id}>
+          <ListItem button>
+            <Grid container={true} alignItems="center" justifyContent="center" spacing={2} wrap="nowrap">
+              <Grid item xs={2} container direction="column">
                 <Avatar alt="Notification Thumbnail" src={notification.photo} />
               </Grid>
               <Grid item xs={9}>
@@ -55,13 +55,13 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
                   </Typography>
                 </Typography>
               </Grid>
-              <Grid item xs={1} justify="flex-start" alignItems="flex-start">
+              <Grid item xs={1}>
                 {notification.readStatus ? '  ' : <FiberManualRecordIcon className={classes.readIndicator} />}
               </Grid>
             </Grid>
           </ListItem>
           <Divider />
-        </>
+        </Fragment>
       ))}
     </List>
   );
