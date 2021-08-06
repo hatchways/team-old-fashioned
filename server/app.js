@@ -20,7 +20,6 @@ const notificationRouter = require('./routes/notification');
 const paymentRouter = require('./routes/payment');
 const submissionRouter = require('./routes/submission');
 const emailRouter = require('./routes/email');
-
 const { json, urlencoded } = express;
 require('dotenv').config();
 connectDB();
@@ -39,6 +38,8 @@ const addUser = (email, socketId) => {
   const user = connectedUsers.find((u) => u.email === email);
   if (!user) {
     connectedUsers.push({ email, socketId });
+  } else {
+    user.socketId = socketId;
   }
 };
 
