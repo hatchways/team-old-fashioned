@@ -1,28 +1,11 @@
 ## TATTOO ART
 
 TATTOO ART is a tattoo design contest website. Any user can create a contest for a tattoo design or submit a design to a contest.
+![Demo](demo/images/demo.mp4)
 
 **Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
 
 **Contributors**: [Eric](https://github.com/eric-silva-61), [Jeri](https://github.com/jerixmx), [Khalil](https://github.com/yliu298), [Rajiv](https://github.com/rajivtitus)
-
-## Demo
-
----
-
-### Getting Started
-
-1. Clone or download repository.
-2. Run `npm i` on both `client` and `server` directories.
-3. Create and fill up `.env` files in the `client` and `server` directories where `sample.env` files are available.
-
-## Running the App
-
-- To run `client` and `server` concurrently, issue `npm run dev` in the root directory.
-  OR
-- Separately, issue `npm run dev` in the `server` directory and `npm run start` in the `client` directory.
-
----
 
 ### Features
 
@@ -43,3 +26,17 @@ TATTOO ART is a tattoo design contest website. Any user can create a contest for
 5. Profile
    ![Profile](demo/images/profile.png)
    Change your profile photo, cover photo, and add information about yourself. The profile page also showcases active contests.
+
+---
+
+### Getting Started
+
+1. Clone or download repository.
+2. Run `npm i` on both `client` and `server` directories.
+3. Create and fill up `.env` files in the `client` and `server` directories where `sample.env` files are available.
+
+### Running the App
+
+- To run `client` and `server` concurrently, issue `npm run dev` in the root directory.
+  OR
+- Separately, issue `npm run dev` in the `server` directory and `npm run start` in the `client` directory.
