@@ -60,12 +60,13 @@ io.on('connection', (socket) => {
     socket.disconnect();
     console.log('invalid token - socket disconnected');
   }
-  io.emit('loggedin');
+
   socketCreateNotification(socket, connectedUsers);
 
   // add user to logged in
   socket.on('USER_LOGIN', (data) => {
     addUser(data, socket.id);
+    io.to(socket.id).emit('loggedin');
     io.emit('GET_USERS', connectedUsers);
   });
 
