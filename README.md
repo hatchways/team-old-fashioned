@@ -1,42 +1,37 @@
-## Project Name
+## TATTOO ART
 
-This is a little description about your project.
+TATTOO ART is a tattoo design contest website. Any user can create a contest for a tattoo design or submit a design to a contest.
 
 **Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
 
-**Contributors**: [Hatchways](https://github.com/hatchways) (replace)
+**Contributors**: [Eric](https://github.com/eric-silva-61), [Jeri](https://github.com/jerixmx), [Khalil](https://github.com/yliu298),
 
 ---
 
 ### Getting Started
 
-1. Clone or download repository
+1. Clone or download repository.
+2. Run `npm i` on both `client` and `server` directories.
+3. Create and fill up `.env` files in the `client` and `server` directories where `sample.env` files are available.
+4.
 
 ---
 
-## Server
+## Running the App
 
-1. Go into the server directory `cd server`
-2. Run `npm install` to install packages
-3. Create your environment variable (.env) file
-4. Run `npm run dev` to start the server
+- To run `client` and `server` concurrently, issue `npm run dev` in the root directory.
+- Separately, issue `npm run dev` in the `server` directory and `npm run start` in the `client` directory.
 
 ---
 
-## Client
-
-1. Go into the client directory `cd client`
-2. Run `npm install` to install packages
-3. Run `npm start` to start the client side
-
----
+### Features
 
 ### Demo
 
-1. Registration. Users will be able to create a new account using their email and password
+1. Discovery Page
 
-![Signup Demo](demo/images/signup.png)
+![Signup Demo](demo/images/signup.png)(replace)
 
-2. Dashboard. Here is a description about what a user can expect to see
+2. Login / Registration Page
 
-![Dashboard](demo/images/dashboard.png)
+![Dashboard](demo/images/dashboard.png)(replace)
