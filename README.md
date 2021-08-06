@@ -1,7 +1,8 @@
 ## TATTOO ART
 
 TATTOO ART is a tattoo design contest website. Any user can create a contest for a tattoo design or submit a design to a contest.
-![Demo](demo/images/demo.mp4)
+
+![Demo](demo/images/demo.gif)
 
 **Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
 
