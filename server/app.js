@@ -40,6 +40,8 @@ const addUser = (email, socketId) => {
   const user = connectedUsers.find((u) => u.email === email);
   if (!user) {
     connectedUsers.push({ email, socketId });
+  } else {
+    user.socketId = socketId;
   }
 };
 
