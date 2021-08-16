@@ -29,9 +29,10 @@ export interface ContestAPIData {
   prizeAmount: number;
   deadline: Date;
   __v: number;
-  user: User;
+  userId: User;
   created: Date | string;
   subs: SubmissionAPIData[];
+  error?: string;
 }
 export interface WinnerAPIData {
   contestId: string;
