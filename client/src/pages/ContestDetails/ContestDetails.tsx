@@ -22,9 +22,11 @@ import relativeTime from '../../pages/Notifications/RelativeTime';
 
 export default function ContestDetails({ match }: RouteComponentProps): JSX.Element {
   const classes = useStyles();
-  const [submissionObj, setSubmissionObj] = useState<Submission[]>(Object);
+  const [submissionObj, setSubmissionObj] = useState<Submission[]>([]);
   const [contestDetails, setContestDetails] = useState<ContestAPIData>();
   const [winner, setWinner] = useState<string>('');
+  const [beyondDeadline, setBeyondDeadline] = useState<boolean>(false);
+  const [button, setButton] = useState<string>('');
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [contestId, setContestId] = useState<string>('');
   const { loggedInUser } = useAuth();
@@ -35,10 +37,12 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
   useEffect(() => {
     const params = match.params as { id: string };
     setContestId(params.id);
+
     getAllSubmissions(params.id).then((data) => {
       setSubmissionObj(data.submission);
       setIsOwner(data.isOwner);
     });
+
     const getDetails = async (id: string) => {
       const response = await getContestDetails(id);
       if (response === null) {
@@ -52,7 +56,23 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
       }
     };
     getDetails(params.id);
-  }, [match, updateSnackBarMessage, history]);
+
+    const hasSubmission = () => {
+      if (!submissionObj) {
+        return false;
+      } else {
+        return submissionObj.some((submission) => {
+          return submission.files && submission.files.length > 0 ? true : false;
+        });
+      }
+    };
+
+    setBeyondDeadline(new Date(contestDetails?.deadline as Date) < new Date());
+    const contestOwner = loggedInUser?.username === contestDetails?.userId?.username;
+    setButton(
+      beyondDeadline && contestOwner && hasSubmission() ? 'winner' : !beyondDeadline && !contestOwner ? 'submit' : '',
+    );
+  }, [match, updateSnackBarMessage, history, contestDetails, loggedInUser, submissionObj, beyondDeadline]);
 
   if (loggedInUser === undefined) return <CircularProgress />;
   if (!loggedInUser) {
@@ -81,13 +101,6 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
     });
   };
 
-  const beyondDeadline = new Date(contestDetails?.deadline as Date) < new Date();
-
-  const button = () => {
-    const contestOwner = loggedInUser.username === contestDetails?.userId?.username;
-    return beyondDeadline && contestOwner ? 'winner' : !beyondDeadline && !contestOwner ? 'submit' : null;
-  };
-
   return (
     <>
       <Grid container component="main" className={classes.root} direction="column">
@@ -111,7 +124,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                 </Button>
               </Box>
               <div>
-                {button() === 'winner' ? (
+                {button === 'winner' ? (
                   <Button
                     variant="outlined"
                     color="primary"
@@ -122,7 +135,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                   >
                     select winner
                   </Button>
-                ) : button() === 'submit' ? (
+                ) : button === 'submit' ? (
                   <Button
                     component={Link}
                     to={`/file-upload/${contestId}`}
