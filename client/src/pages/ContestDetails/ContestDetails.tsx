@@ -18,6 +18,7 @@ import { Submission } from '../../interface/Submission';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import { getContestDetails } from '../../helpers/APICalls/contest';
 import { ContestAPIData } from '../../interface/Contest';
+import relativeTime from '../../pages/Notifications/RelativeTime';
 
 export default function ContestDetails({ match }: RouteComponentProps): JSX.Element {
   const classes = useStyles();
@@ -80,6 +81,13 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
     });
   };
 
+  const beyondDeadline = new Date(contestDetails?.deadline as Date) < new Date();
+
+  const button = () => {
+    const contestOwner = loggedInUser.username === contestDetails?.userId?.username;
+    return beyondDeadline && contestOwner ? 'winner' : !beyondDeadline && !contestOwner ? 'submit' : null;
+  };
+
   return (
     <>
       <Grid container component="main" className={classes.root} direction="column">
@@ -103,7 +111,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                 </Button>
               </Box>
               <div>
-                {loggedInUser.username === contestDetails?.userId?.username ? (
+                {button() === 'winner' ? (
                   <Button
                     variant="outlined"
                     color="primary"
@@ -114,7 +122,7 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                   >
                     select winner
                   </Button>
-                ) : (
+                ) : button() === 'submit' ? (
                   <Button
                     component={Link}
                     to={`/file-upload/${contestId}`}
@@ -124,6 +132,8 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                   >
                     submit design
                   </Button>
+                ) : (
+                  <></>
                 )}
               </div>
             </Box>
@@ -132,7 +142,16 @@ export default function ContestDetails({ match }: RouteComponentProps): JSX.Elem
                 <Box>
                   <Avatar src={contestDetails?.userId?.profilePicUrl} alt="Profile Photo" />
                 </Box>
-                <Box className={classes.userText}>By {contestDetails?.userId?.username}</Box>
+                <Box className={classes.userText} flexGrow={1}>
+                  By {contestDetails?.userId?.username}
+                </Box>
+                <Box className={classes.time}>
+                  <Typography variant="body2" className={classes.italicText}>
+                    {beyondDeadline
+                      ? `Contest deadline has passed`
+                      : `Ends in ${relativeTime(contestDetails?.deadline as Date, 'until')}`}
+                  </Typography>
+                </Box>
               </Box>
             </Grid>
             <Grid className={classes.spacer}></Grid>

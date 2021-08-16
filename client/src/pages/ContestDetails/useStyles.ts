@@ -34,10 +34,18 @@ const useStyles = makeStyles((theme) => ({
   },
   ownerColumn: {
     paddingTop: 8,
+    display: 'inline',
   },
   userText: {
     paddingLeft: 8,
     fontWeight: 600,
+  },
+  time: {
+    paddingRight: 15,
+  },
+  italicText: {
+    fontStyle: 'italic',
+    fontWeight: theme.typography.fontWeightRegular,
   },
   spacer: {
     paddingTop: 32,
