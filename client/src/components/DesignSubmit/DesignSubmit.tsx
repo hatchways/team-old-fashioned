@@ -68,7 +68,9 @@ const DesignSubmit = ({ match }: RouteComponentProps): JSX.Element => {
     }
     if (result.success) {
       const returnData = await contestImgSubmitAPI(contestId, result.success.urlArray);
-      if (socket) {
+      if (returnData.error) {
+        updateSnackBarMessage(returnData.error);
+      } else if (socket) {
         socket.emit('create notification', { returnData, type: 'submission' });
       }
     }
