@@ -102,7 +102,11 @@ exports.selectWinner = asyncHandler(async (req, res, next) => {
 exports.getContest = asyncHandler(async (req, res, next) => {
   try {
     const id = req.params.id;
-    const contest = await Contest.findById(id);
+    const contest = await Contest.findById(id).populate({
+      path: 'userId',
+      model: 'user',
+      select: ['username', 'profilePicUrl'],
+    });
 
     res.status(200).json(contest);
   } catch (error) {

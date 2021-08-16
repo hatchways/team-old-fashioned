@@ -95,3 +95,15 @@ export const getContestsByUsername = async (username: string): Promise<ContestAP
       error: 'Unable to connect to server. Please try again',
     }));
 };
+
+export const getContestDetails = async (id: string): Promise<ContestAPIData> => {
+  const fetchOptions: FetchOptions = {
+    method: 'GET',
+    credentials: 'include',
+  };
+  return await fetch(`/contest/${id}`, fetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: 'Unable to connect to server. Please try again',
+    }));
+};
