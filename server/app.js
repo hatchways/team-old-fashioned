@@ -21,6 +21,7 @@ const paymentRouter = require('./routes/payment');
 const submissionRouter = require('./routes/submission');
 const emailRouter = require('./routes/email');
 const { socketCreateNotification } = require('./controllers/notification');
+const { markAsRead } = require('./controllers/notification');
 
 const { json, urlencoded } = express;
 require('dotenv').config();
@@ -63,8 +64,6 @@ io.on('connection', (socket) => {
     console.log('invalid token - socket disconnected');
   }
 
-  socketCreateNotification(socket, connectedUsers);
-
   // add user to logged in
   socket.on('USER_LOGIN', (data) => {
     addUser(data, socket.id);
@@ -78,6 +77,9 @@ io.on('connection', (socket) => {
       io.to(receiverId.socketId).emit('GET_MESSAGE', { conversationId, message });
     }
   });
+
+  socketCreateNotification(socket, connectedUsers);
+  markAsRead(socket, connectedUsers);
 
   socket.on('disconnect', () => {
     // remove user from logged in

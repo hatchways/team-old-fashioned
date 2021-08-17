@@ -1,6 +1,6 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect } from 'react';
 import { Notification } from '../interface/Notifications';
-import { fetchNotifications } from '../helpers/APICalls/fetchNotifications';
+import { fetchNotifications } from '../helpers/APICalls/notifications';
 import { useSocket } from './useSocketContext';
 
 interface INotificationsContext {
@@ -27,6 +27,9 @@ export const NotificationsProvider: FunctionComponent = ({ children }): JSX.Elem
         getNotifications();
       });
       socket.on('loggedin', () => {
+        getNotifications();
+      });
+      socket.on('notification updated', () => {
         getNotifications();
       });
     }
