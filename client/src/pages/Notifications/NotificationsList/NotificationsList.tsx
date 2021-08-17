@@ -10,6 +10,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import { useSocket } from '../../../context/useSocketContext';
+import { useAuth } from '../../../context/useAuthContext';
 
 interface Props {
   notifications: Notification[];
@@ -18,15 +20,15 @@ interface Props {
 export function NotificationsList({ notifications, type }: Props): JSX.Element {
   const classes = useStyles();
   const history = useHistory();
-  // TODO: Mark notification as read when clicked
-  // const [invisible, setInvisible] = React.useState(false);
+  const { socket } = useSocket();
+  const { loggedInUser } = useAuth();
 
-  // const handleBadgeVisibility = () => {
-  //   setInvisible(true);
-  // };
-  // Linking to conversation by Id is not supported yet
-  const handleClick = (notificationType: string, id: string) => {
-    const link = notificationType === 'submission' ? `/contest-details/${id}` : '/messages';
+  const handleClick = (id: string, notificationType: string, contestId: string) => {
+    if (socket) {
+      socket.emit('read notification', { notificationId: id, receiverId: loggedInUser?.id });
+    }
+    // Linking to conversation by Id is not supported yet
+    const link = notificationType === 'submission' ? `/contest-details/${contestId}` : '/messages';
     history.push(link);
   };
 
@@ -38,6 +40,7 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
             button
             onClick={(e) => {
               handleClick(
+                notification._id,
                 notification.type,
                 notification.type === 'submission'
                   ? (notification.contestId?._id as string)
