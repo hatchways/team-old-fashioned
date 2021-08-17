@@ -42,7 +42,7 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
                         &nbsp; submitted a design to your contest &nbsp;
                       </Typography>
                       <Typography display="inline" variant="body2" className={classes.boldText}>
-                        {notification.contestId.title}.
+                        {notification?.contestId?.title}.
                       </Typography>
                     </>
                   ) : (

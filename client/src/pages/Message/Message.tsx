@@ -6,7 +6,7 @@ import ConversationList from './SideBar/ConversationList/ConversationList';
 import MessageWindow from './MessageWindow/MessageWindow';
 import { addMessage as APIAddMessage } from '../../helpers/APICalls/messaging';
 import { useSocket } from '../../context/useSocketContext';
-
+import { useAuth } from '../../context/useAuthContext';
 import useStyles from './useStyles';
 
 export default function Message(): JSX.Element {
@@ -14,7 +14,9 @@ export default function Message(): JSX.Element {
   const { id: conversationParamId } = useParams<{ id: string }>();
   const { conversations, addMessage } = useContext(MessagingContext);
   const [loadedConversation, setLoadedConversation] = useState(conversationParamId);
+  const { loggedInUser } = useAuth();
   const classes = useStyles();
+
   useEffect(() => {
     if (socket) {
       socket.on('GET_MESSAGE', ({ conversationId, message }) => {
@@ -39,6 +41,12 @@ export default function Message(): JSX.Element {
         receiver,
         conversationId: loadedConversation,
         message: message,
+      });
+      socket.emit('create notification', {
+        type: 'message',
+        conversationId: loadedConversation,
+        receiver,
+        userId: loggedInUser?.id,
       });
     }
   };

@@ -1,6 +1,7 @@
 import { User } from '../interface/User';
 
 const mockLoggedInUser: User = {
+  id: 'mock id',
   email: 'mockLoggedInUser@gmail.com',
   username: 'mock LoggedIn user',
   headline: 'headline',
@@ -12,6 +13,7 @@ const mockLoggedInUser: User = {
 };
 
 const mockOtherUser1: User = {
+  id: 'mock id',
   username: 'Mock test user 1',
   email: 'mockTestUser1@gmail.com',
   headline: 'headline 1',
@@ -22,6 +24,7 @@ const mockOtherUser1: User = {
   coverPhoto: 'foo',
 };
 const mockOtherUser2: User = {
+  id: 'mock id',
   username: 'Mock test user 2',
   email: 'mockTestUser2@gmail.com',
   headline: 'headline 2',
@@ -32,6 +35,7 @@ const mockOtherUser2: User = {
   coverPhoto: 'foo',
 };
 const mockOtherUser3: User = {
+  id: 'mock id',
   username: 'Mock test user 3',
   email: 'mockTestUser3@gmail.com',
   headline: 'headline 3',
