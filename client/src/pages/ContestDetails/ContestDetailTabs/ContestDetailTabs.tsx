@@ -52,7 +52,10 @@ export default function FullWidthTabs({ submissionList, description, setWinner }
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const count = submissionCount({ submissionList });
+  const getCount = (submissionList: Submission[]) => {
+    return submissionList.length > 0 ? submissionCount({ submissionList }) : 0;
+  };
+  const count = getCount(submissionList);
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
   };
@@ -83,7 +86,7 @@ export default function FullWidthTabs({ submissionList, description, setWinner }
         className={classes.panel}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <SubmissionsGrid submissionList={submissionList} setWinner={setWinner} />
+          {count > 0 ? <SubmissionsGrid submissionList={submissionList} setWinner={setWinner} /> : <></>}
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <Typography variant="body1" className={classes.description}>
