@@ -4,13 +4,10 @@ require('mongoose-type-url');
 const { User } = require('./User');
 const { Contest } = require('./Contest');
 const { Submission } = require('./Submission');
-// TODO: Add message model
-// const { Message } = require('./Message');
+const { Conversation } = require('./Conversation');
 
 const notificationTypes = ['submission', 'message'];
 
-// Requires contestId and submissionId field if notification is for a submission
-// TODO: Add messageId requirement for messages
 function setRequirement() {
   return this.notificationType === 'submission';
 }
@@ -48,12 +45,11 @@ const notificationSchema = new Schema(
       required: setRequirement,
     },
 
-    // TODO: Add messageId field once messaging model is set up
-    // messageId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'Message',
-    //   required: setContestRequirement,
-    // },
+    conversationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Conversation',
+      required: !setRequirement,
+    },
 
     readStatus: {
       type: Boolean,

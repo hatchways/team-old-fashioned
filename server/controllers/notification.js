@@ -78,7 +78,6 @@ const getSocketReceiver = async (receiverId, connectedUsers) => {
 
 module.exports.socketCreateNotification = function (socket, connectedUsers) {
   socket.on('create notification', async function (data) {
-    const submissionData = data.returnData.submission;
     const type = data.type;
 
     const typeList = ['submission', 'message'];
@@ -87,7 +86,7 @@ module.exports.socketCreateNotification = function (socket, connectedUsers) {
     } else {
       let params;
       if (type === 'submission') {
-        const { files, _id: submissionId, contestId, userId: senderId } = submissionData;
+        const { files, _id: submissionId, contestId, userId: senderId } = data.returnData.submission;
         // Use last file in submission array while submission featured photo is not yet set
         const photo = files[files.length - 1];
         const receiverId = await Contest.findById(contestId).then((contest) => {
@@ -95,8 +94,14 @@ module.exports.socketCreateNotification = function (socket, connectedUsers) {
         });
         params = { type, receiverId, senderId, contestId, submissionId, photo };
       } else if (type === 'message') {
-        const { receiverId, userId: senderId } = submissionData;
-        params = { type, receiverId, senderId };
+        const { receiver, userId: senderId, conversationId } = data;
+        const receiverId = await User.findOne({ email: receiver }).then((user) => {
+          return user.id;
+        });
+        const photo = await User.findById(senderId).then((user) => {
+          return user.profilePicUrl;
+        });
+        params = { type, receiverId, senderId, conversationId, photo };
       }
 
       const notification = await Notification.create(params);
