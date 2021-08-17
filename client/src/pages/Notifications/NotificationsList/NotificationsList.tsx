@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Notification } from '../../../interface/Notifications';
 import relativeTime from '../RelativeTime';
 import useStyles from './useStyles';
@@ -16,17 +17,34 @@ interface Props {
 }
 export function NotificationsList({ notifications, type }: Props): JSX.Element {
   const classes = useStyles();
+  const history = useHistory();
   // TODO: Mark notification as read when clicked
   // const [invisible, setInvisible] = React.useState(false);
 
   // const handleBadgeVisibility = () => {
   //   setInvisible(true);
   // };
+  // Linking to conversation by Id is not supported yet
+  const handleClick = (notificationType: string, id: string) => {
+    const link = notificationType === 'submission' ? `/contest-details/${id}` : '/messages';
+    history.push(link);
+  };
+
   return (
     <List component="nav" className={classes.root} aria-label="notifications">
       {notifications.map((notification: Notification) => (
         <Fragment key={notification._id}>
-          <ListItem button>
+          <ListItem
+            button
+            onClick={(e) => {
+              handleClick(
+                notification.type,
+                notification.type === 'submission'
+                  ? (notification.contestId?._id as string)
+                  : (notification.conversationId as string),
+              );
+            }}
+          >
             <Grid container={true} alignItems="center" justifyContent="center" spacing={2} wrap="nowrap">
               <Grid item xs={2} container direction="column">
                 <Avatar alt="Notification Thumbnail" src={notification.photo} />
@@ -42,7 +60,7 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
                         &nbsp; submitted a design to your contest &nbsp;
                       </Typography>
                       <Typography display="inline" variant="body2" className={classes.boldText}>
-                        {notification?.contestId?.title}.
+                        {notification.contestId?.title}.
                       </Typography>
                     </>
                   ) : (
