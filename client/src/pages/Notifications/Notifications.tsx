@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import { NotificationsList } from './NotificationsList/NotificationsList';
-import { NotificationsContext } from '../../context/useNotificationsContext';
+import { useNotifications } from '../../context/useNotificationsContext';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
@@ -10,7 +9,7 @@ import useStyles from './useStyles';
 
 export default function NotificationsPage(): JSX.Element {
   const classes = useStyles();
-  const { notifications } = useContext(NotificationsContext);
+  const { notifications } = useNotifications();
 
   const notificationsOnly = notifications.filter(function (notif) {
     return notif.type === 'submission';
