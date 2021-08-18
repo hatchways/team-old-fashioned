@@ -6,19 +6,19 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
-import { useNotifications } from '../../context/useNotificationsContext';
 import { NotificationsList } from '../../pages/Notifications/NotificationsList/NotificationsList';
+import { Notification } from '../../interface/Notifications';
 
 interface Props {
+  notifications: Notification[];
   type: 'submission' | 'message';
   children: JSX.Element;
 }
 
-const NotifsMsgDropdown = ({ type, children }: Props): JSX.Element => {
+const NotifsMsgDropdown = ({ notifications, type, children }: Props): JSX.Element => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const { notifications } = useNotifications();
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
