@@ -10,6 +10,7 @@ import useStyles from './useStyles';
 import AuthMenu from '../AuthMenu/AuthMenu';
 import { useAuth } from '../../context/useAuthContext';
 import { useSocket } from '../../context/useSocketContext';
+import { useNotifications } from '../../context/useNotificationsContext';
 import CustomButton from './CustomButton';
 import NotifsMsgDropdown from '../NotifsMsgDropdown/NotifsMsgDropdown';
 import Typography from '@material-ui/core/Typography';
@@ -18,6 +19,7 @@ const NavBar = (): JSX.Element => {
   const { initSocket, socket } = useSocket();
   const classes = useStyles();
   const { loggedInUser } = useAuth();
+  const { notifications } = useNotifications();
   const path = window.location.pathname;
 
   useEffect(() => {
@@ -50,14 +52,14 @@ const NavBar = (): JSX.Element => {
                   </Link>
                 </Box>
                 <Box p={0}>
-                  <NotifsMsgDropdown type="message">
+                  <NotifsMsgDropdown type="message" notifications={notifications}>
                     <Typography variant="subtitle1" className={classes.link}>
                       Messages
                     </Typography>
                   </NotifsMsgDropdown>
                 </Box>
                 <Box p={0}>
-                  <NotifsMsgDropdown type="submission">
+                  <NotifsMsgDropdown type="submission" notifications={notifications}>
                     <Typography variant="subtitle1" className={classes.link}>
                       Notifications
                     </Typography>
