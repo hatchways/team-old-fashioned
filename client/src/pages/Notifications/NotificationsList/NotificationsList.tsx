@@ -23,12 +23,13 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
   const { socket } = useSocket();
   const { loggedInUser } = useAuth();
 
-  const handleClick = (id: string, notificationType: string, contestId: string) => {
+  const handleClick = (notification: Notification) => {
     if (socket) {
-      socket.emit('read notification', { notificationId: id, receiverId: loggedInUser?.id });
+      socket.emit('read notification', { notificationId: notification._id, receiverId: loggedInUser?.id });
+      notification.readStatus = true;
     }
     // Linking to conversation by Id is not supported yet
-    const link = notificationType === 'submission' ? `/contest-details/${contestId}` : '/messages';
+    const link = notification.type === 'submission' ? `/contest-details/${notification.contestId?._id}` : '/messages';
     history.push(link);
   };
 
@@ -39,13 +40,7 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
           <ListItem
             button
             onClick={(e) => {
-              handleClick(
-                notification._id,
-                notification.type,
-                notification.type === 'submission'
-                  ? (notification.contestId?._id as string)
-                  : (notification.conversationId as string),
-              );
+              handleClick(notification);
             }}
           >
             <Grid container={true} alignItems="center" justifyContent="center" spacing={2} wrap="nowrap">

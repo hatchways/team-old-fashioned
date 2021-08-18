@@ -24,16 +24,15 @@ export const NotificationsProvider: FunctionComponent = ({ children }): JSX.Elem
     };
     if (socket) {
       socket.on('notification created', () => {
-        console.log(`notification created`);
         getNotifications();
       });
       socket.on('loggedin', () => {
         getNotifications();
       });
-      socket.on('notification updated', () => {
-        console.log(`notification updated`);
-        getNotifications();
-      });
+      // Issue: client not receiving emitted message on notification update
+      // socket.on('notification updated', () => {
+      //   getNotifications();
+      // });
     }
   }, [socket]);
 
