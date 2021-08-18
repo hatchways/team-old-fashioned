@@ -26,6 +26,6 @@ export const PaymentMethodsProvider: FunctionComponent = ({ children }): JSX.Ele
   return <PaymentMethodContext.Provider value={{ paymentMethods }}>{children}</PaymentMethodContext.Provider>;
 };
 
-export function useContest(): IPaymentMethodContext {
+export function usePayment(): IPaymentMethodContext {
   return useContext(PaymentMethodContext);
 }

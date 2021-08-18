@@ -38,6 +38,6 @@ export const NotificationsProvider: FunctionComponent = ({ children }): JSX.Elem
   return <NotificationsContext.Provider value={{ notifications }}>{children}</NotificationsContext.Provider>;
 };
 
-export function useContest(): INotificationsContext {
+export function useNotifications(): INotificationsContext {
   return useContext(NotificationsContext);
 }
