@@ -30,7 +30,10 @@ export default function PaymentMethodSelection({ paymentMethods, contestId }: Pr
     if (paymentIntentStatus) {
       paymentIntentStatus.status === 'succeeded'
         ? updateSnackBarMessage(
-            `${paymentIntentStatus.currency} ${paymentIntentStatus.amount_received} has been charged from your account.`,
+            // Stripe unit for USD is in cents
+            `${paymentIntentStatus.currency} ${
+              paymentIntentStatus.amount_received / 100
+            } has been charged from your account.`,
           )
         : updateSnackBarMessage(paymentIntentStatus.status);
     } else {
