@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent, useContext } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
@@ -6,19 +6,19 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
-import { NotificationsContext } from '../../context/useNotificationsContext';
 import { NotificationsList } from '../../pages/Notifications/NotificationsList/NotificationsList';
+import { Notification } from '../../interface/Notifications';
 
 interface Props {
+  notifications: Notification[];
   type: 'submission' | 'message';
   children: JSX.Element;
 }
 
-const NotifsMsgDropdown = ({ type, children }: Props): JSX.Element => {
+const NotifsMsgDropdown = ({ notifications, type, children }: Props): JSX.Element => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const { notifications } = useContext(NotificationsContext);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

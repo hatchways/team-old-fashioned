@@ -6,7 +6,8 @@ export interface Notification {
     username: string;
   };
   receiverId: string;
-  contestId: {
+  conversationId?: string;
+  contestId?: {
     _id: string;
     title: string;
   };

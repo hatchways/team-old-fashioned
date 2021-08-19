@@ -1,6 +1,6 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect } from 'react';
 import { Notification } from '../interface/Notifications';
-import { fetchNotifications } from '../helpers/APICalls/fetchNotifications';
+import { fetchNotifications } from '../helpers/APICalls/notifications';
 import { useSocket } from './useSocketContext';
 
 interface INotificationsContext {
@@ -29,12 +29,16 @@ export const NotificationsProvider: FunctionComponent = ({ children }): JSX.Elem
       socket.on('loggedin', () => {
         getNotifications();
       });
+      // Issue: client not receiving emitted message on notification update
+      // socket.on('notification updated', () => {
+      //   getNotifications();
+      // });
     }
   }, [socket]);
 
   return <NotificationsContext.Provider value={{ notifications }}>{children}</NotificationsContext.Provider>;
 };
 
-export function useContest(): INotificationsContext {
+export function useNotifications(): INotificationsContext {
   return useContext(NotificationsContext);
 }

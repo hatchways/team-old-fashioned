@@ -4,51 +4,6 @@ const Notification = require('../models/Notification');
 const Contest = require('../models/Contest');
 const User = require('../models/User');
 
-exports.createNotification = asyncHandler(async (req, res, next) => {
-  const senderId = req.user.id;
-  const { type } = req.body;
-  const typeList = ['submission', 'message'];
-  if (!typeList.includes(type)) {
-    res.status(400);
-    throw new Error('No such notification type.');
-  } else {
-    let params;
-    if (type === 'submission') {
-      const { files, _id: submissionId, contestId } = req.body;
-      // Use last file in submission array while submission featured photo is not yet set
-      const photo = files[files.length - 1];
-      const receiverId = await Contest.findById(contestId).then((contest) => {
-        return contest.userId;
-      });
-      params = { type, receiverId, senderId, contestId, submissionId, photo };
-    } else if (type === 'message') {
-      const { receiverId } = req.body;
-      params = { type, receiverId, senderId };
-    }
-
-    const notification = await Notification.create(params);
-
-    if (!notification) {
-      res.status(500);
-      throw new Error('Invalid notification data');
-    }
-
-    res.status(201).json(notification);
-  }
-});
-
-exports.markAsRead = asyncHandler(async (req, res, next) => {
-  const notificationId = req.params.id;
-
-  const notification = await Notification.findByIdAndUpdate(notificationId, { readStatus: true }, { new: true });
-
-  if (!notification) {
-    res.status(500);
-    throw new Error(`Failed to mark notification as read`);
-  }
-  res.status(200).json(notification);
-});
-
 exports.getNotifications = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
 
@@ -67,18 +22,27 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
 });
 
 const getSocketReceiver = async (receiverId, connectedUsers) => {
-  return await User.findById(receiverId)
-    .then((user) => {
-      return user.email;
-    })
-    .then((email) => {
-      return connectedUsers.find((user) => user.email === email);
-    });
+  try {
+    return await User.findById(receiverId)
+      .then((user) => {
+        return user.email;
+      })
+      .then((email) => {
+        return connectedUsers.find((user) => email === user.email).socketId;
+      });
+  } catch (error) {
+    console.log('User offline');
+  }
+};
+
+const socketEmit = (receiverId, message, connectedUsers, socket) => {
+  getSocketReceiver(receiverId, connectedUsers).then((receiver) => {
+    socket.to(receiver).emit(message);
+  });
 };
 
 module.exports.socketCreateNotification = function (socket, connectedUsers) {
   socket.on('create notification', async function (data) {
-    const submissionData = data.returnData.submission;
     const type = data.type;
 
     const typeList = ['submission', 'message'];
@@ -87,7 +51,7 @@ module.exports.socketCreateNotification = function (socket, connectedUsers) {
     } else {
       let params;
       if (type === 'submission') {
-        const { files, _id: submissionId, contestId, userId: senderId } = submissionData;
+        const { files, _id: submissionId, contestId, userId: senderId } = data.returnData.submission;
         // Use last file in submission array while submission featured photo is not yet set
         const photo = files[files.length - 1];
         const receiverId = await Contest.findById(contestId).then((contest) => {
@@ -95,8 +59,14 @@ module.exports.socketCreateNotification = function (socket, connectedUsers) {
         });
         params = { type, receiverId, senderId, contestId, submissionId, photo };
       } else if (type === 'message') {
-        const { receiverId, userId: senderId } = submissionData;
-        params = { type, receiverId, senderId };
+        const { receiver, userId: senderId, conversationId } = data;
+        const receiverId = await User.findOne({ email: receiver }).then((user) => {
+          return user.id;
+        });
+        const photo = await User.findById(senderId).then((user) => {
+          return user.profilePicUrl;
+        });
+        params = { type, receiverId, senderId, conversationId, photo };
       }
 
       const notification = await Notification.create(params);
@@ -104,11 +74,22 @@ module.exports.socketCreateNotification = function (socket, connectedUsers) {
       if (!notification) {
         throw new Error('Invalid notification data');
       } else {
-        const receiver = getSocketReceiver(params.receiverId, connectedUsers);
-        if (receiver) {
-          socket.to(receiver).emit('notification created');
-        }
+        socketEmit(params.receiverId, 'notification created', connectedUsers, socket);
       }
+    }
+  });
+};
+
+module.exports.markAsRead = function (socket, connectedUsers) {
+  socket.on('read notification', async function (data) {
+    const { notificationId, receiverId } = data;
+
+    const notification = await Notification.findByIdAndUpdate(notificationId, { readStatus: true }, { new: true });
+
+    if (!notification) {
+      throw new Error(`Failed to mark notification as read`);
+    } else {
+      socketEmit(receiverId, 'notification updated', connectedUsers, socket);
     }
   });
 };

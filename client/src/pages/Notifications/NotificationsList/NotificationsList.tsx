@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Notification } from '../../../interface/Notifications';
 import relativeTime from '../RelativeTime';
 import useStyles from './useStyles';
@@ -9,6 +10,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import { useSocket } from '../../../context/useSocketContext';
+import { useAuth } from '../../../context/useAuthContext';
 
 interface Props {
   notifications: Notification[];
@@ -16,17 +19,30 @@ interface Props {
 }
 export function NotificationsList({ notifications, type }: Props): JSX.Element {
   const classes = useStyles();
-  // TODO: Mark notification as read when clicked
-  // const [invisible, setInvisible] = React.useState(false);
+  const history = useHistory();
+  const { socket } = useSocket();
+  const { loggedInUser } = useAuth();
 
-  // const handleBadgeVisibility = () => {
-  //   setInvisible(true);
-  // };
+  const handleClick = (notification: Notification) => {
+    if (socket) {
+      socket.emit('read notification', { notificationId: notification._id, receiverId: loggedInUser?.id });
+      notification.readStatus = true;
+    }
+    // Linking to conversation by Id is not supported yet
+    const link = notification.type === 'submission' ? `/contest-details/${notification.contestId?._id}` : '/messages';
+    history.push(link);
+  };
+
   return (
     <List component="nav" className={classes.root} aria-label="notifications">
       {notifications.map((notification: Notification) => (
         <Fragment key={notification._id}>
-          <ListItem button>
+          <ListItem
+            button
+            onClick={(e) => {
+              handleClick(notification);
+            }}
+          >
             <Grid container={true} alignItems="center" justifyContent="center" spacing={2} wrap="nowrap">
               <Grid item xs={2} container direction="column">
                 <Avatar alt="Notification Thumbnail" src={notification.photo} />
@@ -42,7 +58,7 @@ export function NotificationsList({ notifications, type }: Props): JSX.Element {
                         &nbsp; submitted a design to your contest &nbsp;
                       </Typography>
                       <Typography display="inline" variant="body2" className={classes.boldText}>
-                        {notification.contestId.title}.
+                        {notification.contestId?.title}.
                       </Typography>
                     </>
                   ) : (
