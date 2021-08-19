@@ -1,4 +1,5 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { IPaymentMethod } from '../interface/Payments';
 
 interface IPaymentMethodContext {
@@ -11,6 +12,7 @@ export const PaymentMethodContext = createContext<IPaymentMethodContext>({
 
 export const PaymentMethodsProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [paymentMethods, setPaymentMethods] = useState<IPaymentMethod[]>([]);
+  const location = useLocation().pathname;
 
   useEffect(() => {
     const getPaymentMethods = async () => {
@@ -20,12 +22,15 @@ export const PaymentMethodsProvider: FunctionComponent = ({ children }): JSX.Ele
         setPaymentMethods(data as IPaymentMethod[]);
       }
     };
-    getPaymentMethods();
-  }, [setPaymentMethods]);
+
+    if (location.endsWith('/profile') || location.endsWith('payment')) {
+      getPaymentMethods();
+    }
+  }, [location]);
 
   return <PaymentMethodContext.Provider value={{ paymentMethods }}>{children}</PaymentMethodContext.Provider>;
 };
 
-export function useContest(): IPaymentMethodContext {
+export function usePayment(): IPaymentMethodContext {
   return useContext(PaymentMethodContext);
 }
