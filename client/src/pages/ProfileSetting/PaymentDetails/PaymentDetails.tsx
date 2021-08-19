@@ -23,7 +23,11 @@ const PaymentDetails: FC = (): JSX.Element => {
   return (
     <Elements stripe={stripePromise}>
       <PageContainer titleEl="Payment Details">
-        {paymentMethods ? <PaymentMethods paymentMethods={paymentMethods} /> : <PaymentForm />}
+        {paymentMethods && paymentMethods.length > 0 ? (
+          <PaymentMethods paymentMethods={paymentMethods} />
+        ) : (
+          <PaymentForm />
+        )}
       </PageContainer>
     </Elements>
   );
