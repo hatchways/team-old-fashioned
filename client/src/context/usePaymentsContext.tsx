@@ -23,7 +23,7 @@ export const PaymentMethodsProvider: FunctionComponent = ({ children }): JSX.Ele
       }
     };
 
-    if (location.endsWith('/profile') || location.endsWith('payment')) {
+    if (location.endsWith('/profile') || location.endsWith('payment') || location.endsWith('/new-contest')) {
       getPaymentMethods();
     }
   }, [location]);
