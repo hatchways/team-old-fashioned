@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import { useHistory } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -8,10 +9,18 @@ import useStyles from './useStyles';
 import NewContestForm from './NewContestForm/NewContestForm';
 import { createContestAPI } from '../../helpers/APICalls/contest';
 import { useSnackBar } from '../../context/useSnackbarContext';
+import { usePayment } from '../../context/usePaymentsContext';
 
 const NewContest: FunctionComponent = (): JSX.Element => {
   const classes = useStyles();
+  const history = useHistory();
   const { updateSnackBarMessage } = useSnackBar();
+  const { paymentMethods } = usePayment();
+
+  if (paymentMethods.length === 0) {
+    updateSnackBarMessage('Please add a payment method before creating contests');
+    history.push('/profile');
+  }
 
   const handleSubmit = (
     {
