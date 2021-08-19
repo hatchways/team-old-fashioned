@@ -98,7 +98,8 @@ exports.chargeCard = asyncHandler(async (req, res, next) => {
   });
   const paymentIntent = await stripe.paymentIntents.create({
     customer: customerId,
-    amount: prizeAmount,
+    // Stripe unit for USD is in cents
+    amount: prizeAmount * 100,
     currency: 'usd',
     payment_method: cardId,
     confirm: true,
