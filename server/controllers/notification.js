@@ -72,6 +72,9 @@ module.exports.socketCreateNotification = function (socket, connectedUsers) {
       }
 
       const notification = await Notification.create(params);
+      if (notification && params.type === 'message') {
+        await Notification.deleteMany({ type: 'message', senderId: params.senderId, _id: { $ne: notification._id } });
+      }
 
       if (!notification) {
         throw new Error('Invalid notification data');
