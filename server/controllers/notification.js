@@ -8,10 +8,12 @@ exports.getNotifications = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
 
   // Lists notifications for the user as the receiver
-  let notifications = await Notification.find({ receiverId: mongoose.Types.ObjectId(userId) }).populate([
-    { path: 'contestId', model: 'Contest', select: ['title'] },
-    { path: 'senderId', model: 'user', select: 'username' },
-  ]);
+  let notifications = await Notification.find({ receiverId: mongoose.Types.ObjectId(userId) })
+    .populate([
+      { path: 'contestId', model: 'Contest', select: ['title'] },
+      { path: 'senderId', model: 'user', select: 'username' },
+    ])
+    .sort('-createdAt');
 
   if (!notifications) {
     res.status(500);
