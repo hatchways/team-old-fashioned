@@ -10,6 +10,8 @@ import { useTheme } from '@material-ui/core/styles';
 import useStyles from './useStyles';
 import { ContestAPIData } from '../../interface/Contest';
 import { ContestList } from './ContestListByUsername/ContestList';
+import { RatingsList } from '../Ratings/RatingsList';
+import { Rating } from '../../interface/Ratings';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -43,8 +45,9 @@ function a11yProps(index: number) {
 
 interface Props {
   contests: ContestAPIData[];
+  ratings: Rating[];
 }
-export default function ProfileTabs({ contests }: Props): JSX.Element {
+export default function ProfileTabs({ contests, ratings }: Props): JSX.Element {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -85,7 +88,7 @@ export default function ProfileTabs({ contests }: Props): JSX.Element {
           <ContestList contests={contests} />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Show ratings as artist and contest owner here.
+          <RatingsList ratings={ratings} />
         </TabPanel>
       </SwipeableViews>
     </div>
