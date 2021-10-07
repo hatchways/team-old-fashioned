@@ -11,11 +11,14 @@ import { MessagingContext } from '../../context/useMessagingContext';
 import useStyles from './useStyles';
 import ProfileTabs from '../../components/Profile Tabs/ProfileTabs';
 import { useHistory } from 'react-router-dom';
+import { fetchRatings } from '../../helpers/APICalls/ratings';
+import { Rating } from '../../interface/Ratings';
 
 const Profile = ({ match }: RouteComponentProps): JSX.Element => {
   const classes = useStyles();
   const [profile, setProfile] = useState<User>();
   const [contests, setContests] = useState<ContestAPIData[]>([]);
+  const [ratings, setRatings] = useState<Rating[]>([]);
   const { loggedInUser } = useContext(AuthContext);
   const { newConversation } = useContext(MessagingContext);
   const history = useHistory();
@@ -35,8 +38,18 @@ const Profile = ({ match }: RouteComponentProps): JSX.Element => {
       }
     };
 
+    const getRatings = async (username: string) => {
+      const response = await fetchRatings(username);
+      console.log('fetching ratings');
+      if (response) {
+        console.log(response);
+        setRatings(response);
+      }
+    };
+
     getProfile(username);
     getContestList(username);
+    getRatings(username);
   }, [match]);
 
   const messageClickHandler = async () => {
@@ -86,7 +99,7 @@ const Profile = ({ match }: RouteComponentProps): JSX.Element => {
         )}
       </Box>
       <Box textAlign="center">
-        <ProfileTabs contests={contests} />
+        <ProfileTabs contests={contests} ratings={ratings} />
       </Box>{' '}
     </Card>
   );

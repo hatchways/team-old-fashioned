@@ -19,6 +19,7 @@ const contestRouter = require('./routes/contest');
 const notificationRouter = require('./routes/notification');
 const paymentRouter = require('./routes/payment');
 const submissionRouter = require('./routes/submission');
+const ratingRouter = require('./routes/rating');
 const emailRouter = require('./routes/email');
 const { socketCreateNotification } = require('./controllers/notification');
 const { markAsRead } = require('./controllers/notification');
@@ -109,6 +110,7 @@ app.use('/notifications', notificationRouter);
 app.use('/conversation', conversationRouter);
 app.use('/submission', submissionRouter);
 app.use('/payments', paymentRouter);
+app.use('/ratings', ratingRouter);
 
 app.use('/email', emailRouter);
 if (process.env.NODE_ENV === 'production') {
