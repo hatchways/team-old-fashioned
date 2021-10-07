@@ -11,6 +11,5 @@ export async function fetchRatings(artistUsername: string): Promise<Rating[]> {
     .then((res) => res.json())
     .catch((error) => {
       console.log(error);
-      // error: { message: 'Unable to connect to server. Please try again' },
     });
 }

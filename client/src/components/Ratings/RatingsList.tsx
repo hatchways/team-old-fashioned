@@ -1,11 +1,9 @@
 import { Fragment } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Rating } from '../../interface/Ratings';
 import relativeTime from '../../pages/Notifications/RelativeTime';
 import useStyles from './useStyles';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';

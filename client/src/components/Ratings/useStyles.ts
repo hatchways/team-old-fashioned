@@ -7,10 +7,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 400,
   },
 
-  readIndicator: {
-    color: '#00ff00',
-  },
-
   boldText: {
     fontWeight: theme.typography.fontWeightBold,
   },
